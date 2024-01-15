@@ -15,13 +15,18 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Member {
+public class Member extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long member_id;
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Reservation> reservationList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    private List<Notification> notificationList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    private List<Review> reviewList = new ArrayList<>();
     private String name;
     private String email;
     private String password;
@@ -29,7 +34,6 @@ public class Member {
     private String phone;
     private Integer age;
     private Integer grade;
-    private LocalDate createdAt;
-    private LocalDate updatedAt;
+
 
 }
