@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Notification extends BaseEntity {
+public class FAQ extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private String content;
-
+    private String answer;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "notification_id")
-    private Member member;
-
+    @JoinColumn(name="school_id")
+    private School school;
 
 }

@@ -1,5 +1,6 @@
 package com.example.school.domain;
 
+import com.example.school.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+
 public class Facility extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
