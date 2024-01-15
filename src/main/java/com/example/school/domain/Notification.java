@@ -6,32 +6,21 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
-
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Reservation extends BaseEntity{
+public class Notification extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String title;
+    private String content;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="member_id")
+    @JoinColumn(name = "notification_id")
     private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="facility_id")
-    private Facility facility;
-
-
-
-    private String start_time;
-    private String duration;
-
-
 
 
 }
