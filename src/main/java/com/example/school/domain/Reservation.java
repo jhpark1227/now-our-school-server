@@ -27,8 +27,6 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name="facility_id")
     private Facility facility;
 
-
-
     private String start_time;
     private String duration;
 

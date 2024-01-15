@@ -23,8 +23,16 @@ public class Facility extends BaseEntity{
     @OneToMany(mappedBy = "facility",cascade = CascadeType.ALL)
     private List<Reservation> reservationList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "review",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "facility",cascade = CascadeType.ALL)
     private List<Review> reviewList = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="building_id")
+    private Building building;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="category_id")
+    private Category category;
 
     private String name;
     private String imageURL;
