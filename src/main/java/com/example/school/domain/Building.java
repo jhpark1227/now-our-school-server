@@ -25,5 +25,5 @@ public class Building {
     @JoinColumn(name = "school_id")
     private School school;
     @OneToMany(mappedBy = "building",cascade = CascadeType.ALL)
-    private List<Building> buildingList = new ArrayList<>();
+    private List<Facility> facilityList = new ArrayList<>();
 }
