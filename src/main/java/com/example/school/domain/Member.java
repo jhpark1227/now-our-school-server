@@ -28,6 +28,10 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Review> reviewList = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="school_id")
+    private School school;
+
     private String name;
     private String email;
     private String password;
