@@ -15,12 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Facility extends BaseEntity {
+
+public class Facility extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany(mappedBy = "facility",cascade = CascadeType.ALL)
     private List<Reservation> reservationList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "review",cascade = CascadeType.ALL)
+    private List<Review> reviewList = new ArrayList<>();
+
     private String name;
     private String imageURL;
     private String purpose;
