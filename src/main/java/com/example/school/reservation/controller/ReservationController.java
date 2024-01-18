@@ -7,6 +7,7 @@ import com.example.school.reservation.dto.ReservationRequestDTO;
 import com.example.school.reservation.dto.ReservationResponseDTO;
 import com.example.school.reservation.repository.ReservationRepository;
 import com.example.school.reservation.service.ReservationService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +19,14 @@ import java.lang.reflect.Member;
 @RequestMapping("reservation")
 public class ReservationController {
     private final ReservationService reservationService;
-    private final ReservationRepository reservationRepository;
-    @PostMapping("/details")
-    public ApiResponse<ReservationResponseDTO.DetailResultDTO> getReservation(@RequestBody ReservationRequestDTO.DetailDTO detailDTO) {
-        Long memberId = detailDTO.getMemberId();
-        Integer page = detailDTO.getPage();
+    //예약 내역 확인 1번
+    @GetMapping("/details")
+    public ApiResponse<ReservationResponseDTO.DetailResultDTO> getReservation(@RequestParam(name="memberId")Long memberId,@RequestParam(name="page")Integer page) {
         System.out.println("page = "+page);
         Page<Reservation> reservationList = reservationService.getReservation(memberId,page);
         return ApiResponse.onSuccess(ReservationConverter.detailResultListDTO(reservationList));
     }
+
 
 
 }
