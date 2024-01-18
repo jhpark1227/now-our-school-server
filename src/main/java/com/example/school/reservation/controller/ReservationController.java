@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Member;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +26,16 @@ public class ReservationController {
         System.out.println("page = "+page);
         Page<Reservation> reservationList = reservationService.getReservation(memberId,page);
         return ApiResponse.onSuccess(ReservationConverter.detailResultListDTO(reservationList));
+    }
+
+    //예약 불가능한 시간대
+    @GetMapping
+    public ApiResponse<ReservationResponseDTO.bookedUpListDTO> checkTime(@RequestParam(name = "facilityId")Long facilityId,
+            @RequestParam(name="year")String year,@RequestParam(name = "month")String month,@RequestParam(name = "day") String day) {
+
+        List<Reservation> reservations = reservationService.possible_time(facilityId, year, month, day);
+        return ApiResponse.onSuccess(ReservationConverter.bookedUpListDTO(reservations));
+
     }
 
 

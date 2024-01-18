@@ -1,5 +1,6 @@
 package com.example.school.reservation.dto;
 
+import com.example.school.domain.Facility;
 import lombok.Getter;
 
 public class ReservationRequestDTO {
@@ -29,6 +30,14 @@ public class ReservationRequestDTO {
     @Getter
     public static class ReservationDTO{
 
+    }
+    //예약 불가능한 시간대
+    @Getter
+    public static class bookedUpDTO{
+        Long facilityId;
+        String year;
+        String month;
+        String day;
     }
 
 }

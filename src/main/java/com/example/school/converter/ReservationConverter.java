@@ -9,14 +9,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ReservationConverter {
+    //예약 세부내용
     public static ReservationResponseDTO.DetailDTO detailResultDTO(Reservation reservation){
         return ReservationResponseDTO.DetailDTO.builder()
                 .month(reservation.getMonth())
+                .start_time(reservation.getStart_time())
+                .end_time(reservation.getEnd_time())
                 .day(reservation.getDay())
                 .duration(reservation.getDuration())
                 .facility(reservation.getFacility())
                 .build();
     }
+    //예약 세부 내용들 list
     public static ReservationResponseDTO.DetailResultDTO detailResultListDTO(Page<Reservation> reservationList){
         List<ReservationResponseDTO.DetailDTO> reservationDTO = reservationList.stream()
                 .map(ReservationConverter::detailResultDTO).collect(Collectors.toList());
@@ -29,4 +33,23 @@ public class ReservationConverter {
                 .listSize(reservationDTO.size())
                 .build();
     }
+    //예약 불가능한 시간대
+    public static ReservationResponseDTO.bookedUpDTO bookedUpDTO(Reservation reservation){
+        return ReservationResponseDTO.bookedUpDTO.builder()
+                .endTime(reservation.getEnd_time())
+                .startTime(reservation.getStart_time())
+                .year(reservation.getYear())
+                .month(reservation.getMonth())
+                .day(reservation.getDay())
+                .build();
+    }
+    //예약 불가능한 시간대 세부내용 리스트
+    public static ReservationResponseDTO.bookedUpListDTO bookedUpListDTO(List<Reservation> reservationList){
+        List<ReservationResponseDTO.bookedUpDTO> reservationDTO = reservationList.stream()
+                .map(ReservationConverter::bookedUpDTO).collect(Collectors.toList());
+        return ReservationResponseDTO.bookedUpListDTO.builder()
+                .bookedUpList(reservationDTO)
+                .build();
+    }
+
 }
