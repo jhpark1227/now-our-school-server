@@ -26,9 +26,22 @@ public class Reservation extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="facility_id")
     private Facility facility;
+    private String month;
+    private String day;
 
     private String start_time;
+    private String end_time;
     private String duration;
+
+
+    public void setMember(Member member){
+        this.member = member;
+        member.getReservationList().add(this);
+    }
+    public void setFacility(Facility facility){
+        this.facility = facility;
+        facility.getReservationList().add(this);
+    }
 
 
 
