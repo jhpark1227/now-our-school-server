@@ -16,14 +16,14 @@ public class ReservationResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class DetailDTO{
+        Long id;
         String year;
         String month;
         String day;
-        String duration;
-        String start_time;
-        String end_time;
-        Facility facility;
-        Member member;
+        Integer duration;
+        Integer start_time;
+        Integer end_time;
+
 
     }
     //예약 내역 리스트
@@ -46,11 +46,12 @@ public class ReservationResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class bookedUpDTO{
+        Long id;
         String year;
         String month;
         String day;
-        String startTime;
-        String endTime;
+        Integer startTime;
+        Integer endTime;
     }
     @Builder
     @Getter

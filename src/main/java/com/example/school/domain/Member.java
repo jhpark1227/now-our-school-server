@@ -16,7 +16,7 @@ import java.util.List;
 public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long member_id;
+    private Long id;
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Reservation> reservationList = new ArrayList<>();
 
