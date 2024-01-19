@@ -18,6 +18,7 @@ public class ReservationConverter {
                 .day(reservation.getDay())
                 .duration(reservation.getDuration())
                 .facility(reservation.getFacility())
+                .member(reservation.getMember())
                 .build();
     }
     //예약 세부 내용들 list
@@ -50,6 +51,18 @@ public class ReservationConverter {
         return ReservationResponseDTO.bookedUpListDTO.builder()
                 .bookedUpList(reservationDTO)
                 .build();
+    }
+    //예약 하기 -> 예약 만듬
+    public static Reservation reservation(ReservationRequestDTO.ReservationDTO reservationDTO){
+        return Reservation.builder()
+                .year(reservationDTO.getYear())
+                .month(reservationDTO.getMonth())
+                .day(reservationDTO.getDay())
+                .start_time(reservationDTO.getStartTime())
+                .end_time(reservationDTO.getEndTime())
+                .duration(reservationDTO.getDuration())
+                .build();
+
     }
 
 }
