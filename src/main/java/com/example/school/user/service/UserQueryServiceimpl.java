@@ -1,7 +1,9 @@
 package com.example.school.user.service;
 
+import com.example.school.domain.Facility;
 import com.example.school.domain.Member;
 import com.example.school.domain.Review;
+import com.example.school.facility.repository.FacilityRepository;
 import com.example.school.user.repository.ReviewRepository;
 import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class UserQueryServiceimpl implements UserQueryService{
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
+    private final FacilityRepository facilityRepository;
 
     @Override
     public Optional<Member> findMember(Long id) {
@@ -30,5 +33,13 @@ public class UserQueryServiceimpl implements UserQueryService{
 
         Page<Review>MemberPage = reviewRepository.findAllByMember(member, PageRequest.of(page, 10));
         return MemberPage;
+    }
+
+    @Override
+    public Page<Review> findByFacility(Long facilityId, Integer page) {
+        Facility facility = facilityRepository.findById(facilityId).get();
+        Page<Review> reviews = reviewRepository.findAllByFacility(facility, PageRequest.of(page-1, 10));
+
+        return reviews;
     }
 }
