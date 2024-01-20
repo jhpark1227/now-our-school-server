@@ -13,8 +13,8 @@ public class UserConverter {
     public static Review toReview(UserRequestDTO.ReviewDTO request){
         return Review.builder()
                 .title(request.getTitle())
-                .point(request.getPoint())
-                .content(request.getContent())
+                .score(request.getScore())
+                .body(request.getBody())
                 .build();
     }
 
@@ -27,9 +27,9 @@ public class UserConverter {
     public static UserResponseDTO.ReviewPreViewDTO reviewPreViewDTO(Review review){
         return UserResponseDTO.ReviewPreViewDTO.builder()
                 .ownerNickname(review.getMember().getName())
-                .point(review.getPoint())
+                .score(review.getScore())
                 .createdAt(review.getCreatedAt().toLocalDate())
-                .content(review.getContent())
+                .body(review.getBody())
                 .build();
     }   public static UserResponseDTO.ReviewPreViewListDTO reviewPreViewListDTO(Page<Review> reviewList){
 
@@ -45,4 +45,5 @@ public class UserConverter {
                 .reviewList(reviewPreViewDTOList)
                 .build();
     }
+
 }

@@ -23,9 +23,13 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "facility_id")
     private Facility facility;
 
-    private Float point;
+
     private String title;
-    private String content;
+
+    private Float score;
+
+    private String body;
+
 
     public void setMember(Member member){
         if(this.member != null)

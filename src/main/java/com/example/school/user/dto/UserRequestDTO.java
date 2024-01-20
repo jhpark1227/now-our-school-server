@@ -10,8 +10,8 @@ public class UserRequestDTO {
         @NotBlank
         String title;
         @NotNull
-        Float point;
+        Float score;
         @NotBlank
-        String content;
+        String body;
     }
 }
