@@ -23,7 +23,7 @@ public class UserResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ReviewPreViewListDTO{
-        List<ReviewPreViewDTO> reviewList;
+        List<UserResponseDTO.ReviewPreViewDTO> reviewList;
         Integer listSize;
         Integer totalPage;
         Long totalElements;
@@ -36,8 +36,8 @@ public class UserResponseDTO {
     @AllArgsConstructor
     public static class ReviewPreViewDTO{
         String ownerNickname;
-        Float point;
-        String content;
+        Float score;
+        String body;
         LocalDate createdAt;
     }
 }

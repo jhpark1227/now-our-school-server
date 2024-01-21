@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserQueryServiceimpl implements UserQueryService{
+public class UserQueryServiceImpl implements UserQueryService{
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
     private final FacilityRepository facilityRepository;
@@ -31,7 +31,7 @@ public class UserQueryServiceimpl implements UserQueryService{
 
         Member member = userRepository.findById(MemberId).get();
 
-        Page<Review>MemberPage = reviewRepository.findAllByMember(member, PageRequest.of(page, 10));
+        Page<Review>MemberPage = reviewRepository.findAllByMember(member, PageRequest.of(page-1, 10));
         return MemberPage;
     }
 
