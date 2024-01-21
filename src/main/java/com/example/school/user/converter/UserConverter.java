@@ -24,8 +24,16 @@ public class UserConverter {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
+    public static UserResponseDTO.UpdateReviewResultDTO toUpdateReviewResultDTO(Review updatedReview) {
+        return UserResponseDTO.UpdateReviewResultDTO.builder()
+                .updatedReviewId(updatedReview.getId())
+                .updatedAt(LocalDateTime.now())
+                .build();
+    }
     public static UserResponseDTO.ReviewPreViewDTO reviewPreViewDTO(Review review){
         return UserResponseDTO.ReviewPreViewDTO.builder()
+                .title(review.getTitle())
                 .ownerNickname(review.getMember().getName())
                 .score(review.getScore())
                 .createdAt(review.getCreatedAt().toLocalDate())

@@ -29,4 +29,34 @@ public class UserCommandServiceImpl implements UserCommandService{
 
         return reviewRepository.save(review);
     }
+    @Override
+    public Review updateReview(Long memberId, Long facilityId, Long reviewId, UserRequestDTO.ReviewDTO request) {
+
+        Review existingReview = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found with id: " + reviewId));
+
+        validateReviewOwnership(existingReview, memberId, facilityId);
+
+        existingReview.setTitle(request.getTitle());
+        existingReview.setScore(request.getScore());
+        existingReview.setBody(request.getBody());
+
+        return reviewRepository.save(existingReview);
+    }
+
+    private void validateReviewOwnership(Review review, Long memberId, Long facilityId) {
+        if (!review.getMember().getId().equals(memberId) || !review.getFacility().getId().equals(facilityId)) {
+            throw new RuntimeException("Review does not belong to the specified member and facility.");
+        }
+    }
+
+    @Override
+    public void deleteReview(Long memberId, Long facilityId, Long reviewId) {
+        Review existingReview = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found with id: " + reviewId));
+        validateReviewOwnership(existingReview, memberId, facilityId);
+
+        reviewRepository.delete(existingReview);
+    }
+
 }

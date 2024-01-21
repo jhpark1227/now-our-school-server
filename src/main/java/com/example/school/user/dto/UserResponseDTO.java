@@ -22,6 +22,15 @@ public class UserResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class UpdateReviewResultDTO {
+        Long updatedReviewId;
+        LocalDateTime updatedAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ReviewPreViewListDTO{
         List<UserResponseDTO.ReviewPreViewDTO> reviewList;
         Integer listSize;
@@ -35,9 +44,11 @@ public class UserResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ReviewPreViewDTO{
+        String title;
         String ownerNickname;
         Float score;
         String body;
         LocalDate createdAt;
     }
+
 }
