@@ -13,6 +13,7 @@ import com.example.school.validation.annotation.ExistFacility;
 import com.example.school.validation.annotation.ExistMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,9 +27,12 @@ public class ReservationController {
     //예약하기
     @PostMapping("")
     public ApiResponse<Reservation> reserve(@RequestBody ReservationRequestDTO.ReservationDTO reservationDTO){
-        //facilityId로 facility 찾는 코드 작성
-        return ApiResponse.onSuccess(reservationService.createReservation(reservationDTO));
-
+        try{
+            //facilityId로 facility 찾는 코드 작성
+            return ApiResponse.onSuccess(reservationService.createReservation(reservationDTO));
+        } catch(RuntimeException e){
+            return ApiResponse.onFailure("COMMOM400",e.getMessage());
+        }
     }
 
     //예약 내역 확인
@@ -41,8 +45,7 @@ public class ReservationController {
     //예약 불가능한 시간대
     @GetMapping("/time")
     public ApiResponse<ReservationResponseDTO.bookedUpListDTO> checkTime(@RequestParam(name = "facilityId")Long facilityId,
-            @RequestParam(name="year")String year,@RequestParam(name = "month")String month,@RequestParam(name = "day") String day) {
-
+                                                                         @RequestParam(name="year")String year, @RequestParam(name = "month")String month, @RequestParam(name = "day") String day) {
         List<Reservation> reservations = reservationService.possible_time(facilityId, year, month, day);
         return ApiResponse.onSuccess(ReservationConverter.bookedUpListDTO(reservations));
     }
@@ -65,5 +68,13 @@ public class ReservationController {
         return ApiResponse.onSuccess(FacilityConverter.detailResultDTO(facilities));
     }
 
+    //반납하기
+    @PostMapping("/return/{reservationId}")
+    public ApiResponse<ReservationResponseDTO.DetailDTO> returnReservation(@PathVariable(name="reservationId") Long reservationId){
+        Reservation reservation = reservationService.getReservationById(reservationId);
+        reservationService.returnReservation(reservation);
+        ReservationResponseDTO.DetailDTO detailDTO = ReservationConverter.returnReservation(reservation);
+        return ApiResponse.onSuccess(detailDTO);
+    }
 
 }

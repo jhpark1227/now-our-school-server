@@ -4,6 +4,7 @@ import com.example.school.domain.common.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 
@@ -34,6 +35,7 @@ public class Reservation extends BaseEntity {
     private Integer start_time;
     private Integer end_time;
     private Integer duration;
+    private Boolean back;
 
 
     public void setMember(Member member){

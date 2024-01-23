@@ -19,6 +19,7 @@ public class ReservationConverter {
                 .end_time(reservation.getEnd_time())
                 .day(reservation.getDay())
                 .duration(reservation.getDuration())
+                .back(reservation.getBack())
                 .build();
     }
     //예약 세부 내용들 list
@@ -62,8 +63,21 @@ public class ReservationConverter {
                 .start_time(reservationDTO.getStartTime())
                 .end_time(reservationDTO.getEndTime())
                 .duration(reservationDTO.getDuration())
+                .back(false)
                 .build();
-
+    }
+    //예약 한 시설물 반납하기
+    public static ReservationResponseDTO.DetailDTO returnReservation(Reservation reservation){
+        return ReservationResponseDTO.DetailDTO.builder()
+                .id(reservation.getId())
+                .year(reservation.getYear())
+                .month(reservation.getMonth())
+                .start_time(reservation.getStart_time())
+                .end_time(reservation.getEnd_time())
+                .day(reservation.getDay())
+                .duration(reservation.getDuration())
+                .back(reservation.getBack())
+                .build();
     }
 
 }

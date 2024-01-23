@@ -31,12 +31,37 @@ public class ReservationService {
     //예약기능
     @Transactional
     public Reservation createReservation(ReservationRequestDTO.ReservationDTO reservationDTO) {
+        String year = reservationDTO.getYear();
+        String month = reservationDTO.getMonth();
+        String day = reservationDTO.getDay();
+        Long facilityId = reservationDTO.getFacilityId();
+        List<Reservation> reservations = reservationRepository.findAllByFacilityIdAndYearAndMonthAndDay(facilityId, year, month, day);
+        boolean isAllowed = reservations.stream()
+                .allMatch(reservation -> isOverlap(reservation, reservationDTO.getStartTime(), reservationDTO.getEndTime()));
+
+        if(!isAllowed){
+            throw new RuntimeException("해당 시간대에는 이미 예약 되어 있습니다.");
+        }
+
         Reservation reservation = ReservationConverter.reservation(reservationDTO);
         Member member = userService.findById(reservationDTO.getMemberId());
         Facility facility = facilityService.findById(reservationDTO.getFacilityId());
         reservation.setMember(member);
         reservation.setFacility(facility);
         return reservationRepository.save(reservation);
+    }
+    // 두 예약의 시간 범위가 겹치는지 확인하는 메서드
+    private boolean isOverlap(Reservation reservation, Integer newStartTime, Integer newEndTime) {
+        Integer startTime = reservation.getStart_time();
+        Integer endTime = reservation.getEnd_time();
+
+        //겹치지 않는 경우
+        if((newStartTime <= startTime && newEndTime <=startTime) || (newStartTime >= endTime && newEndTime >= endTime)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     //예약 불가능한 시간대
@@ -80,8 +105,6 @@ public class ReservationService {
         }
     }
 
-    //예약반납
-    //예약연장(1시간 단위)
     //예약내역(페이지 있는 버전)
     public Page<Reservation> getReservation(Long memberId, Integer page) {
         return reservationRepository.findAllByMemberId(memberId, PageRequest.of(page - 1, 10));
@@ -96,5 +119,17 @@ public class ReservationService {
     public List<Facility> getFacilities(Long memberId) {
         List<Reservation> reservations = getReservation_no(memberId);
         return reservations.stream().map(reservation -> reservation.getFacility()).collect(Collectors.toList());
+    }
+    //예약 아이디로 예약 찾기
+    public Reservation getReservationById(Long reservationId){
+        Reservation reservation = reservationRepository.findById(reservationId).get();
+        return reservation;
+    }
+
+    //반납하기
+    @Transactional
+    public Reservation returnReservation(Reservation reservation){
+        reservation.setBack(true);
+        return reservationRepository.save(reservation);
     }
 }

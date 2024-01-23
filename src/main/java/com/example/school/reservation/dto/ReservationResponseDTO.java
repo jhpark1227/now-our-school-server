@@ -23,6 +23,7 @@ public class ReservationResponseDTO {
         Integer duration;
         Integer start_time;
         Integer end_time;
+        Boolean back;
 
     }
     //예약 내역 리스트

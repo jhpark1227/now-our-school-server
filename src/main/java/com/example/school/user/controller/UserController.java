@@ -41,7 +41,7 @@ public class UserController {
     }
     //시설별 리뷰 조회
     @GetMapping("/details/{facilityId}/review")
-    public ApiResponse<UserResponseDTO.ReviewPreViewListDTO> facilityReview(@PathVariable(name="facilityId") Long facilityId,
+    public ApiResponse<UserResponseDTO.ReviewPreViewListDTO> facilityReview( @PathVariable(name="facilityId") Long facilityId,
                                                                             @RequestParam(name="page") Integer page){
         Page<Review> reviewList = userQueryService.findByFacility(facilityId, page);
         return ApiResponse.onSuccess(UserConverter.reviewPreViewListDTO(reviewList));
