@@ -1,5 +1,6 @@
 package com.example.school.user.converter;
 
+import com.example.school.domain.Inquiry;
 import com.example.school.domain.Review;
 import com.example.school.user.dto.UserRequestDTO;
 import com.example.school.user.dto.UserResponseDTO;
@@ -13,8 +14,8 @@ public class UserConverter {
     public static Review toReview(UserRequestDTO.ReviewDTO request){
         return Review.builder()
                 .title(request.getTitle())
-                .point(request.getPoint())
-                .content(request.getContent())
+                .score(request.getScore())
+                .body(request.getBody())
                 .build();
     }
 
@@ -24,12 +25,20 @@ public class UserConverter {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
+    public static UserResponseDTO.UpdateReviewResultDTO toUpdateReviewResultDTO(Review updatedReview) {
+        return UserResponseDTO.UpdateReviewResultDTO.builder()
+                .updatedReviewId(updatedReview.getId())
+                .updatedAt(LocalDateTime.now())
+                .build();
+    }
     public static UserResponseDTO.ReviewPreViewDTO reviewPreViewDTO(Review review){
         return UserResponseDTO.ReviewPreViewDTO.builder()
+                .title(review.getTitle())
                 .ownerNickname(review.getMember().getName())
-                .point(review.getPoint())
+                .score(review.getScore())
                 .createdAt(review.getCreatedAt().toLocalDate())
-                .content(review.getContent())
+                .body(review.getBody())
                 .build();
     }   public static UserResponseDTO.ReviewPreViewListDTO reviewPreViewListDTO(Page<Review> reviewList){
 
@@ -45,4 +54,18 @@ public class UserConverter {
                 .reviewList(reviewPreViewDTOList)
                 .build();
     }
+
+    public static Inquiry toInquiry(UserRequestDTO.InquiryDTO request){
+        return Inquiry.builder()
+                .title(request.getTitle())
+                .body(request.getBody())
+                .build();
+    }
+    public static UserResponseDTO.CreateInquiryResultDTO toCreateInquiryResultDTO(Inquiry inquiry){
+        return UserResponseDTO.CreateInquiryResultDTO.builder()
+                .inquiryId(inquiry.getId())
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
+
 }
