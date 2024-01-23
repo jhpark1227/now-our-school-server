@@ -43,14 +43,17 @@ public class UserController {
         return ApiResponse.onSuccess(UserConverter.toCreateReviewResultDTO(review));
     }
     //시설별 리뷰 조회
-<<<<<<< HEAD
+    /*
     @GetMapping("/details/{facilityId}/review")
-    public ApiResponse<UserResponseDTO.ReviewPreViewListDTO> facilityReview( @PathVariable(name="facilityId") Long facilityId,
-=======
+    public ApiResponse<UserResponseDTO.ReviewPreViewListDTO> facilityReview(@PathVariable(name="facilityId") Long facilityId,
+                                                                            @RequestParam(name="page") Integer page){
+        Page<Review> reviewList = userQueryService.findByFacility(facilityId, page);
+        return ApiResponse.onSuccess(UserConverter.reviewPreViewListDTO(reviewList));
+    }*/
+
     @GetMapping("/{facilityId}/reviews/byFacility")
     @Operation(summary = "시설별 리뷰 조회 API",description = "시설별로 리뷰목록을 조회하는 API이며, 페이징을 포함합니다. query String 으로 page 번호를 주세요")
     public ApiResponse<UserResponseDTO.ReviewPreViewListDTO> facilityReview(@PathVariable(name="facilityId") Long facilityId,
->>>>>>> 8797a556b92930b06a805951dcae3a7723f21ec4
                                                                             @RequestParam(name="page") Integer page){
         Page<Review> reviewList = userQueryService.findByFacility(facilityId, page);
         return ApiResponse.onSuccess(UserConverter.reviewPreViewListDTO(reviewList));
