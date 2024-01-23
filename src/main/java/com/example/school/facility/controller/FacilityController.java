@@ -1,6 +1,7 @@
 package com.example.school.facility.controller;
 
 import com.example.school.apiPayload.ApiResponse;
+import com.example.school.domain.Building;
 import com.example.school.domain.Theme;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.service.FacilityService;
@@ -25,6 +26,17 @@ public class FacilityController {
         List<FacilityResponseDTO.CategoryWithFacilities> list =
                 entities.stream().map(FacilityResponseDTO.CategoryWithFacilities::new)
                 .collect(Collectors.toList());
+
+        return ApiResponse.onSuccess(new FacilityResponseDTO.Categories(list,list.size()));
+    }
+
+    @GetMapping("/category/building")
+    public ApiResponse<FacilityResponseDTO.Categories> getListByBuilding(@RequestParam("email") String email){
+        List<Building> entities = facilityService.getListByBuilding(email);
+
+        List<FacilityResponseDTO.CategoryWithFacilities> list =
+                entities.stream().map(FacilityResponseDTO.CategoryWithFacilities::new)
+                        .collect(Collectors.toList());
 
         return ApiResponse.onSuccess(new FacilityResponseDTO.Categories(list,list.size()));
     }
