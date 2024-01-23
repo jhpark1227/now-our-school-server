@@ -1,6 +1,9 @@
 package com.example.school.reservation.controller;
 
 import com.example.school.apiPayload.ApiResponse;
+import com.example.school.domain.Facility;
+import com.example.school.facility.converter.FacilityConverter;
+import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.reservation.converter.ReservationConverter;
 import com.example.school.domain.Reservation;
 import com.example.school.reservation.dto.ReservationRequestDTO;
@@ -43,6 +46,7 @@ public class ReservationController {
         List<Reservation> reservations = reservationService.possible_time(facilityId, year, month, day);
         return ApiResponse.onSuccess(ReservationConverter.bookedUpListDTO(reservations));
     }
+
     //예약 연장하기
     @PostMapping("/extend")
     public ApiResponse<ReservationResponseDTO.DetailDTO> extendTime(@RequestBody ReservationRequestDTO.ExtendDTO extendDTO) {
@@ -54,8 +58,12 @@ public class ReservationController {
             return ApiResponse.onFailure("COMMON400", e.getMessage()); // 적절한 에러 코드 및 메시지 설정
         }
     }
-
-    //
+    //사용자 예약현황을 통해 이용한 시설물 목록 보기
+    @GetMapping("/facility")
+    public ApiResponse<FacilityResponseDTO.DetailResultDTO> useFacility(@RequestParam(name="memberId") Long memberId){
+        List<Facility> facilities = reservationService.getFacilities(memberId);
+        return ApiResponse.onSuccess(FacilityConverter.detailResultDTO(facilities));
+    }
 
 
 }

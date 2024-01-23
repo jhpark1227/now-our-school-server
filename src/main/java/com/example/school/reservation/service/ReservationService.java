@@ -30,7 +30,7 @@ public class ReservationService {
 
     //예약기능
     @Transactional
-    public Reservation createReservation(ReservationRequestDTO.ReservationDTO reservationDTO){
+    public Reservation createReservation(ReservationRequestDTO.ReservationDTO reservationDTO) {
         Reservation reservation = ReservationConverter.reservation(reservationDTO);
         Member member = userService.findById(reservationDTO.getMemberId());
         Facility facility = facilityService.findById(reservationDTO.getFacilityId());
@@ -38,11 +38,13 @@ public class ReservationService {
         reservation.setFacility(facility);
         return reservationRepository.save(reservation);
     }
+
     //예약 불가능한 시간대
-    public List<Reservation> possible_time(Long facilityId,String year,String month,String day){
-         return reservationRepository.findAllByFacilityIdAndYearAndMonthAndDay(facilityId, year, month, day);
+    public List<Reservation> possible_time(Long facilityId, String year, String month, String day) {
+        return reservationRepository.findAllByFacilityIdAndYearAndMonthAndDay(facilityId, year, month, day);
 
     }
+
     //예약 연장
     @Transactional
     public Reservation extendTime(Long reservationId, Integer extendTime) {
@@ -80,10 +82,19 @@ public class ReservationService {
 
     //예약반납
     //예약연장(1시간 단위)
-    //예약내역
-        public Page<Reservation> getReservation(Long memberId,Integer page){
-            return reservationRepository.findAllByMemberId(memberId, PageRequest.of(page-1, 10));
-        }
-    //시설물 마다 예약현황
+    //예약내역(페이지 있는 버전)
+    public Page<Reservation> getReservation(Long memberId, Integer page) {
+        return reservationRepository.findAllByMemberId(memberId, PageRequest.of(page - 1, 10));
+    }
 
+    //예약 내역(페이지 없는 버전)
+    public List<Reservation> getReservation_no(Long memberId) {
+        return reservationRepository.findAllByMemberId(memberId);
+    }
+
+    //예약 내역을 통해 이용한 시설물 추출
+    public List<Facility> getFacilities(Long memberId) {
+        List<Reservation> reservations = getReservation_no(memberId);
+        return reservations.stream().map(reservation -> reservation.getFacility()).collect(Collectors.toList());
+    }
 }

@@ -14,4 +14,11 @@ public class UserRequestDTO {
         @NotBlank
         String body;
     }
+    @Getter
+    public static class InquiryDTO{
+        @NotBlank
+        String title;
+        @NotBlank
+        String body;
+    }
 }

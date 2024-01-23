@@ -24,7 +24,6 @@ public class ReservationResponseDTO {
         Integer start_time;
         Integer end_time;
 
-
     }
     //예약 내역 리스트
     @Builder
@@ -59,5 +58,11 @@ public class ReservationResponseDTO {
     @AllArgsConstructor
     public static class bookedUpListDTO{
         List<bookedUpDTO>  bookedUpList;
+        List<DetailDTO> resultList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
     }
 }

@@ -3,12 +3,35 @@ package com.example.school.facility.dto;
 import com.example.school.domain.Building;
 import com.example.school.domain.Theme;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class FacilityResponseDTO {
+    //사용자 이용한 시설물 정보 DTO
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DetailDTO{
+        Long id;
+        String name;
+        String imageURL;
+        String time;
+        String location;
+        Float score;
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DetailResultDTO{
+        List<DetailDTO> resultList;
+        Integer listSize;
+    }
 
     @Getter @AllArgsConstructor
     public static class Categories{
@@ -42,3 +65,4 @@ public class FacilityResponseDTO {
         String name;
     }
 }
+
