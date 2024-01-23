@@ -45,4 +45,14 @@ public class Review extends BaseEntity {
         facility.getReviewList().add(this);
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public void setScore(Float score) {
+        this.score = score;
+    }
+    public void setBody(String body) {
+        this.body = body;
+    }
+
 }

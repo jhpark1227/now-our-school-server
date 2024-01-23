@@ -31,7 +31,7 @@ public class UserQueryServiceImpl implements UserQueryService{
 
         Member member = userRepository.findById(MemberId).get();
 
-        Page<Review>MemberPage = reviewRepository.findAllByMember(member, PageRequest.of(page-1, 10));
+        Page<Review>MemberPage = reviewRepository.findAllByMember(member, PageRequest.of(page, 10));
         return MemberPage;
     }
 
@@ -41,5 +41,12 @@ public class UserQueryServiceImpl implements UserQueryService{
         Page<Review> reviews = reviewRepository.findAllByFacility(facility, PageRequest.of(page-1, 10));
 
         return reviews;
+    }
+
+    @Override
+    public Optional<Review> findById(Long id) {
+        {
+            return reviewRepository.findById(id);
+        }
     }
 }
