@@ -23,7 +23,7 @@ public class School extends BaseEntity {
     @OneToMany(mappedBy = "school",cascade = CascadeType.ALL)
     private List<FAQ> faqList = new ArrayList<>();
     @OneToMany(mappedBy = "school",cascade = CascadeType.ALL)
-    private List<Category> categoryList = new ArrayList<>();
+    private List<Theme> themes = new ArrayList<>();
     @OneToMany(mappedBy = "school",cascade = CascadeType.ALL)
     private List<Member> memberList = new ArrayList<>();
     @OneToMany(mappedBy = "school",cascade = CascadeType.ALL)
