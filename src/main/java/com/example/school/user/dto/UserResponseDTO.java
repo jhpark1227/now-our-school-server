@@ -50,5 +50,12 @@ public class UserResponseDTO {
         String body;
         LocalDate createdAt;
     }
-
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CreateInquiryResultDTO{
+        Long inquiryId;
+        LocalDateTime createdAt;
+    }
 }

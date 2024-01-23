@@ -1,5 +1,6 @@
 package com.example.school.user.converter;
 
+import com.example.school.domain.Inquiry;
 import com.example.school.domain.Review;
 import com.example.school.user.dto.UserRequestDTO;
 import com.example.school.user.dto.UserResponseDTO;
@@ -51,6 +52,19 @@ public class UserConverter {
                 .totalElements(reviewList.getTotalElements())
                 .listSize(reviewPreViewDTOList.size())
                 .reviewList(reviewPreViewDTOList)
+                .build();
+    }
+
+    public static Inquiry toInquiry(UserRequestDTO.InquiryDTO request){
+        return Inquiry.builder()
+                .title(request.getTitle())
+                .body(request.getBody())
+                .build();
+    }
+    public static UserResponseDTO.CreateInquiryResultDTO toCreateInquiryResultDTO(Inquiry inquiry){
+        return UserResponseDTO.CreateInquiryResultDTO.builder()
+                .inquiryId(inquiry.getId())
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 

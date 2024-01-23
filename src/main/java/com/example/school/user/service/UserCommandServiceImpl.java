@@ -1,9 +1,11 @@
 package com.example.school.user.service;
 
+import com.example.school.domain.Inquiry;
 import com.example.school.domain.Review;
 import com.example.school.facility.repository.FacilityRepository;
 import com.example.school.user.converter.UserConverter;
 import com.example.school.user.dto.UserRequestDTO;
+import com.example.school.user.repository.InquiryRepository;
 import com.example.school.user.repository.ReviewRepository;
 import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class UserCommandServiceImpl implements UserCommandService{
     private final UserRepository userRepository;
     private final FacilityRepository facilityRepository;
     private final ReviewRepository reviewRepository;
+    private  final InquiryRepository inquiryRepository;
 
     @Override
     public Review createReview(Long memberId, Long facilityId, UserRequestDTO.ReviewDTO request) {
@@ -59,4 +62,14 @@ public class UserCommandServiceImpl implements UserCommandService{
         reviewRepository.delete(existingReview);
     }
 
-}
+    @Override
+    public Inquiry createInquiry(Long memberId, UserRequestDTO.InquiryDTO request) {
+
+
+        Inquiry inquiry = UserConverter.toInquiry(request);
+
+        inquiry.setMember(userRepository.findById(memberId).get());
+
+        return inquiryRepository.save(inquiry);
+    }
+  }

@@ -1,6 +1,7 @@
 package com.example.school.user.controller;
 
 import com.example.school.apiPayload.ApiResponse;
+import com.example.school.domain.Inquiry;
 import com.example.school.domain.Reservation;
 import com.example.school.domain.Review;
 import com.example.school.reservation.converter.ReservationConverter;
@@ -75,7 +76,7 @@ public class UserController {
         Review updatedReview = userCommandService.updateReview(memberId, facilityId, reviewId, request);
         return ApiResponse.onSuccess(UserConverter.toUpdateReviewResultDTO(updatedReview));
     }
-
+    //리뷰삭제
     @DeleteMapping("/review/delete")
     @Operation(summary = "나의 리뷰 삭제 API", description = "나의 리뷰를 삭제하는 API이며, reviewId, facilityId, memberId가 모두 일치할 시 삭제 가능합니다")
     public ApiResponse<String> deleteReview(
@@ -86,6 +87,12 @@ public class UserController {
         userCommandService.deleteReview(memberId, facilityId, reviewId);
         return ApiResponse.onSuccess("Review deleted successfully");
     }
-
-
+    //문의하기
+    @PostMapping("/inquiry")
+    @Operation(summary = "문의하기 API",description = "문의하는 API")
+    public ApiResponse<UserResponseDTO.CreateInquiryResultDTO> createInquiry(@RequestBody @Valid UserRequestDTO.InquiryDTO request,
+                                                                           @ExistMember @RequestParam(name = "memberId") Long memberId){
+        Inquiry inquiry = userCommandService.createInquiry(memberId, request);
+        return ApiResponse.onSuccess(UserConverter.toCreateInquiryResultDTO(inquiry));
+    }
 }
