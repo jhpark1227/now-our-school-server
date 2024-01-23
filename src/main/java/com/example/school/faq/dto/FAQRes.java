@@ -1,11 +1,11 @@
-package com.example.school.inquiry.dto;
+package com.example.school.faq.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
 
-public class InquiryRes {
+public class FAQRes {
 
     @Getter @AllArgsConstructor
     public static class FAQSamples{
