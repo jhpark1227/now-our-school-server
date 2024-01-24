@@ -2,17 +2,13 @@ package com.example.school.domain;
 
 import com.example.school.domain.common.BaseEntity;
 import jakarta.persistence.*;
-<<<<<<< HEAD
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-=======
 import lombok.*;
->>>>>>> 11e10bb7766baa588ecf62cab120c43555ac40be
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
