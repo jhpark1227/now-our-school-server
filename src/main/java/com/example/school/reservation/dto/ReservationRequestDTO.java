@@ -19,7 +19,8 @@ public class ReservationRequestDTO {
     //예약연장
     @Getter
     public static class ExtendDTO{
-
+        Long reservation_id; //예약 아이디
+        Integer extendTime; //연장 할 시간
     }
     //예약현황
     @Getter
@@ -29,7 +30,14 @@ public class ReservationRequestDTO {
     //예약기능
     @Getter
     public static class ReservationDTO{
-
+        Long memberId;
+        Long facilityId;
+        Integer startTime;
+        Integer endTime;
+        Integer duration;
+        String year;
+        String month;
+        String day;
     }
     //예약 불가능한 시간대
     @Getter

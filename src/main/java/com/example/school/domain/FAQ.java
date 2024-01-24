@@ -19,9 +19,4 @@ public class FAQ extends BaseEntity {
 
     private String title;
     private String content;
-    private String answer;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="school_id")
-    private School school;
-
 }

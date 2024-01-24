@@ -1,6 +1,7 @@
 package com.example.school.reservation.dto;
 
 import com.example.school.domain.Facility;
+import com.example.school.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,12 +16,13 @@ public class ReservationResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class DetailDTO{
+        Long id;
+        String year;
         String month;
         String day;
-        String duration;
-        String start_time;
-        String end_time;
-        Facility facility;
+        Integer duration;
+        Integer start_time;
+        Integer end_time;
 
     }
     //예약 내역 리스트
@@ -43,11 +45,12 @@ public class ReservationResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class bookedUpDTO{
+        Long id;
         String year;
         String month;
         String day;
-        String startTime;
-        String endTime;
+        Integer startTime;
+        Integer endTime;
     }
     @Builder
     @Getter
@@ -55,5 +58,11 @@ public class ReservationResponseDTO {
     @AllArgsConstructor
     public static class bookedUpListDTO{
         List<bookedUpDTO>  bookedUpList;
+        List<DetailDTO> resultList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
     }
 }

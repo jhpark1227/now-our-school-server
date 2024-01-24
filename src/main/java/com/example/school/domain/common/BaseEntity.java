@@ -1,5 +1,6 @@
 package com.example.school.domain.common;
 
+import jakarta.persistence.Column;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,8 +16,10 @@ import java.time.LocalDateTime;
 public abstract class BaseEntity {
 
     @CreatedDate
+    @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 }

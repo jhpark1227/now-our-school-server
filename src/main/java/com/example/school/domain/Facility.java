@@ -2,20 +2,17 @@ package com.example.school.domain;
 
 import com.example.school.domain.common.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-
 public class Facility extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +28,8 @@ public class Facility extends BaseEntity{
     private Building building;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="category_id")
-    private Category category;
+    @JoinColumn(name="theme_id")
+    private Theme theme;
 
     private String name;
     private String imageURL;
@@ -41,5 +38,7 @@ public class Facility extends BaseEntity{
     private String time;
     private String caution;
     private String location;
+    private Float score;
+
 
 }

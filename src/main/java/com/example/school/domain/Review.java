@@ -2,17 +2,14 @@ package com.example.school.domain;
 
 import com.example.school.domain.common.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class Review extends BaseEntity {
     @Id
@@ -26,8 +23,36 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "facility_id")
     private Facility facility;
 
-    private Long point;
+
     private String title;
-    private String content;
+
+    private Float score;
+
+    private String body;
+
+
+    public void setMember(Member member){
+        if(this.member != null)
+            member.getReviewList().remove(this);
+        this.member = member;
+        member.getReviewList().add(this);
+    }
+
+    public void setFacility(Facility facility){
+        if (this.facility != null)
+            facility.getReviewList().remove(this);
+        this.facility = facility;
+        facility.getReviewList().add(this);
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public void setScore(Float score) {
+        this.score = score;
+    }
+    public void setBody(String body) {
+        this.body = body;
+    }
 
 }

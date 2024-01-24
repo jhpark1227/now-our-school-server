@@ -1,4 +1,4 @@
-package com.example.school.converter;
+package com.example.school.reservation.converter;
 
 import com.example.school.domain.Reservation;
 import com.example.school.reservation.dto.ReservationRequestDTO;
@@ -12,12 +12,13 @@ public class ReservationConverter {
     //예약 세부내용
     public static ReservationResponseDTO.DetailDTO detailResultDTO(Reservation reservation){
         return ReservationResponseDTO.DetailDTO.builder()
+                .id(reservation.getId())
+                .year(reservation.getYear())
                 .month(reservation.getMonth())
                 .start_time(reservation.getStart_time())
                 .end_time(reservation.getEnd_time())
                 .day(reservation.getDay())
                 .duration(reservation.getDuration())
-                .facility(reservation.getFacility())
                 .build();
     }
     //예약 세부 내용들 list
@@ -36,6 +37,7 @@ public class ReservationConverter {
     //예약 불가능한 시간대
     public static ReservationResponseDTO.bookedUpDTO bookedUpDTO(Reservation reservation){
         return ReservationResponseDTO.bookedUpDTO.builder()
+                .id(reservation.getId())
                 .endTime(reservation.getEnd_time())
                 .startTime(reservation.getStart_time())
                 .year(reservation.getYear())
@@ -50,6 +52,18 @@ public class ReservationConverter {
         return ReservationResponseDTO.bookedUpListDTO.builder()
                 .bookedUpList(reservationDTO)
                 .build();
+    }
+    //예약 하기 -> 예약 만듬
+    public static Reservation reservation(ReservationRequestDTO.ReservationDTO reservationDTO){
+        return Reservation.builder()
+                .year(reservationDTO.getYear())
+                .month(reservationDTO.getMonth())
+                .day(reservationDTO.getDay())
+                .start_time(reservationDTO.getStartTime())
+                .end_time(reservationDTO.getEndTime())
+                .duration(reservationDTO.getDuration())
+                .build();
+
     }
 
 }
