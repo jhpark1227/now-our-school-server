@@ -64,5 +64,18 @@ public class FacilityResponseDTO {
         Long id;
         String name;
     }
+
+    @Getter @AllArgsConstructor
+    public static class Markers{
+        List<Marker> list;
+        int count;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class Marker{
+        Long id;
+        Double latitude;
+        Double longitude;
+    }
 }
 

@@ -17,9 +17,9 @@ public class Building {
 
     private String name;
 
-    private double latitude;
+    private Double latitude;
 
-    private double longitude;
+    private Double longitude;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id")
