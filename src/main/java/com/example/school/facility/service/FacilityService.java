@@ -42,4 +42,11 @@ public class FacilityService {
 
         return entities;
     }
+
+    public List<Building> getMarkers(String email) {
+        Member member = userRepository.findByEmail(email)
+                .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
+        return buildingRepository.findAllBySchool(member.getSchool());
+    }
 }

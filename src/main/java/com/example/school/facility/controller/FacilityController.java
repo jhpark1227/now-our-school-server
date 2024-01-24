@@ -40,4 +40,15 @@ public class FacilityController {
 
         return ApiResponse.onSuccess(new FacilityResponseDTO.Categories(list,list.size()));
     }
+
+    @GetMapping("/map")
+    public ApiResponse<FacilityResponseDTO.Markers> getMarkers(@RequestParam("email") String email){
+        List<Building> entities = facilityService.getMarkers(email);
+
+        List<FacilityResponseDTO.Marker> list = entities.stream()
+                .map(entity->new FacilityResponseDTO.Marker(entity.getId(),entity.getLatitude(),entity.getLongitude()))
+                .collect(Collectors.toList());
+
+        return ApiResponse.onSuccess(new FacilityResponseDTO.Markers(list,list.size()));
+    }
 }
