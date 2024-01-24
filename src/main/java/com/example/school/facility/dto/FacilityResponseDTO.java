@@ -77,5 +77,24 @@ public class FacilityResponseDTO {
         Double latitude;
         Double longitude;
     }
+
+    @Getter @AllArgsConstructor
+    public static class Tags{
+        List<Tag> tags;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class Tag{
+        String tag;
+        List<FacilityWithTag> facilities;
+        int count;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class FacilityWithTag{
+        Long id;
+        String name;
+        String imageURL;
+    }
 }
 
