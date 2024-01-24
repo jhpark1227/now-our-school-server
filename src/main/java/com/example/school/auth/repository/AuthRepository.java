@@ -9,7 +9,7 @@ public interface AuthRepository extends JpaRepository<Member, Long> {
     Optional<Member> existsByNickname(String nickname);
     Optional<Member> findByEmail(String email);
 //    Optional<Member> findById(String id);
-    Member findById(String id);
+    Member findByUserId(String userId);
 //
 //    Optional<Member> existsById(String id);
 }

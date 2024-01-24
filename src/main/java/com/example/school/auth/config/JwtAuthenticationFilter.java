@@ -2,29 +2,18 @@ package com.example.school.auth.config;
 
 import com.example.school.auth.config.util.JwtUtils;
 import com.example.school.auth.config.util.RedisUtils;
-import com.example.school.auth.repository.AuthRepository;
-import com.example.school.auth.service.UserDetailsServiceImpl;
-import com.example.school.auth.service.UserQueryServiceImpl;
-import com.example.school.domain.Member;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.util.Date;
 
 @RequiredArgsConstructor
 @Slf4j

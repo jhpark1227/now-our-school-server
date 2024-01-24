@@ -38,7 +38,7 @@ public class Member extends BaseEntity implements UserDetails {
     @JoinColumn(name="school_id")
     private School school;
 
-    private String id;
+    private String userId;
     private String name;
     private String email;
     private String password;

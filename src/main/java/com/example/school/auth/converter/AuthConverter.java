@@ -1,7 +1,6 @@
 package com.example.school.auth.converter;
 
-import com.example.school.auth.config.util.JwtUtils;
-import com.example.school.auth.config.util.RedisUtils;
+
 import com.example.school.auth.dto.AuthRequestDTO;
 import com.example.school.auth.dto.AuthResponseDTO;
 import com.example.school.domain.Member;
@@ -21,7 +20,7 @@ public class AuthConverter {
 
         return Member.builder()
                 .name(request.getName())
-                .id(request.getId())
+                .userId(request.getUserId())
                 .email(request.getEmail())
                 .identify_num(request.getIdentify_num())
                 .password(encryptedPassword)

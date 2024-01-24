@@ -1,10 +1,6 @@
 package com.example.school.auth.config.util;
 
-import com.example.school.auth.repository.AuthRepository;
 import com.example.school.auth.service.UserDetailsServiceImpl;
-import com.example.school.auth.service.UserQueryService;
-import com.example.school.auth.service.UserQueryServiceImpl;
-import com.example.school.domain.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -15,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;

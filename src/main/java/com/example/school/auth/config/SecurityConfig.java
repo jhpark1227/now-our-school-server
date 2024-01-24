@@ -4,7 +4,6 @@ import com.example.school.auth.config.handler.CustomAccessDeniedHandler;
 import com.example.school.auth.config.handler.CustomAuthenticationEntryPoint;
 import com.example.school.auth.config.util.JwtUtils;
 import com.example.school.auth.config.util.RedisUtils;
-import com.example.school.auth.service.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

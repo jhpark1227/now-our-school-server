@@ -1,6 +1,5 @@
 package com.example.school.auth.service;
 
-import ch.qos.logback.core.status.ErrorStatus;
 import com.example.school.auth.config.util.JwtUtils;
 import com.example.school.auth.config.util.RedisUtils;
 import com.example.school.auth.converter.AuthConverter;
@@ -17,7 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserQueryServiceImpl implements UserQueryService {
+public class AuthQueryServiceImpl implements AuthQueryService {
 
     private final AuthRepository authRepository;
     private final PasswordEncoder passwordEncoder;
@@ -33,8 +32,8 @@ public class UserQueryServiceImpl implements UserQueryService {
     }
 
     @Override
-    public Boolean checkUserIdDuplicate(String id) {
-        Member member = authRepository.findById(id);
+    public Boolean checkUserIdDuplicate(String userId) {
+        Member member = authRepository.findByUserId(userId);
         if(member != null){
             return true;
         } else {
@@ -59,7 +58,7 @@ public class UserQueryServiceImpl implements UserQueryService {
 
     @Override
     public AuthResponseDTO.LoginResDTO login(AuthRequestDTO.LoginReqDTO request) {
-        Member member = authRepository.findById(request.getId());
+        Member member = authRepository.findByUserId(request.getUserId());
 
         // id를 잘못 입력한 경우
         if (member == null) {
@@ -69,8 +68,8 @@ public class UserQueryServiceImpl implements UserQueryService {
         // 비밀번호를 잘못 입력한 경우
         if(!passwordEncoder.matches(request.getPassword(), member.getPassword())){
 
-            System.out.println("입력된 비밀번호: " + request.getPassword());
-            System.out.println("저장된 비밀번호: " + member.getPassword());
+//            System.out.println("입력된 비밀번호: " + request.getPassword());
+//            System.out.println("저장된 비밀번호: " + member.getPassword());
             throw new RuntimeException("비밀번호를 정확하게 입력해주세요.");
         }
 

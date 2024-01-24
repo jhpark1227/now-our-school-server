@@ -22,7 +22,7 @@ public class AuthRequestDTO {
         @NotBlank(message = "핸드폰번호를 입력해 주세요.")
         String phone;
         @NotBlank(message = "아이디를 입력해 주세요.")
-        String id;
+        String userId;
         String nickname;
 
         Integer age;
@@ -35,11 +35,11 @@ public class AuthRequestDTO {
     @AllArgsConstructor
     public static class LoginReqDTO {
 
-        String id;
+        String userId;
         String password;
 
         public UsernamePasswordAuthenticationToken toAuthentication() {
-            return new UsernamePasswordAuthenticationToken(this.id, this.password);
+            return new UsernamePasswordAuthenticationToken(this.userId, this.password);
         }
     }
 }

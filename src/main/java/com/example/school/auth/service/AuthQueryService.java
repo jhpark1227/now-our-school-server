@@ -4,7 +4,7 @@ import com.example.school.auth.dto.AuthRequestDTO;
 import com.example.school.auth.dto.AuthResponseDTO;
 import com.example.school.domain.Member;
 
-public interface UserQueryService {
+public interface AuthQueryService {
 
     Member register(AuthRequestDTO.RegisterReqDTO request);
     Boolean checkUserIdDuplicate(String id);
