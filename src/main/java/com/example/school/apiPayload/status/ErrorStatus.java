@@ -21,6 +21,7 @@ public enum ErrorStatus {
     USER_ID_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4002","사용 불가능한 아이디입니다."),
     NICKNAME_DUPLICATE(HttpStatus.BAD_REQUEST,"AUTH_4003", "사용 불가능한 닉네임입니다."),
     PASSWORD_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4004", "사용 불가능한 비밀번호입니다."),
+    EMAIL_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4008", "사용 불가능한 이메일입니다."),
     REDIS_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4005", "Redis 오류."),
     EMAIL_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4006", "이메일 인증 실패"),
     EMAIL_CODE_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4007", "이메일 인증번호 불일치"),
@@ -28,7 +29,9 @@ public enum ErrorStatus {
 
     FACILITY_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE_4001","시설이 없습니다."),
     BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND, "BUILDING_4001","건물이 존재하지 않습니다."),
-    REFRESHTOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "TOKEN_4001", "해당 RefreshToken이 존재하지 않습니다.");
+
+    REFRESHTOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "TOKEN_4001", "해당 RefreshToken이 존재하지 않습니다."),
+    SEARCH_CONDITION_ERROR(HttpStatus.BAD_REQUEST,"FAC_4001","잘못된 검색어입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

@@ -25,12 +25,16 @@ public class AuthController {
     @PostMapping(value = "/register")
     public ApiResponse<Member> register(@RequestBody AuthRequestDTO.RegisterReqDTO registerReqDTO) {
 
-        if(!authQueryService.checkUserIdFormat(registerReqDTO.getUserId())){
+        if (!authQueryService.checkUserIdFormat(registerReqDTO.getUserId())) {
             return ApiResponse.onFailure(ErrorStatus.USER_ID_ERROR.getCode(), ErrorStatus.USER_ID_ERROR.getMessage());
         }
 
         if (!authQueryService.checkPassword((registerReqDTO.getPassword()))) {
             return ApiResponse.onFailure(ErrorStatus.PASSWORD_FORMAT_ERROR.getCode(), ErrorStatus.PASSWORD_FORMAT_ERROR.getMessage());
+        }
+
+        if (!authQueryService.checkEmailFormat(registerReqDTO.getEmail())) {
+            return ApiResponse.onFailure(ErrorStatus.EMAIL_FORMAT_ERROR.getCode(), ErrorStatus.EMAIL_FORMAT_ERROR.getMessage());
         }
 
         if (authQueryService.checkNicknameDuplicate(registerReqDTO.getNickname())) {
@@ -53,17 +57,27 @@ public class AuthController {
 
     // 이메일 전송
     @PostMapping(value = "/email-send")
-    public ApiResponse<String> sendEmail(@RequestBody String email) throws Exception {
-        String verificationCode  = mailService.sendCertificationMail(email);
+    public ApiResponse<String> sendEmail(@RequestBody AuthRequestDTO.EmailAuthReqDTO emailAuthReqDTO) {
+
+        if (!authQueryService.checkEmailFormat(emailAuthReqDTO.getEmail())) {
+            return ApiResponse.onFailure(ErrorStatus.EMAIL_FORMAT_ERROR.getCode(), ErrorStatus.EMAIL_FORMAT_ERROR.getMessage());
+        }
+        String verificationCode = mailService.sendCertificationMail(emailAuthReqDTO.getEmail());
+
         return ApiResponse.onSuccess(verificationCode);
     }
+    // 이메일 인증
+    @PostMapping(value = "/email-auth")
+    public ApiResponse<String> authEmail(@RequestBody AuthRequestDTO.EmailAuthReqDTO emailAuthReqDTO) {
+        Boolean isAuthenticationSuccessful = mailService.verifyCertificationCode(emailAuthReqDTO.getEmail(), emailAuthReqDTO.getAuthCode());
 
-    // 이메일 인증번호 확인
-    @PostMapping(value = "/{email}/email-auth")
-    public ApiResponse<String> authEmail(@PathVariable String email, @RequestBody AuthRequestDTO.EmailAuthReqDTO emailAuthReqDTO) {
-            mailService.verifyCertificationCode(email, emailAuthReqDTO.getAuthCode());
-            // 인증 성공 시
+        if (isAuthenticationSuccessful) {
+            // 인증이 성공한 경우
             return ApiResponse.onSuccess("이메일 인증 성공!");
+        } else {
+            // 인증이 실패한 경우
+            return ApiResponse.onFailure(ErrorStatus.EMAIL_CODE_ERROR.getCode(), ErrorStatus.EMAIL_CODE_ERROR.getMessage());
+        }
     }
 
     // 비밀번호 변경

@@ -9,6 +9,9 @@ import com.example.school.auth.dto.AuthRequestDTO;
 import com.example.school.auth.dto.AuthResponseDTO;
 import com.example.school.domain.Member;
 import com.example.school.user.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -85,17 +88,20 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         return true;
     }
 
+    public String extractEmailAddress(String emailJson) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(emailJson);
+        return jsonNode.get("email").asText();
+    }
+
     @Override
     public Boolean checkEmailFormat(String email) {
+        System.out.print(email);
 
-        // 이메일 형식 체크를 위한 정규식
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]$";
-
-        // 대학 이메일인지 확인
-        if (email.matches(emailRegex) && email.endsWith("ac.kr")) {
-            return true;
-        } else {
+        if(!email.matches(".+@.*ac\\.kr$")){
             return false;
+        } else {
+            return true;
         }
     }
 
