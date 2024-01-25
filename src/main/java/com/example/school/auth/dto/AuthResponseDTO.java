@@ -20,4 +20,15 @@ public class AuthResponseDTO {
         String accessToken;
         String refreshToken;
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ForgotPasswordResDTO {
+        boolean isSuccess;
+        int code;
+        String message;
+        String result;
+    }
 }

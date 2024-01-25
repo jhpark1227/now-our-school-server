@@ -8,7 +8,9 @@ import com.example.school.domain.enums.FacilityTag;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.service.FacilityQueryService;
 import com.example.school.facility.service.FacilityService;
+import com.example.school.validation.annotation.CheckKeyword;
 import com.example.school.validation.annotation.CheckPage;
+import com.example.school.validation.annotation.ExistKeyword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,6 +86,30 @@ public class FacilityController {
             @RequestParam("page") @CheckPage Integer page
     ){
         FacilityResponseDTO.Images res = facilityQueryService.getImages(facilityId, page);
+
+        return ApiResponse.onSuccess(res);
+    }
+
+    @GetMapping("/keyword/{keyword}")
+    public ApiResponse<FacilityResponseDTO.ListByKeyword> getListByKeyword(
+            @PathVariable("keyword") @ExistKeyword String keyword, @RequestParam("userId")String userId){
+        FacilityResponseDTO.ListByKeyword res = facilityQueryService.getListByKeyword(userId, keyword);
+
+        return ApiResponse.onSuccess(res);
+    }
+
+    @GetMapping("/map/{buildingId}")
+    public ApiResponse<FacilityResponseDTO.DetailOnMarker> getDetailOnMarker(@PathVariable("buildingId") Long buildingId){
+        FacilityResponseDTO.DetailOnMarker res = facilityQueryService.getDetailOnMarker(buildingId);
+
+        return ApiResponse.onSuccess(res);
+    }
+
+    @GetMapping("/search")
+    public ApiResponse<FacilityResponseDTO.SearchResults> searchFacility(
+            @RequestParam("query") @CheckKeyword String keyword,
+            @RequestParam("userId")String userId){
+        FacilityResponseDTO.SearchResults res = facilityQueryService.searchFacility(keyword,userId);
 
         return ApiResponse.onSuccess(res);
     }

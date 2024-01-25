@@ -159,5 +159,48 @@ public class FacilityResponseDTO {
         Boolean isFirst;
         Boolean isLast;
     }
+
+    @Getter @AllArgsConstructor
+    public static class ListByKeyword{
+        List<FacilityInKeyword> list;
+        int count;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class FacilityInKeyword{
+        Long id;
+        String name;
+        String description;
+        String imageURL;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class DetailOnMarker{
+        String name;
+        String imageURL;
+        List<BuildingHourDTO> hours;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class BuildingHourDTO{
+        String name;
+        String openingTime;
+        String closingTime;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class SearchResults{
+        List<SearchResult> list;
+        int count;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class SearchResult{
+        Long id;
+        String name;
+        String imageURL;
+        String time;
+        String buildingName;
+    }
 }
 

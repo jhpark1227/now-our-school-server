@@ -16,4 +16,10 @@ public interface FacilityQueryService {
     FacilityResponseDTO.Detail getDetail(Long facilityId);
 
     FacilityResponseDTO.Images getImages(Long facilityId, Integer page);
+
+    FacilityResponseDTO.ListByKeyword getListByKeyword(String userId, String keyword);
+
+    FacilityResponseDTO.DetailOnMarker getDetailOnMarker(Long buildingId);
+
+    FacilityResponseDTO.SearchResults searchFacility(String keyword, String userId);
 }
