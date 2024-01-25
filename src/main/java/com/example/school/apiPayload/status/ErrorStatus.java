@@ -1,6 +1,5 @@
 package com.example.school.apiPayload.status;
 
-import com.fasterxml.jackson.databind.JavaType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -10,8 +9,11 @@ import org.springframework.http.HttpStatus;
 public enum ErrorStatus {
 
     BAD_REQUEST(HttpStatus.OK,"COMMON400","잘못된 요청입니다."),
+    PAGE_LT_ONE(HttpStatus.BAD_REQUEST,"COMMON401","잘못된 페이지입니다."),
     EXPIRED_JWT(HttpStatus.OK, "3000", "만료된 토큰입니다."),
     BAD_JWT(HttpStatus.OK, "2000", "JWT 토큰이 잘못되었습니다."),
+
+
 
     // 멤버 관려 에러
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
