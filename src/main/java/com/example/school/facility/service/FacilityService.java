@@ -49,4 +49,10 @@ public class FacilityService {
 
         return buildingRepository.findAllBySchool(member.getSchool());
     }
+
+    public List<Facility> getSuggestion(String userId) {
+        Member member = userRepository.findByUserId(userId)
+                .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+        return facilityRepository.findByBuildingSchoolAndTagIsNotNull(member.getSchool());
+    }
 }

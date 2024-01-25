@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import lombok.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,6 +46,7 @@ public class Member extends BaseEntity implements UserDetails {
     private String nickname;
     private Integer age;
     private Integer grade;
+    private String imageURL;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

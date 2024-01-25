@@ -7,7 +7,9 @@ import com.example.school.domain.Member;
 public interface AuthQueryService {
 
     Member register(AuthRequestDTO.RegisterReqDTO request);
-    Boolean checkUserIdDuplicate(String id);
+    Boolean checkUserIdFormat(String id);
+
+    Boolean checkEmailFormat(String email);
     Boolean checkPassword(String password);
     Boolean checkNicknameDuplicate(String nickname);
 

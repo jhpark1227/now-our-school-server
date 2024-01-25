@@ -42,4 +42,14 @@ public class AuthRequestDTO {
             return new UsernamePasswordAuthenticationToken(this.userId, this.password);
         }
     }
+
+    @Getter @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class EmailAuthReqDTO {
+
+        String email;
+        String authCode;
+    }
+
 }
