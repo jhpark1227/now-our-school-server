@@ -16,8 +16,15 @@ public enum ErrorStatus {
     // 멤버 관려 에러
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
     FACILITY_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE_4001","시설이 없습니다."),
-    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "REVIEW_4001","리뷰가 없습니다.");
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "REVIEW_4001","리뷰가 없습니다."),
 
+    // 인증, 인가 관련 에러
+    USER_ID_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4002","사용 불가능한 아이디입니다."),
+    NICKNAME_DUPLICATE(HttpStatus.BAD_REQUEST,"AUTH_4003", "사용 불가능한 닉네임입니다."),
+    PASSWORD_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4004", "사용 불가능한 비밀번호입니다."),
+    REDIS_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4005", "Redis 오류."),
+    EMAIL_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4006", "이메일 인증 실패"),
+    EMAIL_CODE_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4007", "이메일 인증번호 불일치");
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;

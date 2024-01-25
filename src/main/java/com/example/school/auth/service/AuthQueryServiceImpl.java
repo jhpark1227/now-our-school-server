@@ -32,28 +32,70 @@ public class AuthQueryServiceImpl implements AuthQueryService {
     }
 
     @Override
-    public Boolean checkUserIdDuplicate(String userId) {
-        Member member = authRepository.findByUserId(userId);
-        if(member != null){
-            return true;
-        } else {
+    public Boolean checkUserIdFormat(String userId) {
+
+        if (userId.length() < 4 || userId.length() > 15) {
             return false;
         }
+
+        Member member = authRepository.findByUserId(userId);
+        if (member != null) {
+            return false;
+        }
+
+        String regex = "^[a-zA-Z]+[a-zA-Z0-9]$";
+        if(!userId.matches(regex)){
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public Boolean checkNicknameDuplicate(String nickname) {
-        Optional<Member> member = authRepository.existsByNickname(nickname);
-        if(member.isEmpty()){
-            return true;
+        Optional<Member> user = authRepository.findByNickname(nickname);
+        if (!user.isEmpty()) {
+            return true; // 존재한다면 true 반환
         } else {
-            return false;
+            return false; // 존재하지 않으면 false 반환
         }
     }
 
     @Override
     public Boolean checkPassword(String password) {
-        return null;
+
+        // 비밀번호 길이
+        if (password.length() < 8 || password.length() > 15) {
+            return false;
+        }
+
+        // 영문자 대소문자 조합
+        if (!password.matches(".*[a-zA-Z].*") || !password.matches(".*\\d.*")) {
+            return false;
+        }
+
+
+        // 특수문자 확인
+//        String specialChars = "[!@#$%&*]";
+//        if (!password.matches(".*" + specialChars + ".*")) {
+//            return false;
+//        }
+
+        return true;
+    }
+
+    @Override
+    public Boolean checkEmailFormat(String email) {
+
+        // 이메일 형식 체크를 위한 정규식
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]$";
+
+        // 대학 이메일인지 확인
+        if (email.matches(emailRegex) && email.endsWith("ac.kr")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -67,9 +109,6 @@ public class AuthQueryServiceImpl implements AuthQueryService {
 
         // 비밀번호를 잘못 입력한 경우
         if(!passwordEncoder.matches(request.getPassword(), member.getPassword())){
-
-//            System.out.println("입력된 비밀번호: " + request.getPassword());
-//            System.out.println("저장된 비밀번호: " + member.getPassword());
             throw new RuntimeException("비밀번호를 정확하게 입력해주세요.");
         }
 
