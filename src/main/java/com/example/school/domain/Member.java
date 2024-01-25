@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import lombok.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,6 +46,7 @@ public class Member extends BaseEntity implements UserDetails {
     private String nickname;
     private Integer age;
     private Integer grade;
+    private String imageURL;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -89,5 +89,7 @@ public class Member extends BaseEntity implements UserDetails {
         // 계정이 활성화되어 있는지 여부를 반환하는 로직을 구현
         return true;
     }
-
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

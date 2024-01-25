@@ -1,6 +1,8 @@
 package com.example.school.domain;
 
 import com.example.school.domain.common.BaseEntity;
+import com.example.school.domain.enums.FacilityKeyword;
+import com.example.school.domain.enums.FacilityTag;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,5 +42,11 @@ public class Facility extends BaseEntity{
     private String location;
     private Float score;
 
+    private String description;
 
+    @Enumerated(EnumType.STRING)
+    private FacilityTag tag;
+
+    @Enumerated(EnumType.STRING)
+    private FacilityKeyword keyword;
 }

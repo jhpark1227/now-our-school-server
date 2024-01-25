@@ -19,5 +19,18 @@ public class AuthResponseDTO {
     public static class LoginResDTO {
         String accessToken;
         String refreshToken;
+        private Long accessTokenExpirationTime;
+
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ForgotPasswordResDTO {
+        boolean isSuccess;
+        int code;
+        String message;
+        String result;
     }
 }

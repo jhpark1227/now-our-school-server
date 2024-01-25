@@ -40,9 +40,10 @@ public class SecurityConfig {
                             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/user/**").permitAll()
+                        .requestMatchers("/api/v1/user/**").authenticated()
+                        .requestMatchers("/api/v1/reservation/**").authenticated()
+                        .requestMatchers("/api/v1/facility/**").authenticated()
 //                        .requestMatchers("/api/admin/**").permitAll()
-                        .requestMatchers("/api/member/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())
