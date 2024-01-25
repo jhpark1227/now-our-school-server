@@ -20,4 +20,6 @@ public interface FacilityQueryService {
     FacilityResponseDTO.ListByKeyword getListByKeyword(String userId, String keyword);
 
     FacilityResponseDTO.DetailOnMarker getDetailOnMarker(Long buildingId);
+
+    FacilityResponseDTO.SearchResults searchFacility(String keyword, String userId);
 }
