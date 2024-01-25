@@ -26,7 +26,8 @@ public enum ErrorStatus {
     PASSWORD_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4004", "사용 불가능한 비밀번호입니다."),
     REDIS_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4005", "Redis 오류."),
     EMAIL_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4006", "이메일 인증 실패"),
-    EMAIL_CODE_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4007", "이메일 인증번호 불일치");
+    EMAIL_CODE_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4007", "이메일 인증번호 불일치"),
+    INVALID_CURRENT_PASSWORD(HttpStatus.BAD_REQUEST,"AUTH_4008", "현재 비밀번호 불일치");
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;

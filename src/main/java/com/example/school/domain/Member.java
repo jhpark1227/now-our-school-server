@@ -89,5 +89,7 @@ public class Member extends BaseEntity implements UserDetails {
         // 계정이 활성화되어 있는지 여부를 반환하는 로직을 구현
         return true;
     }
-
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
