@@ -35,7 +35,7 @@ public final class JwtUtils {
     public static final long TOKEN_VALID_TIME = 1000L * 120 * 5 * 12; // 2시간
     public static final long REFRESH_TOKEN_VALID_TIME = 1000L * 60 * 60 * 144;
     public static final long REFRESH_TOKEN_VALID_TIME_IN_REDIS = 60 * 60 * 24 * 7;
-    private UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
 
     public Key getSigningKey(String secretKey) {

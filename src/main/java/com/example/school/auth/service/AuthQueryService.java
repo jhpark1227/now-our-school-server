@@ -14,6 +14,7 @@ public interface AuthQueryService {
     Boolean checkNicknameDuplicate(String nickname);
 
     AuthResponseDTO.LoginResDTO login(AuthRequestDTO.LoginReqDTO request);
-    AuthResponseDTO.ForgotPasswordResDTO changePassword(AuthRequestDTO.ChangePasswordReqDTO changePasswordReqDTO);
+    Boolean changePassword(AuthRequestDTO.ChangePasswordReqDTO request);
 
+    void logout(String accessToken);
 }

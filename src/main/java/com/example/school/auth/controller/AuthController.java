@@ -8,7 +8,10 @@ import com.example.school.auth.dto.AuthResponseDTO;
 import com.example.school.auth.service.AuthQueryService;
 import com.example.school.auth.service.MailService;
 import com.example.school.domain.Member;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController @RequestMapping("/api/v1/auth")
@@ -41,6 +44,12 @@ public class AuthController {
     public ApiResponse<AuthResponseDTO.LoginResDTO> login(@RequestBody AuthRequestDTO.LoginReqDTO user) {
         return ApiResponse.onSuccess(authQueryService.login(user));
     }
+    //로그아웃
+    @PostMapping("/logout")
+    public ApiResponse<String> logout(@RequestHeader("Authorization") String accessToken) {
+        authQueryService.logout(accessToken);
+        return ApiResponse.onSuccess("로그아웃 처리 되었습니다.");
+    }
 
     // 이메일 전송
     @PostMapping(value = "/email-send")
@@ -72,4 +81,6 @@ public class AuthController {
 
         return ApiResponse.onSuccess("비밀번호가 성공적으로 변경되었습니다.");
     }
+
+
 }
