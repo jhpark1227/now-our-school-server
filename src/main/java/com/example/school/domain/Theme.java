@@ -8,22 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class Category extends BaseEntity {
+@Getter
+@Builder @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
+public class Theme extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Facility> facilityList = new ArrayList<>();
+    private String name;
 
+    @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL)
+    private List<Facility> facilities = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id")
     private School school;
-
-    private String name;
 }

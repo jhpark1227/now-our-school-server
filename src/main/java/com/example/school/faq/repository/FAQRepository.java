@@ -1,4 +1,4 @@
-package com.example.school.inquiry.repository;
+package com.example.school.faq.repository;
 
 import com.example.school.domain.FAQ;
 import org.springframework.data.jpa.repository.JpaRepository;

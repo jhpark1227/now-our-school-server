@@ -52,6 +52,7 @@ public class ReservationConverter {
                 .map(ReservationConverter::bookedUpDTO).collect(Collectors.toList());
         return ReservationResponseDTO.bookedUpListDTO.builder()
                 .bookedUpList(reservationDTO)
+                .listSize(reservationList.size())
                 .build();
     }
     //예약 하기 -> 예약 만듬

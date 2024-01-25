@@ -28,8 +28,8 @@ public class Facility extends BaseEntity{
     private Building building;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="category_id")
-    private Category category;
+    @JoinColumn(name="theme_id")
+    private Theme theme;
 
     private String name;
     private String imageURL;

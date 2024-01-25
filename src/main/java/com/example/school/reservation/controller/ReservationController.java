@@ -14,6 +14,8 @@ import com.example.school.validation.annotation.ExistMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,20 +25,24 @@ import java.util.List;
 @RequestMapping("reservation")
 public class ReservationController {
     private final ReservationService reservationService;
-
-    //예약하기
+    // 예약하기
     @PostMapping("")
-    public ApiResponse<Reservation> reserve(@RequestBody ReservationRequestDTO.ReservationDTO reservationDTO){
-        try{
-            //facilityId로 facility 찾는 코드 작성
+    @PreAuthorize("isAuthenticated()")
+    public ApiResponse<Reservation> reserve(@RequestBody ReservationRequestDTO.ReservationDTO reservationDTO, Authentication authentication)
+    {
+        boolean authenticated = authentication.isAuthenticated();
+        System.out.println("인증 되었는가?"+ authenticated);
+        try {
+            // facilityId로 facility 찾는 코드 작성
             return ApiResponse.onSuccess(reservationService.createReservation(reservationDTO));
-        } catch(RuntimeException e){
-            return ApiResponse.onFailure("COMMOM400",e.getMessage());
+        } catch (RuntimeException e) {
+            return ApiResponse.onFailure("COMMON400", e.getMessage());
         }
     }
 
     //예약 내역 확인
     @GetMapping("/details")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<ReservationResponseDTO.DetailResultDTO> getReservation(@RequestParam(name="memberId") Long memberId, @RequestParam(name="page")Integer page) {
         Page<Reservation> reservationList = reservationService.getReservation(memberId,page);
         return ApiResponse.onSuccess(ReservationConverter.detailResultListDTO(reservationList));
@@ -44,6 +50,7 @@ public class ReservationController {
 
     //예약 불가능한 시간대
     @GetMapping("/time")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<ReservationResponseDTO.bookedUpListDTO> checkTime(@RequestParam(name = "facilityId")Long facilityId,
                                                                          @RequestParam(name="year")String year, @RequestParam(name = "month")String month, @RequestParam(name = "day") String day) {
         List<Reservation> reservations = reservationService.possible_time(facilityId, year, month, day);
@@ -52,6 +59,7 @@ public class ReservationController {
 
     //예약 연장하기
     @PostMapping("/extend")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<ReservationResponseDTO.DetailDTO> extendTime(@RequestBody ReservationRequestDTO.ExtendDTO extendDTO) {
         try {
             Reservation reservation = reservationService.extendTime(extendDTO.getReservation_id(), extendDTO.getExtendTime());
@@ -63,6 +71,7 @@ public class ReservationController {
     }
     //사용자 예약현황을 통해 이용한 시설물 목록 보기
     @GetMapping("/facility")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<FacilityResponseDTO.DetailResultDTO> useFacility(@RequestParam(name="memberId") Long memberId){
         List<Facility> facilities = reservationService.getFacilities(memberId);
         return ApiResponse.onSuccess(FacilityConverter.detailResultDTO(facilities));
@@ -70,6 +79,7 @@ public class ReservationController {
 
     //반납하기
     @PostMapping("/return/{reservationId}")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<ReservationResponseDTO.DetailDTO> returnReservation(@PathVariable(name="reservationId") Long reservationId){
         Reservation reservation = reservationService.getReservationById(reservationId);
         reservationService.returnReservation(reservation);

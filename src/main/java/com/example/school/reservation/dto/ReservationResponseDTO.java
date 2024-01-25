@@ -59,11 +59,7 @@ public class ReservationResponseDTO {
     @AllArgsConstructor
     public static class bookedUpListDTO{
         List<bookedUpDTO>  bookedUpList;
-        List<DetailDTO> resultList;
         Integer listSize;
-        Integer totalPage;
-        Long totalElements;
-        Boolean isFirst;
-        Boolean isLast;
+
     }
 }

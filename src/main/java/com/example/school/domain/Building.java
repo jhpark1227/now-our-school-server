@@ -17,13 +17,13 @@ public class Building {
 
     private String name;
 
-    private double latitude;
+    private Double latitude;
 
-    private double longitude;
+    private Double longitude;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id")
     private School school;
     @OneToMany(mappedBy = "building",cascade = CascadeType.ALL)
-    private List<Facility> facilityList = new ArrayList<>();
+    private List<Facility> facilities = new ArrayList<>();
 }
