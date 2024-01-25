@@ -25,7 +25,7 @@ public class AuthController {
     @PostMapping(value = "/register")
     public ApiResponse<Member> register(@RequestBody AuthRequestDTO.RegisterReqDTO registerReqDTO) {
 
-        if (!authQueryService.checkUserIdFormat(registerReqDTO.getUserId())) {
+        if (authQueryService.checkUserIdFormat(registerReqDTO.getUserId())) {
             return ApiResponse.onFailure(ErrorStatus.USER_ID_ERROR.getCode(), ErrorStatus.USER_ID_ERROR.getMessage());
         }
 
@@ -37,7 +37,7 @@ public class AuthController {
             return ApiResponse.onFailure(ErrorStatus.EMAIL_FORMAT_ERROR.getCode(), ErrorStatus.EMAIL_FORMAT_ERROR.getMessage());
         }
 
-        if (authQueryService.checkNicknameDuplicate(registerReqDTO.getNickname())) {
+        if (!authQueryService.checkNicknameDuplicate(registerReqDTO.getNickname())) {
             return ApiResponse.onFailure(ErrorStatus.NICKNAME_DUPLICATE.getCode(), ErrorStatus.NICKNAME_DUPLICATE.getMessage());
         }
         return ApiResponse.onSuccess(authQueryService.register(registerReqDTO));
@@ -83,12 +83,6 @@ public class AuthController {
     // 비밀번호 변경
     @PostMapping(value = "/change-password")
     public ApiResponse<String> changePassword(@RequestBody AuthRequestDTO.ChangePasswordReqDTO changePasswordReqDTO) {
-
-        // 현재 비밀번호가 일치하는지 확인
-        if (!authQueryService.checkPassword(changePasswordReqDTO.getCurrentPassword())) {
-            return ApiResponse.onFailure(ErrorStatus.INVALID_CURRENT_PASSWORD.getCode(),
-                    ErrorStatus.INVALID_CURRENT_PASSWORD.getMessage());
-        }
 
         // 비밀번호 변경 수행
         authQueryService.changePassword(changePasswordReqDTO);

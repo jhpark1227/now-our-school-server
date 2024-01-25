@@ -78,7 +78,6 @@ public class AuthQueryServiceImpl implements AuthQueryService {
             return false;
         }
 
-
         // 특수문자 확인
 //        String specialChars = "[!@#$%&*]";
 //        if (!password.matches(".*" + specialChars + ".*")) {
@@ -162,7 +161,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         Member member = userRepository.findByEmail(email).orElseThrow(() ->
                 new GeneralException(ErrorStatus.MEMBER_NOT_FOUND)
         );
-
+        //기존 비밀번호와 일치하는지 확인 후 맞을 시 변경
         if (passwordEncoder.matches(request.getCurrentPassword(), member.getPassword())) {
             member.setPassword(passwordEncoder.encode(request.getChangePassword()));
             userRepository.save(member);
@@ -171,5 +170,6 @@ public class AuthQueryServiceImpl implements AuthQueryService {
             return false;
         }
     }
+
 
 }
