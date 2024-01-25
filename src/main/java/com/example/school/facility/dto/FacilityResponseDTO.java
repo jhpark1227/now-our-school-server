@@ -159,5 +159,19 @@ public class FacilityResponseDTO {
         Boolean isFirst;
         Boolean isLast;
     }
+
+    @Getter @AllArgsConstructor
+    public static class ListByKeyword{
+        List<FacilityInKeyword> list;
+        int count;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class FacilityInKeyword{
+        Long id;
+        String name;
+        String description;
+        String imageURL;
+    }
 }
 
