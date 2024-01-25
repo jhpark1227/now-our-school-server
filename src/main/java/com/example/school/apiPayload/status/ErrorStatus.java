@@ -24,6 +24,7 @@ public enum ErrorStatus {
     REDIS_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4005", "Redis 오류."),
     EMAIL_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4006", "이메일 인증 실패"),
     EMAIL_CODE_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4007", "이메일 인증번호 불일치"),
+    INVALID_CURRENT_PASSWORD(HttpStatus.BAD_REQUEST,"AUTH_4008", "현재 비밀번호 불일치"),
 
     FACILITY_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE_4001","시설이 없습니다."),
     BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND, "BUILDING_4001","건물이 존재하지 않습니다."),

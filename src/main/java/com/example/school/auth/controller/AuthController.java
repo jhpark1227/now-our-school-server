@@ -56,4 +56,20 @@ public class AuthController {
             // 인증 성공 시
             return ApiResponse.onSuccess("이메일 인증 성공!");
     }
+
+    // 비밀번호 변경
+    @PostMapping(value = "/change-password")
+    public ApiResponse<String> changePassword(@RequestBody AuthRequestDTO.ChangePasswordReqDTO changePasswordReqDTO) {
+
+        // 현재 비밀번호가 일치하는지 확인
+        if (!authQueryService.checkPassword(changePasswordReqDTO.getCurrentPassword())) {
+            return ApiResponse.onFailure(ErrorStatus.INVALID_CURRENT_PASSWORD.getCode(),
+                    ErrorStatus.INVALID_CURRENT_PASSWORD.getMessage());
+        }
+
+        // 비밀번호 변경 수행
+        authQueryService.changePassword(changePasswordReqDTO);
+
+        return ApiResponse.onSuccess("비밀번호가 성공적으로 변경되었습니다.");
+    }
 }
