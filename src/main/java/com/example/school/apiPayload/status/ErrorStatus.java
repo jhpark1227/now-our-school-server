@@ -27,7 +27,8 @@ public enum ErrorStatus {
     INVALID_CURRENT_PASSWORD(HttpStatus.BAD_REQUEST,"AUTH_4008", "현재 비밀번호 불일치"),
 
     FACILITY_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE_4001","시설이 없습니다."),
-    BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND, "BUILDING_4001","건물이 존재하지 않습니다.");
+    BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND, "BUILDING_4001","건물이 존재하지 않습니다."),
+    SEARCH_CONDITION_ERROR(HttpStatus.BAD_REQUEST,"FAC_4001","잘못된 검색어입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

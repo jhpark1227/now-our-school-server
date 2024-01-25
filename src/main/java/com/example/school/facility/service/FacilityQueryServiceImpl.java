@@ -101,4 +101,18 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
 
         return new FacilityResponseDTO.DetailOnMarker(entity.getName(), entity.getImageURL(), hours);
     }
+
+    @Override
+    public FacilityResponseDTO.SearchResults searchFacility(String keyword, String userId) {
+        Member member = userRepository.findByUserId(userId)
+                .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
+        List<Facility> entities = facilityRepository.findByNameLikeAndBuildingSchool(keyword.trim(),member.getSchool());
+
+        List<FacilityResponseDTO.SearchResult> list = entities.stream().map(entity->{
+            return new FacilityResponseDTO.SearchResult(entity.getId(),entity.getName(),entity.getImageURL(),entity.getTime(),entity.getBuilding().getName());
+        }).collect(Collectors.toList());
+
+        return new FacilityResponseDTO.SearchResults(list,list.size());
+    }
 }

@@ -8,6 +8,7 @@ import com.example.school.domain.enums.FacilityTag;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.service.FacilityQueryService;
 import com.example.school.facility.service.FacilityService;
+import com.example.school.validation.annotation.CheckKeyword;
 import com.example.school.validation.annotation.CheckPage;
 import com.example.school.validation.annotation.ExistKeyword;
 import lombok.RequiredArgsConstructor;
@@ -100,6 +101,15 @@ public class FacilityController {
     @GetMapping("/map/{buildingId}")
     public ApiResponse<FacilityResponseDTO.DetailOnMarker> getDetailOnMarker(@PathVariable("buildingId") Long buildingId){
         FacilityResponseDTO.DetailOnMarker res = facilityQueryService.getDetailOnMarker(buildingId);
+
+        return ApiResponse.onSuccess(res);
+    }
+
+    @GetMapping("/search")
+    public ApiResponse<FacilityResponseDTO.SearchResults> searchFacility(
+            @RequestParam("query") @CheckKeyword String keyword,
+            @RequestParam("userId")String userId){
+        FacilityResponseDTO.SearchResults res = facilityQueryService.searchFacility(keyword,userId);
 
         return ApiResponse.onSuccess(res);
     }

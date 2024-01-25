@@ -187,5 +187,20 @@ public class FacilityResponseDTO {
         String openingTime;
         String closingTime;
     }
+
+    @Getter @AllArgsConstructor
+    public static class SearchResults{
+        List<SearchResult> list;
+        int count;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class SearchResult{
+        Long id;
+        String name;
+        String imageURL;
+        String time;
+        String buildingName;
+    }
 }
 
