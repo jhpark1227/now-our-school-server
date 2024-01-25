@@ -1,7 +1,10 @@
 package com.example.school.facility.service;
 
+import com.example.school.apiPayload.GeneralException;
+import com.example.school.apiPayload.status.ErrorStatus;
 import com.example.school.domain.Facility;
 import com.example.school.domain.Review;
+import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.dto.FacilitySaveResponseDTO;
 import com.example.school.facility.repository.FacilityRepository;
 import com.example.school.user.repository.ReviewRepository;
@@ -37,4 +40,11 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
         return FacilityPage;
     }
 
+    @Override
+    public FacilityResponseDTO.Detail getDetail(Long facilityId) {
+        Facility entity = facilityRepository.findByIdWithBuildingAndReview(facilityId)
+                .orElseThrow(()->new GeneralException(ErrorStatus.FACILITY_NOT_FOUND));
+
+        return new FacilityResponseDTO.Detail(entity);
+    }
 }

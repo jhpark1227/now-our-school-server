@@ -6,12 +6,10 @@ import com.example.school.domain.Facility;
 import com.example.school.domain.Theme;
 import com.example.school.domain.enums.FacilityTag;
 import com.example.school.facility.dto.FacilityResponseDTO;
+import com.example.school.facility.service.FacilityQueryService;
 import com.example.school.facility.service.FacilityService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FacilityController {
     private final FacilityService facilityService;
+    private final FacilityQueryService facilityQueryService;
 
     @GetMapping("/category/theme")
     public ApiResponse<FacilityResponseDTO.Categories> getListByTheme(@RequestParam("email") String email){
@@ -58,6 +57,7 @@ public class FacilityController {
     @GetMapping("/suggestion")
     public ApiResponse<FacilityResponseDTO.Tags> getSuggestion(@RequestParam("userId")String userId){
         List<Facility> entities = facilityService.getSuggestion(userId);
+
         Map<FacilityTag,List<Facility>> map = entities.stream().collect(Collectors.groupingBy(Facility::getTag));
         List<FacilityResponseDTO.Tag> res = map.keySet().stream().map(key->{
             List<FacilityResponseDTO.FacilityWithTag> list =
@@ -68,5 +68,12 @@ public class FacilityController {
         }).collect(Collectors.toList());
 
         return ApiResponse.onSuccess(new FacilityResponseDTO.Tags(res));
+    }
+
+    @GetMapping("/{facilityId}")
+    public ApiResponse<FacilityResponseDTO.Detail> getDetail(@PathVariable("facilityId")Long facilityId){
+        FacilityResponseDTO.Detail res = facilityQueryService.getDetail(facilityId);
+
+        return ApiResponse.onSuccess(res);
     }
 }
