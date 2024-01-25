@@ -149,5 +149,15 @@ public class FacilityResponseDTO {
         String imageURL;
         String body;
     }
+
+    @Getter @AllArgsConstructor
+    public static class Images {
+        List<String> list;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
 }
 

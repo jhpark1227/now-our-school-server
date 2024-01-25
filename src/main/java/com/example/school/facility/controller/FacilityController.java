@@ -8,6 +8,7 @@ import com.example.school.domain.enums.FacilityTag;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.service.FacilityQueryService;
 import com.example.school.facility.service.FacilityService;
+import com.example.school.validation.annotation.CheckPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,6 +74,16 @@ public class FacilityController {
     @GetMapping("/{facilityId}")
     public ApiResponse<FacilityResponseDTO.Detail> getDetail(@PathVariable("facilityId")Long facilityId){
         FacilityResponseDTO.Detail res = facilityQueryService.getDetail(facilityId);
+
+        return ApiResponse.onSuccess(res);
+    }
+
+    @GetMapping("/{facilityId}/img")
+    public ApiResponse<FacilityResponseDTO.Images> getImages(
+            @PathVariable("facilityId")Long facilityId,
+            @RequestParam("page") @CheckPage Integer page
+    ){
+        FacilityResponseDTO.Images res = facilityQueryService.getImages(facilityId, page);
 
         return ApiResponse.onSuccess(res);
     }
