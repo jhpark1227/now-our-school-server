@@ -13,11 +13,8 @@ public enum ErrorStatus {
     EXPIRED_JWT(HttpStatus.OK, "3000", "만료된 토큰입니다."),
     BAD_JWT(HttpStatus.OK, "2000", "JWT 토큰이 잘못되었습니다."),
 
-
-
     // 멤버 관려 에러
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
-    FACILITY_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE_4001","시설이 없습니다."),
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "REVIEW_4001","리뷰가 없습니다."),
 
     // 인증, 인가 관련 에러
@@ -27,7 +24,11 @@ public enum ErrorStatus {
     REDIS_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4005", "Redis 오류."),
     EMAIL_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4006", "이메일 인증 실패"),
     EMAIL_CODE_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4007", "이메일 인증번호 불일치"),
-    INVALID_CURRENT_PASSWORD(HttpStatus.BAD_REQUEST,"AUTH_4008", "현재 비밀번호 불일치");
+    INVALID_CURRENT_PASSWORD(HttpStatus.BAD_REQUEST,"AUTH_4008", "현재 비밀번호 불일치"),
+
+    FACILITY_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE_4001","시설이 없습니다."),
+    BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND, "BUILDING_4001","건물이 존재하지 않습니다.");
+
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;
