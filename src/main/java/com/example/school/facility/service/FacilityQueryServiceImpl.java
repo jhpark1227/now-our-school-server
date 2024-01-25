@@ -2,13 +2,11 @@ package com.example.school.facility.service;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.domain.Facility;
-import com.example.school.domain.FacilityImage;
-import com.example.school.domain.Member;
-import com.example.school.domain.Review;
+import com.example.school.domain.*;
 import com.example.school.domain.enums.FacilityKeyword;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.dto.FacilitySaveResponseDTO;
+import com.example.school.facility.repository.BuildingRepository;
 import com.example.school.facility.repository.FacilityImageRepository;
 import com.example.school.facility.repository.FacilityRepository;
 import com.example.school.user.repository.ReviewRepository;
@@ -32,6 +30,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
     private final ReviewRepository reviewRepository;
     private final FacilityImageRepository facilityImageRepository;
     private final UserRepository userRepository;
+    private final BuildingRepository buildingRepository;
 
     @Override
     public Optional<Facility> findFacility(Long id) {
@@ -89,5 +88,17 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
         }).collect(Collectors.toList());
 
         return new FacilityResponseDTO.ListByKeyword(list,list.size());
+    }
+
+    @Override
+    public FacilityResponseDTO.DetailOnMarker getDetailOnMarker(Long buildingId) {
+        Building entity = buildingRepository.findByIdWithBuildingHours(buildingId)
+                .orElseThrow(()->new GeneralException(ErrorStatus.BUILDING_NOT_FOUND));
+
+        List<FacilityResponseDTO.BuildingHourDTO> hours = entity.getBuildingHours().stream().map(hour->{
+            return new FacilityResponseDTO.BuildingHourDTO(hour.getName(), hour.getOpeningTime(), hour.getClosingTime());
+        }).collect(Collectors.toList());
+
+        return new FacilityResponseDTO.DetailOnMarker(entity.getName(), entity.getImageURL(), hours);
     }
 }

@@ -7,10 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BuildingRepository extends JpaRepository<Building, Long> {
     @Query("select b from Building b join fetch b.facilities where b.school=:school")
     List<Building> findBySchoolWithFacility(@Param("school") School school);
 
     List<Building> findAllBySchool(School school);
+
+    @Query("select b from Building b left join fetch b.buildingHours where b.id=:id")
+    Optional<Building> findByIdWithBuildingHours(@Param("id") Long buildingId);
 }

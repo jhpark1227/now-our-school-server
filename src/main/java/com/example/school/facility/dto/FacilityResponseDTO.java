@@ -173,5 +173,19 @@ public class FacilityResponseDTO {
         String description;
         String imageURL;
     }
+
+    @Getter @AllArgsConstructor
+    public static class DetailOnMarker{
+        String name;
+        String imageURL;
+        List<BuildingHourDTO> hours;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class BuildingHourDTO{
+        String name;
+        String openingTime;
+        String closingTime;
+    }
 }
 

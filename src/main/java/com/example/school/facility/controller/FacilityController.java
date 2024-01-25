@@ -96,4 +96,11 @@ public class FacilityController {
 
         return ApiResponse.onSuccess(res);
     }
+
+    @GetMapping("/map/{buildingId}")
+    public ApiResponse<FacilityResponseDTO.DetailOnMarker> getDetailOnMarker(@PathVariable("buildingId") Long buildingId){
+        FacilityResponseDTO.DetailOnMarker res = facilityQueryService.getDetailOnMarker(buildingId);
+
+        return ApiResponse.onSuccess(res);
+    }
 }
