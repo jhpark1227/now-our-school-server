@@ -19,12 +19,19 @@ public class FacilityResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class DetailDTO{
-        Long id;
+        Long facilityId;
         String name;
         String imageURL;
         String time;
         String location;
+        String purpose;
         Float score;
+        String year;
+        String month;
+        String day;
+        Integer startTime;
+        Integer endTime;
+        Integer duration;
     }
     @Builder
     @Getter
@@ -33,7 +40,10 @@ public class FacilityResponseDTO {
     public static class DetailResultDTO{
         List<DetailDTO> resultList;
         Integer listSize;
-    }
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;    }
 
     @Getter @AllArgsConstructor
     public static class Categories{

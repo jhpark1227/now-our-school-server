@@ -116,14 +116,19 @@ public class ReservationService {
     }
 
     //예약 내역을 통해 이용한 시설물 추출
-    public List<Facility> getFacilities(Long memberId) {
-        List<Reservation> reservations = getReservation_no(memberId);
-        return reservations.stream().map(reservation -> reservation.getFacility()).collect(Collectors.toList());
+    public Page<Facility> getFacilities(Long memberId,Integer page) {
+        Page<Reservation> reservations = reservationRepository.findAllByMemberId(memberId, PageRequest.of(page - 1, 10));
+        return reservations.map(reservation -> reservation.getFacility());
     }
     //예약 아이디로 예약 찾기
     public Reservation getReservationById(Long reservationId){
         Reservation reservation = reservationRepository.findById(reservationId).get();
         return reservation;
+    }
+    //시설물 기준 예약 현황 목록
+    public Page<Reservation> getReservationByFacilityId(Long facilityId,Integer page){
+        Page<Reservation> reservations = reservationRepository.findAllByFacilityId(facilityId, PageRequest.of(page - 1, 10));
+        return reservations;
     }
 
     //반납하기

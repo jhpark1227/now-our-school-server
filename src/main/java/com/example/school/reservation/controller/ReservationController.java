@@ -40,11 +40,19 @@ public class ReservationController {
         }
     }
 
-    //예약 내역 확인
+    //예약 내역 확인(사용자 기준)
     @GetMapping("/details")
     @PreAuthorize("isAuthenticated()")
     public ApiResponse<ReservationResponseDTO.DetailResultDTO> getReservation(@RequestParam(name="memberId") Long memberId, @RequestParam(name="page")Integer page) {
         Page<Reservation> reservationList = reservationService.getReservation(memberId,page);
+        return ApiResponse.onSuccess(ReservationConverter.detailResultListDTO(reservationList));
+    }
+
+    //예약 내역(시설물 기준)
+    @GetMapping("/byfacility")
+    @PreAuthorize("isAuthenticated()")
+    public ApiResponse<ReservationResponseDTO.DetailResultDTO> getReservations(@RequestParam(name="facilityId") Long facilityId,@RequestParam(name="page")Integer page){
+        Page<Reservation> reservationList = reservationService.getReservationByFacilityId(facilityId,page);
         return ApiResponse.onSuccess(ReservationConverter.detailResultListDTO(reservationList));
     }
 
@@ -72,9 +80,11 @@ public class ReservationController {
     //사용자 예약현황을 통해 이용한 시설물 목록 보기
     @GetMapping("/facility")
     @PreAuthorize("isAuthenticated()")
-    public ApiResponse<FacilityResponseDTO.DetailResultDTO> useFacility(@RequestParam(name="memberId") Long memberId){
-        List<Facility> facilities = reservationService.getFacilities(memberId);
-        return ApiResponse.onSuccess(FacilityConverter.detailResultDTO(facilities));
+    public ApiResponse<FacilityResponseDTO.DetailResultDTO> useFacility(@RequestParam(name="memberId") Long memberId,Integer page){
+        Page<Facility> facilities = reservationService.getFacilities(memberId,page);
+        Page<Reservation> reservations = reservationService.getReservation(memberId, page);
+        FacilityResponseDTO.DetailResultDTO detailResultDTO = FacilityConverter.detailResultDTO(facilities,reservations);
+        return ApiResponse.onSuccess(detailResultDTO);
     }
 
     //반납하기
