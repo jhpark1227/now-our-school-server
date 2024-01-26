@@ -21,4 +21,10 @@ public class UserRequestDTO {
         @NotBlank
         String body;
     }
+
+    @Getter
+    public static class UpdateProfileDTO {
+        String nickname;
+        String profilePicture;
+    }
 }

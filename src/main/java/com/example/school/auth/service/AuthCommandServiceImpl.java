@@ -17,6 +17,8 @@ public class AuthCommandServiceImpl implements AuthCommandService{
     private final UserRepository userRepository;
     private final JwtUtils jwtUtils;
     private final RedisUtils redisUtils;
+
+    //회원탈퇴
     @Override
     public Boolean withdrawUser(String accessToken) {
         String resolveToken = jwtUtils.resolveToken(accessToken);

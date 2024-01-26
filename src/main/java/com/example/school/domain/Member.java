@@ -36,19 +36,17 @@ public class Member extends BaseEntity implements UserDetails {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="school_id")
     private School school;
-    @Column(nullable = false, length = 1)
-    private String status;
     private String userId;
     private String name;
     private String email;
     private String password;
-    private String identify_num;
+    private String identifyNum;
     private String phone;
     private String nickname;
     private Integer age;
     private Integer grade;
     private String imageURL;
-
+    private String profileImg;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // 사용자의 권한 정보를 반환하는 로직을 구현
@@ -90,12 +88,18 @@ public class Member extends BaseEntity implements UserDetails {
         // 계정이 활성화되어 있는지 여부를 반환하는 로직을 구현
         return true;
     }
-    public void setPassword(String password) {
+    public void changePassword(String password) {
         this.password = password;
     }
 
-    public void modifyUserDeleteStatus() {
-        status = "F";
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
+
+    public void setProfileImg(String profileImg) {
+        this.profileImg = profileImg;
+    }
+
+
 
 }

@@ -151,12 +151,12 @@ public class AuthQueryServiceImpl implements AuthQueryService {
     @Override
     public Boolean changePassword(AuthRequestDTO.ChangePasswordReqDTO request) {
         String email = jwtUtils.getEmailInToken(request.getToken());
-        Member member = userRepository.findByEmail(email).orElseThrow(() ->
-                new GeneralException(ErrorStatus.MEMBER_NOT_FOUND)
-        );
+        Member member = userRepository.findByEmail(email).orElseThrow(() -> {
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_FOUND);
+        });
         //기존 비밀번호와 일치하는지 확인 후 맞을 시 변경
         if (passwordEncoder.matches(request.getCurrentPassword(), member.getPassword())) {
-            member.setPassword(passwordEncoder.encode(request.getChangePassword()));
+            member.changePassword(passwordEncoder.encode(request.getChangePassword()));
             userRepository.save(member);
             return true;
         } else {

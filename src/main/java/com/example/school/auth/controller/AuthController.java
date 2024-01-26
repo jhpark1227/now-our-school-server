@@ -14,6 +14,7 @@ import com.example.school.validation.annotation.ExistMember;
 import com.example.school.validation.annotation.ExistReview;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController @RequestMapping("/api/v1/auth")
@@ -84,7 +85,7 @@ public class AuthController {
     }
 
     // 비밀번호 변경
-    @PostMapping(value = "/change-password")
+    @PutMapping(value = "/change-password")
     public ApiResponse<String> changePassword(@RequestBody AuthRequestDTO.ChangePasswordReqDTO changePasswordReqDTO) {
 
         // 비밀번호 변경 수행
@@ -92,6 +93,8 @@ public class AuthController {
 
         return ApiResponse.onSuccess("비밀번호가 성공적으로 변경되었습니다.");
     }
+
+
 
     // 아이디 찾기
     @PostMapping(value = "/find-userId")

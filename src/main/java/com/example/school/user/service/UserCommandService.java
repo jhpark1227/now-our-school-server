@@ -1,6 +1,7 @@
 package com.example.school.user.service;
 
 import com.example.school.domain.Inquiry;
+import com.example.school.domain.Member;
 import com.example.school.domain.Review;
 import com.example.school.user.dto.UserRequestDTO;
 import jakarta.validation.Valid;
@@ -12,5 +13,5 @@ public interface UserCommandService {
 
     Inquiry createInquiry(Long memberId, UserRequestDTO.InquiryDTO request);
 
-
+    Member updateProfile(Long memberId, UserRequestDTO.UpdateProfileDTO request);
 }
