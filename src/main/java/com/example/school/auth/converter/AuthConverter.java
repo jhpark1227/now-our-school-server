@@ -19,6 +19,7 @@ public class AuthConverter {
         String encryptedPassword = new BCryptPasswordEncoder().encode(request.getPassword());
 
         return Member.builder()
+                .status("T")
                 .name(request.getName())
                 .userId(request.getUserId())
                 .email(request.getEmail())

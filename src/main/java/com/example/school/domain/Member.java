@@ -36,7 +36,8 @@ public class Member extends BaseEntity implements UserDetails {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="school_id")
     private School school;
-
+    @Column(nullable = false, length = 1)
+    private String status;
     private String userId;
     private String name;
     private String email;
@@ -92,4 +93,9 @@ public class Member extends BaseEntity implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public void modifyUserDeleteStatus() {
+        status = "F";
+    }
+
 }
