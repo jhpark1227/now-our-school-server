@@ -90,5 +90,11 @@ public class AuthController {
         return ApiResponse.onSuccess("비밀번호가 성공적으로 변경되었습니다.");
     }
 
+    //회원탈퇴
+    @PutMapping("/delete")
+    public ApiResponse<String>  withdrawUser(@RequestHeader("Authorization") String accessToken){
+        authQueryService.withdrawUser(accessToken);
+        return ApiResponse.onSuccess("회원탈퇴 처리 되었습니다.");
+    }
 
 }

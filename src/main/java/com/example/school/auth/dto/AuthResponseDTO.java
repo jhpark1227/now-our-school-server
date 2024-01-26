@@ -19,6 +19,7 @@ public class AuthResponseDTO {
     public static class LoginResDTO {
         String accessToken;
         String refreshToken;
+        String userid;
         private Long accessTokenExpirationTime;
 
     }

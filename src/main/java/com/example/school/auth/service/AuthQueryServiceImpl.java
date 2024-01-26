@@ -1,5 +1,6 @@
 package com.example.school.auth.service;
 
+import com.example.school.apiPayload.ApiResponse;
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
 import com.example.school.auth.config.util.JwtUtils;
@@ -13,11 +14,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+
 import java.util.Optional;
 
 @Service
@@ -129,10 +134,12 @@ public class AuthQueryServiceImpl implements AuthQueryService {
             redisUtils.setDataExpire("RT:" + member.getEmail(), newRefreshToken, JwtUtils.REFRESH_TOKEN_VALID_TIME_IN_REDIS);
             refreshToken = newRefreshToken;
         }
+        String userid = member.getUserId();
 
         return AuthResponseDTO.LoginResDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .userid(userid)
                 .accessTokenExpirationTime(JwtUtils.TOKEN_VALID_TIME)
                 .build();
     }
@@ -155,6 +162,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         redisUtils.setDataExpire(resolvedToken, "logout", jwtUtils.getExpiration(resolvedToken));
     }
 
+
     @Override
     public Boolean changePassword(AuthRequestDTO.ChangePasswordReqDTO request) {
         String email = jwtUtils.getEmailInToken(request.getToken());
@@ -171,5 +179,15 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         }
     }
 
-
+    @Override
+    public Boolean withdrawUser(String accessToken) {
+        String resolveToken = jwtUtils.resolveToken(accessToken);
+        String email = jwtUtils.getEmailInToken(resolveToken);
+        Member member = userRepository.findByEmail(email).orElseThrow(() -> {
+                throw new GeneralException(ErrorStatus.MEMBER_NOT_FOUND);
+        });
+        member.modifyUserDeleteStatus();
+        logout(accessToken);
+        return true;
+    }
 }
