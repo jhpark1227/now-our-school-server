@@ -8,10 +8,7 @@ import com.example.school.auth.dto.AuthResponseDTO;
 import com.example.school.auth.service.AuthQueryService;
 import com.example.school.auth.service.MailService;
 import com.example.school.domain.Member;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController @RequestMapping("/api/v1/auth")
@@ -90,5 +87,49 @@ public class AuthController {
         return ApiResponse.onSuccess("비밀번호가 성공적으로 변경되었습니다.");
     }
 
+    // 아이디 찾기
+    @PostMapping(value = "/find-userId")
+    public ApiResponse<AuthResponseDTO.findUserIdDTO> findUsername(@RequestBody AuthRequestDTO.EmailAuthReqDTO emailAuthReqDTO) {
+            if (!authQueryService.checkEmailFormat(emailAuthReqDTO.getEmail())) {
+                return ApiResponse.onFailure(ErrorStatus.EMAIL_FORMAT_ERROR.getCode(), ErrorStatus.EMAIL_FORMAT_ERROR.getMessage());
+            }
 
+            // 인증 번호가 일치하는지 확인
+            Boolean isAuthenticationSuccessful = mailService.verifyCertificationCode(emailAuthReqDTO.getEmail(), emailAuthReqDTO.getAuthCode());
+
+            if (isAuthenticationSuccessful) {
+                // 인증이 성공한 경우, 아이디 및 생성일자 반환
+                Member foundMember = authQueryService.findMemberByEmail(emailAuthReqDTO.getEmail());
+                AuthResponseDTO.findUserIdDTO responseDTO = new AuthResponseDTO.findUserIdDTO(foundMember.getUsername(), foundMember.getCreatedAt());
+                return ApiResponse.onSuccess(responseDTO);
+            } else {
+                // 인증이 실패한 경우
+                return ApiResponse.onFailure(ErrorStatus.EMAIL_CODE_ERROR.getCode(), ErrorStatus.EMAIL_CODE_ERROR.getMessage());
+            }
+
+    }
+
+    @PostMapping(value = "/find-password")
+    public ApiResponse<String> findPassword(@RequestBody AuthRequestDTO.FindPwRequest findPwRequest) {
+        try {
+            // 서비스를 호출하여 비밀번호 찾기 기능 수행
+            Boolean isPasswordFound = authQueryService.findPasswd(findPwRequest);
+
+            if (isPasswordFound) {
+                // 비밀번호 찾기가 성공한 경우
+                return ApiResponse.onSuccess("비밀번호 찾기 인증 성공");
+            } else {
+                // 비밀번호 찾기 실패 (오류에 따라 다른 응답을 보낼 수 있음)
+                return ApiResponse.onFailure(ErrorStatus.FIND_PASSWORD_ERROR.getCode(), ErrorStatus.FIND_PASSWORD_ERROR.getMessage());
+            }
+        } catch (GeneralException e) {
+            // GeneralException이 발생한 경우에 대한 처리
+            return ApiResponse.onFailure(e.getErrorStatus().getCode(), e.getErrorStatus().getMessage());
+        } catch (Exception e) {
+            // 기타 예외가 발생한 경우에 대한 처리
+            e.printStackTrace();
+            return ApiResponse.onFailure(ErrorStatus.INTERNAL_SERVER_ERROR.getCode(), ErrorStatus.INTERNAL_SERVER_ERROR.getMessage());
+        }
+
+    }
 }

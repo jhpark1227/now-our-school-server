@@ -62,4 +62,15 @@ public class AuthRequestDTO {
         private String currentPassword;
         private String changePassword;
     }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class FindPwRequest{
+        private String email;
+        private String userId;
+        private String password;
+        private String authCode;
+    }
 }

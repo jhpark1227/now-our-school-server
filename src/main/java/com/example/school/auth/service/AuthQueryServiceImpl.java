@@ -27,6 +27,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
     private final JwtUtils jwtUtils;
     private final RedisUtils redisUtils;
 
@@ -36,6 +37,13 @@ public class AuthQueryServiceImpl implements AuthQueryService {
 
         Member newMember = AuthConverter.toMember(registerReqDTO);
         return userRepository.save(newMember);
+    }
+
+    @Override
+    public Member findMemberByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() ->
+                new GeneralException(ErrorStatus.MEMBER_NOT_FOUND)
+        );
     }
 
     @Override
@@ -169,6 +177,26 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Boolean findPasswd(AuthRequestDTO.FindPwRequest request) {
+        Member member = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> {
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_FOUND);
+        });
+
+        // 유저 아이디와 요청에서 받은 아이디가 일치하는지 확인
+        if (!member.getUserId().equals(request.getUserId())) {
+            throw new GeneralException(ErrorStatus.USERID_MISMATCH);
+        }
+
+        // 인증번호가 일치하는지 확인
+        if (!mailService.verifyCertificationCode(request.getEmail(), request.getAuthCode())) {
+            throw new GeneralException(ErrorStatus.EMAIL_CODE_ERROR);
+        }
+
+        // 변경된 비밀번호를 저장하지 않고 성공 여부를 반환
+        return true;
     }
 
 

@@ -2,6 +2,8 @@ package com.example.school.auth.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 public class AuthResponseDTO {
 
     @Getter
@@ -32,5 +34,14 @@ public class AuthResponseDTO {
         int code;
         String message;
         String result;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class findUserIdDTO {
+        String userId;
+        LocalDateTime createdAt;
     }
 }
