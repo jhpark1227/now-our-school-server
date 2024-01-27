@@ -9,6 +9,7 @@ import com.example.school.auth.service.AuthQueryService;
 import com.example.school.auth.service.MailService;
 import com.example.school.domain.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController @RequestMapping("/api/v1/auth")
@@ -130,6 +131,11 @@ public class AuthController {
             e.printStackTrace();
             return ApiResponse.onFailure(ErrorStatus.INTERNAL_SERVER_ERROR.getCode(), ErrorStatus.INTERNAL_SERVER_ERROR.getMessage());
         }
+    }
 
+    @PostMapping("/reissue")
+    public ApiResponse<AuthResponseDTO.ReissueRespDto> reissue(@RequestHeader("Authorization") String refreshToken) {
+        AuthResponseDTO.ReissueRespDto reissueRespDto = authQueryService.reissue(refreshToken);
+        return ApiResponse.onSuccess(reissueRespDto);
     }
 }

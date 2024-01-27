@@ -9,6 +9,7 @@ public interface AuthQueryService {
     Member register(AuthRequestDTO.RegisterReqDTO request);
     Boolean checkUserIdFormat(String id);
     Member findMemberByEmail(String email);
+    AuthResponseDTO.ReissueRespDto reissue(String refreshToken);
 
     Boolean checkEmailFormat(String email);
     Boolean checkPassword(String password);

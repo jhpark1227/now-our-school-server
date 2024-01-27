@@ -44,4 +44,14 @@ public class AuthResponseDTO {
         String userId;
         LocalDateTime createdAt;
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ReissueRespDto {
+        private String newAccessToken;
+        private String newRefreshToken;
+        private Long accessTokenExpirationTime;
+    }
 }
