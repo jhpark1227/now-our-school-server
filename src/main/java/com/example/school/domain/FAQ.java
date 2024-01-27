@@ -1,6 +1,7 @@
 package com.example.school.domain;
 
 import com.example.school.domain.common.BaseEntity;
+import com.example.school.domain.enums.FaqType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,5 +19,9 @@ public class FAQ extends BaseEntity {
     private Long id;
 
     private String title;
+
     private String content;
+
+    @Enumerated(EnumType.STRING)
+    private FaqType type;
 }
