@@ -26,7 +26,7 @@ public class AuthController {
     public ApiResponse<Member> register(@RequestBody AuthRequestDTO.RegisterReqDTO registerReqDTO) {
 
         if (authQueryService.checkUserIdFormat(registerReqDTO.getUserId())) {
-            return ApiResponse.onFailure(ErrorStatus.USER_ID_ERROR.getCode(), ErrorStatus.USER_ID_ERROR.getMessage());
+            return ApiResponse.onFailure(ErrorStatus.USER_FORMAT_ERROR.getCode(), ErrorStatus.USER_FORMAT_ERROR.getMessage());
         }
 
         if (!authQueryService.checkPassword((registerReqDTO.getPassword()))) {

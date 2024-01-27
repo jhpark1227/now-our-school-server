@@ -20,7 +20,7 @@ public enum ErrorStatus {
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "REVIEW_4001","리뷰가 없습니다."),
 
     // 인증, 인가 관련 에러
-    USER_ID_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4002","사용 불가능한 아이디입니다."),
+    USER_FORMAT_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4002","사용 불가능한 아이디입니다."),
     NICKNAME_DUPLICATE(HttpStatus.BAD_REQUEST,"AUTH_4003", "사용 불가능한 닉네임입니다."),
     PASSWORD_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4004", "사용 불가능한 비밀번호입니다."),
     EMAIL_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4005", "사용 불가능한 이메일입니다."),
@@ -30,6 +30,8 @@ public enum ErrorStatus {
     INVALID_CURRENT_PASSWORD(HttpStatus.BAD_REQUEST,"AUTH_4009", "현재 비밀번호 불일치"),
     USERID_MISMATCH(HttpStatus.BAD_REQUEST,"AUTH_4010", "유저 아이디와 이메일이 일치하지 않습니다."),
     FIND_PASSWORD_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4011", "비밀번호 찾기 실패"),
+    PASSWORD_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4012", "비밀번호가 일치하지 않습니다."),
+    USER_ID_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4013", "ID를 정확하게 입력해 주세요."),
 
     FACILITY_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE_4001","시설이 없습니다."),
     BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND, "BUILDING_4001","건물이 존재하지 않습니다."),

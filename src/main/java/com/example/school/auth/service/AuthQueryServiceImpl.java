@@ -94,12 +94,6 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         return true;
     }
 
-    public String extractEmailAddress(String emailJson) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readTree(emailJson);
-        return jsonNode.get("email").asText();
-    }
-
     @Override
     public Boolean checkEmailFormat(String email) {
         System.out.print(email);
@@ -117,14 +111,14 @@ public class AuthQueryServiceImpl implements AuthQueryService {
 
         // id를 잘못 입력한 경우
         if (memberOptional.isEmpty()) {
-            throw new RuntimeException("Id를 정확하게 입력해주세요.");
+            throw new GeneralException(ErrorStatus.USER_ID_ERROR);
         }
 
         Member member = memberOptional.get();
 
         // 비밀번호를 잘못 입력한 경우
         if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
-            throw new RuntimeException("비밀번호를 정확하게 입력해주세요.");
+            throw new GeneralException(ErrorStatus.PASSWORD_ERROR);
         }
 
         String accessToken = jwtUtils.createToken(member.getEmail(), JwtUtils.TOKEN_VALID_TIME);
@@ -177,8 +171,9 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         if (!mailService.verifyCertificationCode(request.getEmail(), request.getAuthCode())) {
             throw new GeneralException(ErrorStatus.EMAIL_CODE_ERROR);
         }
+        member.changePassword(passwordEncoder.encode(request.getPassword()));
+        userRepository.save(member);
 
-        // 변경된 비밀번호를 저장하지 않고 성공 여부를 반환
         return true;
     }
 
