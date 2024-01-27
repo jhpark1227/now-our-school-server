@@ -1,5 +1,6 @@
 package com.example.school.auth.dto;
 
+import com.example.school.domain.School;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -64,5 +65,14 @@ public class AuthResponseDTO {
     public static class ImageDTO{
         List<String> imgUrls;
 
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SchoolResDTO{
+        Long id;
+        String name;
     }
 }
