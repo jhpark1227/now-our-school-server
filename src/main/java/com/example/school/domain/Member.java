@@ -45,6 +45,7 @@ public class Member extends BaseEntity implements UserDetails {
     private String nickname;
     private Integer age;
     private Integer grade;
+    private String imageURL;
     private String profileImg;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
