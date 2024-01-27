@@ -8,6 +8,7 @@ import com.example.school.auth.config.util.RedisUtils;
 import com.example.school.auth.converter.AuthConverter;
 import com.example.school.auth.dto.AuthRequestDTO;
 import com.example.school.auth.dto.AuthResponseDTO;
+import com.example.school.awsS3.AwsS3Service;
 import com.example.school.domain.Member;
 import com.example.school.user.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,6 +18,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -29,12 +33,26 @@ public class AuthQueryServiceImpl implements AuthQueryService {
     private final MailService mailService;
     private final JwtUtils jwtUtils;
     private final RedisUtils redisUtils;
+    private final AwsS3Service awsS3Service;
 
+    //    @Override
+//    @Transactional
+//    public Member register(AuthRequestDTO.RegisterReqDTO registerReqDTO) {
+//
+//        Member newMember = AuthConverter.toMember(registerReqDTO);
+//        return userRepository.save(newMember);
+//    }
     @Override
     @Transactional
-    public Member register(AuthRequestDTO.RegisterReqDTO registerReqDTO) {
+    public Member register(AuthRequestDTO.RegisterReqDTO registerReqDTO, MultipartFile profileImage) {
+        // 파일 업로드
+        String imageUrl = awsS3Service.uploadSingleFile(profileImage);
 
+        // 회원 정보 생성
         Member newMember = AuthConverter.toMember(registerReqDTO);
+        newMember.setProfileImg(imageUrl);
+
+        // 회원 정보 저장
         return userRepository.save(newMember);
     }
 

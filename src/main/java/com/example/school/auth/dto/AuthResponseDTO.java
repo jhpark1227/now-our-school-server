@@ -3,6 +3,7 @@ package com.example.school.auth.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class AuthResponseDTO {
 
@@ -54,5 +55,14 @@ public class AuthResponseDTO {
         private String newAccessToken;
         private String newRefreshToken;
         private Long accessTokenExpirationTime;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ImageDTO{
+        List<String> imgUrls;
+
     }
 }

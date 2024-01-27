@@ -12,6 +12,7 @@ import com.example.school.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -23,7 +24,8 @@ public class AuthController {
 
     // 회원가입
     @PostMapping(value = "/register")
-    public ApiResponse<Member> register(@RequestBody AuthRequestDTO.RegisterReqDTO registerReqDTO) {
+    public ApiResponse<Member> register(@RequestPart(value="image", required=false) MultipartFile profileImage,
+                                        @RequestPart AuthRequestDTO.RegisterReqDTO registerReqDTO) {
 
         if (authQueryService.checkUserIdFormat(registerReqDTO.getUserId())) {
             return ApiResponse.onFailure(ErrorStatus.USER_FORMAT_ERROR.getCode(), ErrorStatus.USER_FORMAT_ERROR.getMessage());
@@ -40,7 +42,7 @@ public class AuthController {
         if (!authQueryService.checkNicknameDuplicate(registerReqDTO.getNickname())) {
             return ApiResponse.onFailure(ErrorStatus.NICKNAME_DUPLICATE.getCode(), ErrorStatus.NICKNAME_DUPLICATE.getMessage());
         }
-        return ApiResponse.onSuccess(authQueryService.register(registerReqDTO));
+        return ApiResponse.onSuccess(authQueryService.register(registerReqDTO, profileImage));
     }
 
     // 로그인

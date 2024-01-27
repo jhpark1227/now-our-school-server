@@ -30,7 +30,4 @@ public class AuthConverter {
                 .build();
     }
 
-//    public static AuthResponseDTO.LoginResDTO toLoginResDTO(){
-//        return null;
-//    }
 }

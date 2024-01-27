@@ -24,6 +24,7 @@ public class AuthRequestDTO {
         @NotBlank(message = "아이디를 입력해 주세요.")
         String userId;
         String nickname;
+        String profileImg;
 
         Integer age;
         Integer grade;
