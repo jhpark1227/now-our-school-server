@@ -4,9 +4,12 @@ import com.example.school.apiPayload.ApiResponse;
 import com.example.school.domain.FAQ;
 import com.example.school.faq.dto.FAQRes;
 import com.example.school.faq.service.FAQService;
+import com.example.school.validation.annotation.CheckFaqType;
+import com.example.school.validation.annotation.CheckPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,5 +29,14 @@ public class FAQController {
                 .collect(Collectors.toList());
 
         return ApiResponse.onSuccess(new FAQRes.FAQSamples(list,list.size()));
+    }
+
+    @GetMapping("list")
+    public ApiResponse<FAQRes.FAQList> getList(
+            @RequestParam("type") @CheckFaqType String type,
+            @RequestParam("page") @CheckPage Integer page){
+        FAQRes.FAQList res = FAQService.getList(type, page);
+
+        return ApiResponse.onSuccess(res);
     }
 }
