@@ -79,7 +79,7 @@ public class UserResponseDTO {
 
         public Info(Member member){
             name = member.getName();
-            imageURL = member.getImageURL();
+            imageURL = member.getProfileImg();
             grade = member.getGrade();
         }
     }

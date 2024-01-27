@@ -143,7 +143,7 @@ public class FacilityResponseDTO {
                         review.getScore(),
                         review.getCreatedAt().toLocalDate(),
                         review.getMember().getNickname(),
-                        review.getMember().getImageURL(),
+                        review.getMember().getProfileImg(),
                         review.getBody());
             }).collect(Collectors.toList());
             reviewCount = reviews.size();
