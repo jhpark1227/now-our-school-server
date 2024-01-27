@@ -3,10 +3,7 @@ package com.example.school.user.controller;
 import com.example.school.apiPayload.ApiResponse;
 import com.example.school.domain.Inquiry;
 import com.example.school.domain.Member;
-import com.example.school.domain.Reservation;
 import com.example.school.domain.Review;
-import com.example.school.reservation.converter.ReservationConverter;
-import com.example.school.reservation.dto.ReservationResponseDTO;
 import com.example.school.user.converter.UserConverter;
 import com.example.school.user.dto.UserRequestDTO;
 import com.example.school.user.dto.UserResponseDTO;
@@ -17,8 +14,6 @@ import com.example.school.validation.annotation.ExistMember;
 
 import com.example.school.validation.annotation.ExistReview;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -26,6 +21,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -116,5 +112,14 @@ public class UserController {
 
         Member updatedMember = userCommandService.updateProfile(memberId, request);
         return ApiResponse.onSuccess(UserConverter.toUpdateProfileResultDTO(updatedMember));
+    }
+
+    @GetMapping("/info")
+    public ApiResponse<UserResponseDTO.Info> getInfo(Authentication auth){
+        Member member = (Member)auth.getPrincipal();
+
+        UserResponseDTO.Info res = userQueryService.getInfo(member.getId());
+
+        return ApiResponse.onSuccess(res);
     }
 }
