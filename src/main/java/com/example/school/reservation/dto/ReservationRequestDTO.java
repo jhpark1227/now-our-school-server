@@ -11,11 +11,6 @@ public class ReservationRequestDTO {
         Integer page;
 
     }
-    //예약반납
-    @Getter
-    public static class ReturnDTO{
-
-    }
     //예약연장
     @Getter
     public static class ExtendDTO{
@@ -46,6 +41,20 @@ public class ReservationRequestDTO {
         String year;
         String month;
         String day;
+    }
+    //반납하기
+    @Getter
+    public static class returnDTO{
+        Long reservationId;
+        boolean checkList1;
+        boolean checkList2;
+        boolean checkList3;
+        boolean checkList4;
+    }
+    //반납 사진 받기
+    @Getter
+    public static class returnImg{
+
     }
 
 }

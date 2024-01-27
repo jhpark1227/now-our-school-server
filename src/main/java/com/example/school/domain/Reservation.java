@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
@@ -36,7 +38,6 @@ public class Reservation extends BaseEntity {
     private Integer end_time;
     private Integer duration;
     private Boolean back;
-
 
     public void setMember(Member member){
         this.member = member;
