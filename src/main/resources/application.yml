@@ -6,8 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/school
     username: root
-    password: ksh0558@
-
+    password: hatw8669
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
@@ -15,8 +14,8 @@ spring:
   mail:
     host: smtp.naver.com
     port: 465
-    username: htw6269
-    password: ha1102
+    username: 5959kop
+    password: sowjdqh15945
     properties:
       mail:
         smtp:
