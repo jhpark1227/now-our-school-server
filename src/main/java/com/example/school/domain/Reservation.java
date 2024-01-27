@@ -4,10 +4,8 @@ import com.example.school.domain.common.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,6 +28,9 @@ public class Reservation extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="facility_id")
     private Facility facility;
+
+    @OneToMany(mappedBy = "reservation")
+    List<Image> images = new ArrayList<>();
     private String year;
     private String month;
     private String day;

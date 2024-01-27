@@ -68,8 +68,8 @@ public class ReservationConverter {
                 .build();
     }
     //예약 한 시설물 반납하기
-    public static ReservationResponseDTO.DetailDTO returnReservation(Reservation reservation){
-        return ReservationResponseDTO.DetailDTO.builder()
+    public static ReservationResponseDTO.returnDTO returnReservation(Reservation reservation){
+        return ReservationResponseDTO.returnDTO.builder()
                 .id(reservation.getId())
                 .year(reservation.getYear())
                 .month(reservation.getMonth())

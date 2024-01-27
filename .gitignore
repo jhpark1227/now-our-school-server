@@ -16,7 +16,10 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
-
+resources/application.properties
+resources/application-awsS3.yml
+resources/application-credentials.yml
+resources/application.yml
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -36,5 +39,3 @@ out/
 ### VS Code ###
 .vscode/
 
-application.yml
-application.properties

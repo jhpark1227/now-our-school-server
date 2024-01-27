@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/school
     username: root
-    password: hatw8669
+    password: ksh0558@
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:

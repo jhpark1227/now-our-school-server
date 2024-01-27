@@ -1,13 +1,18 @@
 package com.example.school.reservation.controller;
 
 import com.example.school.apiPayload.ApiResponse;
+import com.example.school.awsS3.AwsS3Service;
 import com.example.school.domain.Facility;
+import com.example.school.domain.Image;
 import com.example.school.facility.converter.FacilityConverter;
 import com.example.school.facility.dto.FacilityResponseDTO;
+import com.example.school.reservation.converter.ImageConverter;
 import com.example.school.reservation.converter.ReservationConverter;
 import com.example.school.domain.Reservation;
+import com.example.school.reservation.dto.ImageResponseDTO;
 import com.example.school.reservation.dto.ReservationRequestDTO;
 import com.example.school.reservation.dto.ReservationResponseDTO;
+import com.example.school.reservation.service.ImageService;
 import com.example.school.reservation.service.ReservationService;
 import com.example.school.validation.annotation.ExistFacility;
 import com.example.school.validation.annotation.ExistMember;
@@ -29,6 +34,8 @@ import java.util.List;
 @RequestMapping("reservation")
 public class ReservationController {
     private final ReservationService reservationService;
+    private final AwsS3Service awsS3Service;
+    private final ImageService imageService;
     // 예약하기
     @PostMapping("")
     @PreAuthorize("isAuthenticated()")
@@ -96,12 +103,30 @@ public class ReservationController {
     //반납하기
     @PostMapping( value = "/return", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("isAuthenticated()")
-    public ApiResponse<ReservationResponseDTO.DetailDTO> returnReservation(@RequestPart(value="image", required=false) List<MultipartFile> imgFile,
+    public ApiResponse<ReservationResponseDTO.returnDTO> returnReservation(@RequestPart(value="image", required=false) List<MultipartFile> imgFile,
                                                                            @RequestPart ReservationRequestDTO.returnDTO returnDTO){
         log.info("이미지 : {}",imgFile);
         Reservation reservation = reservationService.getReservationById(returnDTO.getReservationId());
         reservationService.returnReservation(reservation);
-        ReservationResponseDTO.DetailDTO detailDTO = ReservationConverter.returnReservation(reservation);
-        return ApiResponse.onSuccess(detailDTO);
+
+        List<String> urls = awsS3Service.uploadFile(imgFile);
+        urls.forEach(url ->{
+            imageService.save(url,reservation);
+        });
+        ReservationResponseDTO.returnDTO returnDTO1 = ReservationConverter.returnReservation(reservation);
+
+        return ApiResponse.onSuccess(returnDTO1);
+    }
+
+    //반납 인증 사진 url 조회
+    @GetMapping("return/image/{reservationId}")
+    @PreAuthorize("isAuthenticated()")
+    public ApiResponse<ImageResponseDTO.ImageDTO> imgUrl(@PathVariable(name = "reservationId")Long reservationId){
+        Reservation reservation = reservationService.getReservationById(reservationId);
+        List<Image> images = reservation.getImages();
+        System.out.println("이미지?"+images);
+
+        ImageResponseDTO.ImageDTO imageDTO = ImageConverter.imageDTO(images);
+        return ApiResponse.onSuccess(imageDTO);
     }
 }
