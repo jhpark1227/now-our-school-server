@@ -9,10 +9,6 @@ import com.example.school.auth.service.AuthCommandService;
 import com.example.school.auth.service.AuthQueryService;
 import com.example.school.auth.service.MailService;
 import com.example.school.domain.Member;
-import com.example.school.validation.annotation.ExistFacility;
-import com.example.school.validation.annotation.ExistMember;
-import com.example.school.validation.annotation.ExistReview;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -85,7 +81,7 @@ public class AuthController {
     }
 
     // 비밀번호 변경
-    @PutMapping(value = "/change-password")
+    @PostMapping(value = "/change-password")
     public ApiResponse<String> changePassword(@RequestBody AuthRequestDTO.ChangePasswordReqDTO changePasswordReqDTO) {
 
         // 비밀번호 변경 수행
@@ -94,36 +90,27 @@ public class AuthController {
         return ApiResponse.onSuccess("비밀번호가 성공적으로 변경되었습니다.");
     }
 
-
-
     // 아이디 찾기
     @PostMapping(value = "/find-userId")
     public ApiResponse<AuthResponseDTO.findUserIdDTO> findUsername(@RequestBody AuthRequestDTO.EmailAuthReqDTO emailAuthReqDTO) {
-        if (!authQueryService.checkEmailFormat(emailAuthReqDTO.getEmail())) {
-            return ApiResponse.onFailure(ErrorStatus.EMAIL_FORMAT_ERROR.getCode(), ErrorStatus.EMAIL_FORMAT_ERROR.getMessage());
-        }
+            if (!authQueryService.checkEmailFormat(emailAuthReqDTO.getEmail())) {
+                return ApiResponse.onFailure(ErrorStatus.EMAIL_FORMAT_ERROR.getCode(), ErrorStatus.EMAIL_FORMAT_ERROR.getMessage());
+            }
 
-        // 인증 번호가 일치하는지 확인
-        Boolean isAuthenticationSuccessful = mailService.verifyCertificationCode(emailAuthReqDTO.getEmail(), emailAuthReqDTO.getAuthCode());
+            // 인증 번호가 일치하는지 확인
+            Boolean isAuthenticationSuccessful = mailService.verifyCertificationCode(emailAuthReqDTO.getEmail(), emailAuthReqDTO.getAuthCode());
 
-        if (isAuthenticationSuccessful) {
-            // 인증이 성공한 경우, 아이디 및 생성일자 반환
-            Member foundMember = authQueryService.findMemberByEmail(emailAuthReqDTO.getEmail());
-            AuthResponseDTO.findUserIdDTO responseDTO = new AuthResponseDTO.findUserIdDTO(foundMember.getUsername(), foundMember.getCreatedAt());
-            return ApiResponse.onSuccess(responseDTO);
-        } else {
-            // 인증이 실패한 경우
-            return ApiResponse.onFailure(ErrorStatus.EMAIL_CODE_ERROR.getCode(), ErrorStatus.EMAIL_CODE_ERROR.getMessage());
-        }
+            if (isAuthenticationSuccessful) {
+                // 인증이 성공한 경우, 아이디 및 생성일자 반환
+                Member foundMember = authQueryService.findMemberByEmail(emailAuthReqDTO.getEmail());
+                AuthResponseDTO.findUserIdDTO responseDTO = new AuthResponseDTO.findUserIdDTO(foundMember.getUsername(), foundMember.getCreatedAt());
+                return ApiResponse.onSuccess(responseDTO);
+            } else {
+                // 인증이 실패한 경우
+                return ApiResponse.onFailure(ErrorStatus.EMAIL_CODE_ERROR.getCode(), ErrorStatus.EMAIL_CODE_ERROR.getMessage());
+            }
+
     }
-
-    //회원탈퇴
-    @DeleteMapping(value="/delete")
-    public ApiResponse<String>  withdrawUser(@RequestHeader("Authorization") String accessToken){
-        authCommandService.withdrawUser(accessToken);
-        return ApiResponse.onSuccess("회원탈퇴 처리 되었습니다.");
-    }
-
 
     @PostMapping(value = "/find-password")
     public ApiResponse<String> findPassword(@RequestBody AuthRequestDTO.FindPwRequest findPwRequest) {
@@ -146,6 +133,11 @@ public class AuthController {
             e.printStackTrace();
             return ApiResponse.onFailure(ErrorStatus.INTERNAL_SERVER_ERROR.getCode(), ErrorStatus.INTERNAL_SERVER_ERROR.getMessage());
         }
+    }
 
+    @PostMapping("/reissue")
+    public ApiResponse<AuthResponseDTO.ReissueRespDto> reissue(@RequestHeader("Authorization") String refreshToken) {
+        AuthResponseDTO.ReissueRespDto reissueRespDto = authQueryService.reissue(refreshToken);
+        return ApiResponse.onSuccess(reissueRespDto);
     }
 }

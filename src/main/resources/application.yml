@@ -4,9 +4,10 @@ spring:
       host: 127.0.0.1
       port: 6379
   datasource:
-    url: jdbc:mysql://localhost:3306/school
+    url: jdbc:mysql://localhost:3306/our-school
     username: root
     password: ksh0558@
+
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:

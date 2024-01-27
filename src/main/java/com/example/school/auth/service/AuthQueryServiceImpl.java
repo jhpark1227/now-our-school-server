@@ -58,7 +58,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         }
 
         String regex = "^[a-zA-Z]+[a-zA-Z0-9]$";
-        if(!userId.matches(regex)){
+        if (!userId.matches(regex)) {
             return false;
         }
 
@@ -104,7 +104,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
     public Boolean checkEmailFormat(String email) {
         System.out.print(email);
 
-        if(!email.matches(".+@.*ac\\.kr$")){
+        if (!email.matches(".+@.*ac\\.kr$")) {
             return false;
         } else {
             return true;
@@ -146,8 +146,6 @@ public class AuthQueryServiceImpl implements AuthQueryService {
                 .build();
     }
 
-
-
     @Override
     public Boolean changePassword(AuthRequestDTO.ChangePasswordReqDTO request) {
         String email = jwtUtils.getEmailInToken(request.getToken());
@@ -184,5 +182,26 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         return true;
     }
 
+    @Override
+    public AuthResponseDTO.ReissueRespDto reissue(String refreshToken) {
+        String resolvedToken = jwtUtils.resolveToken(refreshToken);
+        String email = jwtUtils.getEmailInToken(resolvedToken);
+        String savedRefreshToken = redisUtils.getData("RT:" + email);
+//        log.info("savedRefreshToken : "+savedRefreshToken);
+//        log.info("RefreshToken : "+resolvedToken);
+        if (refreshToken.isEmpty() || !resolvedToken.equals(savedRefreshToken)) {
+            throw new GeneralException(ErrorStatus.INVALID_REFRESH_TOKEN);
+        } else {
+            String newAccessToken = jwtUtils.createToken(email, JwtUtils.TOKEN_VALID_TIME);
+            String newRefreshToken = jwtUtils.createToken(email, JwtUtils.REFRESH_TOKEN_VALID_TIME);
+            redisUtils.setDataExpire("RT:" + email, newRefreshToken, JwtUtils.REFRESH_TOKEN_VALID_TIME_IN_REDIS);
+            String getToken = redisUtils.getData("RT:" + email);
 
+            return AuthResponseDTO.ReissueRespDto.builder()
+                    .newAccessToken(newAccessToken)
+                    .newRefreshToken(newRefreshToken)
+                    .accessTokenExpirationTime(JwtUtils.TOKEN_VALID_TIME)
+                    .build();
+        }
+    }
 }
