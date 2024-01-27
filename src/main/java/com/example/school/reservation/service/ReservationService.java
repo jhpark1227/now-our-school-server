@@ -11,10 +11,12 @@ import com.example.school.reservation.repository.ReservationRepository;
 import com.example.school.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,26 +52,12 @@ public class ReservationService {
         reservation.setFacility(facility);
         return reservationRepository.save(reservation);
     }
-    // 두 예약의 시간 범위가 겹치는지 확인하는 메서드
-    private boolean isOverlap(Reservation reservation, Integer newStartTime, Integer newEndTime) {
-        Integer startTime = reservation.getStart_time();
-        Integer endTime = reservation.getEnd_time();
-
-        //겹치지 않는 경우
-        if((newStartTime <= startTime && newEndTime <=startTime) || (newStartTime >= endTime && newEndTime >= endTime)){
-            return true;
-        }
-        else{
-            return false;
-        }
+    //반납하기
+    @Transactional
+    public Reservation returnReservation(Reservation reservation){
+        reservation.setBack(true);
+        return reservationRepository.save(reservation);
     }
-
-    //예약 불가능한 시간대
-    public List<Reservation> possible_time(Long facilityId, String year, String month, String day) {
-        return reservationRepository.findAllByFacilityIdAndYearAndMonthAndDay(facilityId, year, month, day);
-
-    }
-
     //예약 연장
     @Transactional
     public Reservation extendTime(Long reservationId, Integer extendTime) {
@@ -105,6 +93,27 @@ public class ReservationService {
         }
     }
 
+    // 두 예약의 시간 범위가 겹치는지 확인하는 메서드
+    private boolean isOverlap(Reservation reservation, Integer newStartTime, Integer newEndTime) {
+        Integer startTime = reservation.getStart_time();
+        Integer endTime = reservation.getEnd_time();
+
+        //겹치지 않는 경우
+        if((newStartTime <= startTime && newEndTime <=startTime) || (newStartTime >= endTime && newEndTime >= endTime)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    //예약 불가능한 시간대
+    public List<Reservation> possible_time(Long facilityId, String year, String month, String day) {
+        return reservationRepository.findAllByFacilityIdAndYearAndMonthAndDay(facilityId, year, month, day);
+
+    }
+
+
     //예약내역(페이지 있는 버전)
     public Page<Reservation> getReservation(Long memberId, Integer page) {
         return reservationRepository.findAllByMemberId(memberId, PageRequest.of(page - 1, 10));
@@ -131,10 +140,25 @@ public class ReservationService {
         return reservations;
     }
 
-    //반납하기
-    @Transactional
-    public Reservation returnReservation(Reservation reservation){
-        reservation.setBack(true);
-        return reservationRepository.save(reservation);
+    // 오늘 기준 이전 예약 추출
+    public Page<Reservation> useReservation(List<Reservation> reservations, Integer page) {
+        LocalDate today = LocalDate.now();
+
+        List<Reservation> previousReservations = reservations.stream()
+                .filter(reservation ->
+                        Integer.parseInt(reservation.getYear()) < today.getYear()
+                                || (Integer.parseInt(reservation.getYear()) == today.getYear() && Integer.parseInt(reservation.getMonth()) < today.getMonthValue())
+                                || (Integer.parseInt(reservation.getYear()) == today.getYear() && Integer.parseInt(reservation.getMonth()) == today.getMonthValue() && Integer.parseInt(reservation.getDay()) < today.getDayOfMonth())
+                                || (Integer.parseInt(reservation.getYear()) == today.getYear() && Integer.parseInt(reservation.getMonth()) == today.getMonthValue() && Integer.parseInt(reservation.getDay()) == today.getDayOfMonth() && reservation.getStart_time() < today.atStartOfDay().getHour()))
+                .collect(Collectors.toList());
+
+        int pageSize = 10;  // 페이지당 항목 수
+        int start = (page - 1) * pageSize;
+        int end = Math.min(page * pageSize, previousReservations.size());
+        List<Reservation> pageReservations = previousReservations.subList(start, end);
+
+        return new PageImpl<>(pageReservations, PageRequest.of(page - 1, pageSize), previousReservations.size());
+
     }
+
 }

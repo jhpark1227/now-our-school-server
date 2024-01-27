@@ -60,6 +60,19 @@ public class ReservationResponseDTO {
     public static class bookedUpListDTO{
         List<bookedUpDTO>  bookedUpList;
         Integer listSize;
-
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class returnDTO{
+        Long id;
+        String year;
+        String month;
+        String day;
+        Integer duration;
+        Integer start_time;
+        Integer end_time;
+        Boolean back;
     }
 }

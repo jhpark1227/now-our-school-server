@@ -4,9 +4,9 @@ import com.example.school.domain.common.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -28,6 +28,9 @@ public class Reservation extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="facility_id")
     private Facility facility;
+
+    @OneToMany(mappedBy = "reservation")
+    List<Image> images = new ArrayList<>();
     private String year;
     private String month;
     private String day;
@@ -36,7 +39,6 @@ public class Reservation extends BaseEntity {
     private Integer end_time;
     private Integer duration;
     private Boolean back;
-
 
     public void setMember(Member member){
         this.member = member;
