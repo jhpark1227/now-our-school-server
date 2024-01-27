@@ -1,5 +1,6 @@
 package com.example.school.announcement.service;
 
+import com.example.school.announcement.dto.AnnouncementRes;
 import com.example.school.announcement.repository.AnnouncementRepository;
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
@@ -31,5 +32,12 @@ public class AnnouncementService {
         );
 
         return entities;
+    }
+
+    public AnnouncementRes.Detail getDetail(Long id) {
+        Announcement entity = announcementRepository.findById(id)
+                .orElseThrow(()->new GeneralException(ErrorStatus.ANNOUNCE_NOT_FOUND));
+
+        return new AnnouncementRes.Detail(entity);
     }
 }

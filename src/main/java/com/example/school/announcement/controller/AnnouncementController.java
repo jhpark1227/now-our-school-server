@@ -5,10 +5,7 @@ import com.example.school.announcement.service.AnnouncementService;
 import com.example.school.apiPayload.ApiResponse;
 import com.example.school.domain.Announcement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,5 +24,12 @@ public class AnnouncementController {
                         .collect(Collectors.toList());
 
         return ApiResponse.onSuccess(new AnnouncementRes.Samples(list,list.size()));
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<AnnouncementRes.Detail> getDetail(@PathVariable("id") Long id){
+        AnnouncementRes.Detail res = announcementService.getDetail(id);
+
+        return ApiResponse.onSuccess(res);
     }
 }
