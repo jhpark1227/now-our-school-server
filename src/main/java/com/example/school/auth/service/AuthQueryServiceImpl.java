@@ -8,8 +8,10 @@ import com.example.school.auth.config.util.RedisUtils;
 import com.example.school.auth.converter.AuthConverter;
 import com.example.school.auth.dto.AuthRequestDTO;
 import com.example.school.auth.dto.AuthResponseDTO;
+import com.example.school.auth.repository.AuthRepository;
 import com.example.school.awsS3.AwsS3Service;
 import com.example.school.domain.Member;
+import com.example.school.domain.School;
 import com.example.school.user.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,8 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +34,7 @@ import java.util.Optional;
 public class AuthQueryServiceImpl implements AuthQueryService {
 
     private final UserRepository userRepository;
+    private final AuthRepository authRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
     private final JwtUtils jwtUtils;
@@ -216,5 +222,24 @@ public class AuthQueryServiceImpl implements AuthQueryService {
                     .accessTokenExpirationTime(JwtUtils.TOKEN_VALID_TIME)
                     .build();
         }
+    }
+
+    public List<AuthResponseDTO.SchoolResDTO> searchSchool(String schoolName) {
+        // 대학 검색 쿼리 수행
+        List<School> schools = authRepository.findSchoolByName(schoolName);
+
+        // 검색된 대학이 없을 경우
+        if (schools.isEmpty()) {
+            // 또는 다른 처리 로직을 수행하거나 예외를 던질 수 있습니다.
+            return Collections.emptyList();
+        }
+
+        // 검색된 대학들을 DTO로 매핑
+        List<AuthResponseDTO.SchoolResDTO> schoolResDTOs = schools.stream()
+                .map(school -> new AuthResponseDTO.SchoolResDTO(school.getId(), school.getName()))
+                .collect(Collectors.toList());
+
+        // 최종 결과 반환
+        return schoolResDTOs;
     }
 }
