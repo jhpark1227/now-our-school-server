@@ -1,5 +1,6 @@
 package com.example.school.user.dto;
 
+import com.example.school.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -67,5 +68,19 @@ public class UserResponseDTO {
         String nickname;
         String profilePicture;
         LocalDateTime updatedAt;
+    }
+
+    @Getter
+    public static class Info {
+        String name;
+        String imageURL;
+        Integer grade;
+
+
+        public Info(Member member){
+            name = member.getName();
+            imageURL = member.getImageURL();
+            grade = member.getGrade();
+        }
     }
 }
