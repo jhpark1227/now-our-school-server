@@ -36,7 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-resources/application.properties
-resources/application-awsS3.yml
-resources/application-credentials.yml
-resources/application.yml
+*.yml
+*.properties
