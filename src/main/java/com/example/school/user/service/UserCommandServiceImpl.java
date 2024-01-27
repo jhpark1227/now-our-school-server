@@ -1,6 +1,9 @@
 package com.example.school.user.service;
 
+import com.example.school.apiPayload.GeneralException;
+import com.example.school.apiPayload.status.ErrorStatus;
 import com.example.school.domain.Inquiry;
+import com.example.school.domain.Member;
 import com.example.school.domain.Review;
 import com.example.school.facility.repository.FacilityRepository;
 import com.example.school.user.converter.UserConverter;
@@ -15,12 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserCommandServiceImpl implements UserCommandService{
+public class UserCommandServiceImpl implements UserCommandService {
 
     private final UserRepository userRepository;
     private final FacilityRepository facilityRepository;
     private final ReviewRepository reviewRepository;
-    private  final InquiryRepository inquiryRepository;
+    private final InquiryRepository inquiryRepository;
 
     @Override
     public Review createReview(Long memberId, Long facilityId, UserRequestDTO.ReviewDTO request) {
@@ -32,6 +35,7 @@ public class UserCommandServiceImpl implements UserCommandService{
 
         return reviewRepository.save(review);
     }
+
     @Override
     public Review updateReview(Long memberId, Long facilityId, Long reviewId, UserRequestDTO.ReviewDTO request) {
 
@@ -72,4 +76,24 @@ public class UserCommandServiceImpl implements UserCommandService{
 
         return inquiryRepository.save(inquiry);
     }
-  }
+
+    @Override
+    public Member updateProfile(Long memberId, UserRequestDTO.UpdateProfileDTO request) {
+        Member member = userRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
+        // 프로필 수정 로직
+        if (request.getNickname() != null) {
+            member.setNickname(request.getNickname());
+        }
+        if (request.getProfilePicture() != null) {
+            member.setProfileImg(request.getProfilePicture());
+        }
+
+        // 이미 존재하는 엔터티를 수정할 때는 flush 또는 merge를 사용
+        userRepository.flush();
+
+        return member;
+    }
+}
+

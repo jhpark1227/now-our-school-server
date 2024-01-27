@@ -58,4 +58,14 @@ public class UserResponseDTO {
         Long inquiryId;
         LocalDateTime createdAt;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateProfileResultDTO {
+        String nickname;
+        String profilePicture;
+        LocalDateTime updatedAt;
+    }
 }

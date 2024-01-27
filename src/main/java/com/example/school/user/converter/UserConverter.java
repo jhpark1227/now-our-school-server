@@ -1,6 +1,7 @@
 package com.example.school.user.converter;
 
 import com.example.school.domain.Inquiry;
+import com.example.school.domain.Member;
 import com.example.school.domain.Review;
 import com.example.school.user.dto.UserRequestDTO;
 import com.example.school.user.dto.UserResponseDTO;
@@ -65,6 +66,13 @@ public class UserConverter {
         return UserResponseDTO.CreateInquiryResultDTO.builder()
                 .inquiryId(inquiry.getId())
                 .createdAt(LocalDateTime.now())
+                .build();
+    }
+    public static UserResponseDTO.UpdateProfileResultDTO toUpdateProfileResultDTO(Member member) {
+        return UserResponseDTO.UpdateProfileResultDTO.builder()
+                .nickname(member.getNickname())
+                .profilePicture(member.getProfileImg())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 

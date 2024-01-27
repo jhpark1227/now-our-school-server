@@ -1,5 +1,6 @@
 package com.example.school.auth.service;
 
+import com.example.school.apiPayload.ApiResponse;
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
 import com.example.school.auth.config.util.JwtUtils;
@@ -13,8 +14,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -137,40 +136,25 @@ public class AuthQueryServiceImpl implements AuthQueryService {
             redisUtils.setDataExpire("RT:" + member.getEmail(), newRefreshToken, JwtUtils.REFRESH_TOKEN_VALID_TIME_IN_REDIS);
             refreshToken = newRefreshToken;
         }
+        String userid = member.getUserId();
 
         return AuthResponseDTO.LoginResDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .userid(userid)
                 .accessTokenExpirationTime(JwtUtils.TOKEN_VALID_TIME)
                 .build();
-    }
-
-
-    //로그아웃
-    @Override
-    public void logout(String accessToken) {
-        String resolvedToken = jwtUtils.resolveToken(accessToken);
-
-        String email = jwtUtils.getEmailInToken(resolvedToken);
-        String data = redisUtils.getData("RT:" + email);
-        if (data != null) {
-            redisUtils.deleteData("RT:" + email);
-        } else {
-            throw new GeneralException(ErrorStatus.REFRESHTOKEN_NOT_FOUND);
-        }
-
-        redisUtils.setDataExpire(resolvedToken, "logout", jwtUtils.getExpiration(resolvedToken));
     }
 
     @Override
     public Boolean changePassword(AuthRequestDTO.ChangePasswordReqDTO request) {
         String email = jwtUtils.getEmailInToken(request.getToken());
-        Member member = userRepository.findByEmail(email).orElseThrow(() ->
-                new GeneralException(ErrorStatus.MEMBER_NOT_FOUND)
-        );
+        Member member = userRepository.findByEmail(email).orElseThrow(() -> {
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_FOUND);
+        });
         //기존 비밀번호와 일치하는지 확인 후 맞을 시 변경
         if (passwordEncoder.matches(request.getCurrentPassword(), member.getPassword())) {
-            member.setPassword(passwordEncoder.encode(request.getChangePassword()));
+            member.changePassword(passwordEncoder.encode(request.getChangePassword()));
             userRepository.save(member);
             return true;
         } else {

@@ -2,6 +2,7 @@ package com.example.school.user.controller;
 
 import com.example.school.apiPayload.ApiResponse;
 import com.example.school.domain.Inquiry;
+import com.example.school.domain.Member;
 import com.example.school.domain.Reservation;
 import com.example.school.domain.Review;
 import com.example.school.reservation.converter.ReservationConverter;
@@ -104,5 +105,16 @@ public class UserController {
                                                                            @ExistMember @RequestParam(name = "memberId") Long memberId){
         Inquiry inquiry = userCommandService.createInquiry(memberId, request);
         return ApiResponse.onSuccess(UserConverter.toCreateInquiryResultDTO(inquiry));
+    }
+
+    // 프로필 수정
+    @PutMapping("/profile/update")
+    @Operation(summary = "프로필 수정 API", description = "프로필 정보를 수정하는 API")
+    public ApiResponse<UserResponseDTO.UpdateProfileResultDTO> updateProfile(
+            @ExistMember @RequestParam(name = "memberId") Long memberId,
+            @RequestBody @Valid UserRequestDTO.UpdateProfileDTO request) {
+
+        Member updatedMember = userCommandService.updateProfile(memberId, request);
+        return ApiResponse.onSuccess(UserConverter.toUpdateProfileResultDTO(updatedMember));
     }
 }

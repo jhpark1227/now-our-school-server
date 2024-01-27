@@ -5,6 +5,7 @@ import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
 import com.example.school.auth.dto.AuthRequestDTO;
 import com.example.school.auth.dto.AuthResponseDTO;
+import com.example.school.auth.service.AuthCommandService;
 import com.example.school.auth.service.AuthQueryService;
 import com.example.school.auth.service.MailService;
 import com.example.school.domain.Member;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
+    private final AuthCommandService authCommandService;
 
     private final AuthQueryService authQueryService;
     private final MailService mailService;
@@ -49,7 +51,7 @@ public class AuthController {
     //로그아웃
     @PostMapping("/logout")
     public ApiResponse<String> logout(@RequestHeader("Authorization") String accessToken) {
-        authQueryService.logout(accessToken);
+        authCommandService.logout(accessToken);
         return ApiResponse.onSuccess("로그아웃 처리 되었습니다.");
     }
 

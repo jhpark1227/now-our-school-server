@@ -22,7 +22,7 @@ public class AuthConverter {
                 .name(request.getName())
                 .userId(request.getUserId())
                 .email(request.getEmail())
-                .identify_num(request.getIdentify_num())
+                .identifyNum(request.getIdentify_num())
                 .password(encryptedPassword)
                 .phone(request.getPhone())
                 .nickname(request.getNickname())
