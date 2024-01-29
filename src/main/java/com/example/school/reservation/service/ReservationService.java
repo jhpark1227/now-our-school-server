@@ -1,5 +1,7 @@
 package com.example.school.reservation.service;
 
+import com.example.school.apiPayload.GeneralException;
+import com.example.school.apiPayload.status.ErrorStatus;
 import com.example.school.reservation.converter.ReservationConverter;
 import com.example.school.domain.Facility;
 import com.example.school.domain.Member;
@@ -7,7 +9,9 @@ import com.example.school.domain.Reservation;
 import com.example.school.facility.repository.FacilityRepository;
 import com.example.school.facility.service.FacilityService;
 import com.example.school.reservation.dto.ReservationRequestDTO;
+import com.example.school.reservation.dto.ReservationResponseDTO;
 import com.example.school.reservation.repository.ReservationRepository;
+import com.example.school.user.repository.UserRepository;
 import com.example.school.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,6 +34,7 @@ public class ReservationService {
     private final FacilityRepository facilityRepository;
     private final UserService userService;
     private final FacilityService facilityService;
+    private final UserRepository userRepository;
 
     //예약기능
     @Transactional
@@ -161,4 +167,24 @@ public class ReservationService {
 
     }
 
+    public ReservationResponseDTO.InUse getInUse(Long id) {
+        Member member = userRepository.findById(id)
+                .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
+        LocalDateTime now = LocalDateTime.now();
+        String year = Integer.toString(now.getYear());
+        String month = Integer.toString(now.getMonthValue());
+        String day = Integer.toString(now.getDayOfMonth());
+        int hour = now.getHour();
+        int minute = now.getMinute();
+
+        Reservation entity = reservationRepository.findInUse(member,year,month,day,hour)
+                .orElseThrow(()->new GeneralException(ErrorStatus.NO_CONTENT));
+
+        int leftHour = entity.getEnd_time()-1-hour;
+        int leftMinute = 60 - minute;
+        String remainingTime = leftHour+":"+leftMinute;
+
+        return new ReservationResponseDTO.InUse(entity.getId(), entity.getFacility().getName(), entity.getEnd_time(),remainingTime);
+    }
 }

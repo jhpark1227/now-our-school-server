@@ -4,6 +4,7 @@ import com.example.school.apiPayload.ApiResponse;
 import com.example.school.awsS3.AwsS3Service;
 import com.example.school.domain.Facility;
 import com.example.school.domain.Image;
+import com.example.school.domain.Member;
 import com.example.school.facility.converter.FacilityConverter;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.reservation.converter.ImageConverter;
@@ -14,8 +15,6 @@ import com.example.school.reservation.dto.ReservationRequestDTO;
 import com.example.school.reservation.dto.ReservationResponseDTO;
 import com.example.school.reservation.service.ImageService;
 import com.example.school.reservation.service.ReservationService;
-import com.example.school.validation.annotation.ExistFacility;
-import com.example.school.validation.annotation.ExistMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -128,5 +127,13 @@ public class ReservationController {
 
         ImageResponseDTO.ImageDTO imageDTO = ImageConverter.imageDTO(images);
         return ApiResponse.onSuccess(imageDTO);
+    }
+
+    @GetMapping("/in-use")
+    public ApiResponse<ReservationResponseDTO.InUse> getInUse(Authentication auth){
+        Member member = (Member)auth.getPrincipal();
+        ReservationResponseDTO.InUse res = reservationService.getInUse(member.getId());
+
+        return ApiResponse.onSuccess(res);
     }
 }
