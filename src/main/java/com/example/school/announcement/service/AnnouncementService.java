@@ -7,11 +7,14 @@ import com.example.school.apiPayload.status.ErrorStatus;
 import com.example.school.domain.Announcement;
 import com.example.school.domain.Member;
 import com.example.school.domain.School;
+import com.example.school.domain.enums.AnnouncementType;
 import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -39,5 +42,19 @@ public class AnnouncementService {
                 .orElseThrow(()->new GeneralException(ErrorStatus.ANNOUNCE_NOT_FOUND));
 
         return new AnnouncementRes.Detail(entity);
+    }
+
+    public AnnouncementRes.ListDto getList(Long id, String type, Integer page) {
+        Member member = userRepository.findById(id)
+                .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
+        AnnouncementType announcementType = null;
+        if(StringUtils.hasText(type)){
+            announcementType = AnnouncementType.valueOf(type.toUpperCase());
+        }
+
+        Page<Announcement> entities = announcementRepository.findByType(member.getSchool(), announcementType, PageRequest.of(page-1,15));
+
+        return new AnnouncementRes.ListDto(entities);
     }
 }
