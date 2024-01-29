@@ -1,7 +1,5 @@
 package com.example.school.reservation.dto;
 
-import com.example.school.domain.Facility;
-import com.example.school.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -74,5 +72,13 @@ public class ReservationResponseDTO {
         Integer start_time;
         Integer end_time;
         Boolean back;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class InUse {
+        Long reservationId;
+        String facilityName;
+        Integer endTime;
+        String remainingTime;
     }
 }
