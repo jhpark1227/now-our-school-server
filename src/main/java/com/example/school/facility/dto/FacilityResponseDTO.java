@@ -212,5 +212,18 @@ public class FacilityResponseDTO {
         String time;
         String buildingName;
     }
+
+    @Getter @AllArgsConstructor
+    public static class LibraryStatus{
+        List<LibraryDetail> list;
+    }
+
+    @Getter @Builder
+    public static class LibraryDetail{
+        Integer current;
+        String name;
+        String status;
+        Integer total;
+    }
 }
 

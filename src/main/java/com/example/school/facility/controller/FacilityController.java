@@ -3,15 +3,18 @@ package com.example.school.facility.controller;
 import com.example.school.apiPayload.ApiResponse;
 import com.example.school.domain.Building;
 import com.example.school.domain.Facility;
+import com.example.school.domain.Member;
 import com.example.school.domain.Theme;
 import com.example.school.domain.enums.FacilityTag;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.service.FacilityQueryService;
 import com.example.school.facility.service.FacilityService;
+import com.example.school.facility.service.LibraryService;
 import com.example.school.validation.annotation.CheckKeyword;
 import com.example.school.validation.annotation.CheckPage;
 import com.example.school.validation.annotation.ExistKeyword;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +26,7 @@ import java.util.stream.Collectors;
 public class FacilityController {
     private final FacilityService facilityService;
     private final FacilityQueryService facilityQueryService;
+    private final LibraryService libraryService;
 
     @GetMapping("/category/theme")
     public ApiResponse<FacilityResponseDTO.Categories> getListByTheme(@RequestParam("email") String email){
@@ -110,6 +114,15 @@ public class FacilityController {
             @RequestParam("query") @CheckKeyword String keyword,
             @RequestParam("userId")String userId){
         FacilityResponseDTO.SearchResults res = facilityQueryService.searchFacility(keyword,userId);
+
+        return ApiResponse.onSuccess(res);
+    }
+
+    @GetMapping("/library")
+    public ApiResponse<Object> getLibraryStatus(Authentication auth){
+        Member member = (Member)auth.getPrincipal();
+
+        FacilityResponseDTO.LibraryStatus res = libraryService.getLibraryStatus(member.getId());
 
         return ApiResponse.onSuccess(res);
     }
