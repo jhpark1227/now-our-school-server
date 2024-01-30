@@ -31,6 +31,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
     private final FacilityImageRepository facilityImageRepository;
     private final UserRepository userRepository;
     private final BuildingRepository buildingRepository;
+    private final FacilityService facilityService;
 
     @Override
     public Optional<Facility> findFacility(Long id) {
@@ -103,11 +104,12 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
     }
 
     @Override
-    public FacilityResponseDTO.SearchResults searchFacility(String keyword, String userId) {
-        Member member = userRepository.findByUserId(userId)
+    public FacilityResponseDTO.SearchResults searchFacility(Long memberId, String keyword) {
+        Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
         List<Facility> entities = facilityRepository.findByNameLikeAndBuildingSchool(keyword.trim(),member.getSchool());
+        facilityService.saveSearchLog(memberId, member.getSchool().getId(), keyword);
 
         List<FacilityResponseDTO.SearchResult> list = entities.stream().map(entity->{
             return new FacilityResponseDTO.SearchResult(entity.getId(),entity.getName(),entity.getImageURL(),entity.getTime(),entity.getBuilding().getName());
