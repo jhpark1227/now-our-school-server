@@ -32,6 +32,9 @@ public class AuthController {
     @PostMapping(value = "/register")
     public ApiResponse<Member> register(@RequestPart(value = "image", required = false) MultipartFile profileImage,
                                         @RequestPart AuthRequestDTO.RegisterReqDTO registerReqDTO) {
+        if (authQueryService.validateDuplicateUserId(registerReqDTO.getUserId())) {
+            return ApiResponse.onFailure(ErrorStatus.USERID_DUPLICATE.getCode(), ErrorStatus.USERID_DUPLICATE.getMessage());
+        }
 
         if (authQueryService.checkUserIdFormat(registerReqDTO.getUserId())) {
             return ApiResponse.onFailure(ErrorStatus.USER_FORMAT_ERROR.getCode(), ErrorStatus.USER_FORMAT_ERROR.getMessage());
@@ -39,6 +42,10 @@ public class AuthController {
 
         if (!authQueryService.checkPassword((registerReqDTO.getPassword()))) {
             return ApiResponse.onFailure(ErrorStatus.PASSWORD_FORMAT_ERROR.getCode(), ErrorStatus.PASSWORD_FORMAT_ERROR.getMessage());
+        }
+
+        if (authQueryService.validateDuplicateEmail(registerReqDTO.getEmail())) {
+            return ApiResponse.onFailure(ErrorStatus.EMAIL_DUPLICATE.getCode(), ErrorStatus.EMAIL_DUPLICATE.getMessage());
         }
 
         if (!authQueryService.checkEmailFormat(registerReqDTO.getEmail())) {
@@ -71,6 +78,10 @@ public class AuthController {
         if (!authQueryService.checkEmailFormat(emailAuthReqDTO.getEmail())) {
             return ApiResponse.onFailure(ErrorStatus.EMAIL_FORMAT_ERROR.getCode(), ErrorStatus.EMAIL_FORMAT_ERROR.getMessage());
         }
+
+//        if (authQueryService.validateDuplicateEmail(emailAuthReqDTO.getEmail())) {
+//            return ApiResponse.onFailure(ErrorStatus.EMAIL_DUPLICATE.getCode(), ErrorStatus.EMAIL_DUPLICATE.getMessage());
+//        }
         String verificationCode = mailService.sendCertificationMail(emailAuthReqDTO.getEmail());
 
         return ApiResponse.onSuccess(verificationCode);

@@ -95,6 +95,25 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         return user != null; // 이미 존재하는 경우 true, 그렇지 않은 경우 false 반환
     }
 
+    @Override
+    public Boolean validateDuplicateEmail(String email) {
+        Optional<Member> member = userRepository.findByEmail(email);
+        if (!member.isEmpty()) {
+            return true; // 존재한다면 true 반환
+        } else {
+            return false; // 존재하지 않으면 false 반환
+        }
+    }
+
+    @Override
+    public Boolean validateDuplicateUserId(String userId) {
+        Optional<Member> member = userRepository.findByUserId(userId);
+        if (!member.isEmpty()) {
+            return true; // 존재한다면 true 반환
+        } else {
+            return false; // 존재하지 않으면 false 반환
+        }
+    }
 
     @Override
     public Boolean checkPassword(String password) {
@@ -198,8 +217,28 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         member.changePassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(member);
 
+        if (passwordEncoder.matches(request.getPassword(), member.getPassword())) {
+            System.out.println("비밀번호가 성공적으로 변경되었습니다.");
+        } else {
+            System.out.println("비밀번호 변경 실패");
+        }
+
         return true;
     }
+
+//    @Override
+//    public Boolean changePwd(AuthRequestDTO.FindPwRequest request) {
+//        // 토큰에서 이메일을 추출하지 않고 직접 request에서 얻어옴
+//        String email = request.getPassword(); // 예시로 request에 getEmail() 메서드가 있다고 가정
+//
+//        Member member = userRepository.findByEmail(email).orElseThrow(() -> {
+//            throw new GeneralException(ErrorStatus.MEMBER_NOT_FOUND);
+//        });
+//
+//        member.changePassword(passwordEncoder.encode(request.getPassword()));
+//        userRepository.save(member);
+//        return true;
+//    }
 
     @Override
     public AuthResponseDTO.ReissueRespDto reissue(String refreshToken) {

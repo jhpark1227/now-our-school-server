@@ -34,6 +34,9 @@ public enum ErrorStatus {
     FIND_PASSWORD_ERROR(HttpStatus.BAD_REQUEST,"AUTH_4011", "비밀번호 찾기 실패"),
     PASSWORD_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4012", "비밀번호가 일치하지 않습니다."),
     USER_ID_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4013", "ID를 정확하게 입력해 주세요."),
+    EMAIL_DUPLICATE(HttpStatus.BAD_REQUEST,"AUTH_4014", "중복된 이메일입니다."),
+    USERID_DUPLICATE(HttpStatus.BAD_REQUEST,"AUTH_4015", "중복된 아이디입니다."),
+
 
     FACILITY_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE_4001","시설이 없습니다."),
     BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND, "BUILDING_4001","건물이 존재하지 않습니다."),

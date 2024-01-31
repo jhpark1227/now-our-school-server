@@ -13,6 +13,8 @@ public interface AuthQueryService {
     List<AuthResponseDTO.SchoolResDTO> searchSchool(String schoolName);
     Boolean checkUserIdFormat(String id);
     Member findMemberByEmail(String email);
+    Boolean validateDuplicateEmail(String email);
+    Boolean validateDuplicateUserId(String userId);
     AuthResponseDTO.ReissueRespDto reissue(String refreshToken);
 
     Boolean checkEmailFormat(String email);

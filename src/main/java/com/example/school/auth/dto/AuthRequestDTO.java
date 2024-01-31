@@ -19,7 +19,6 @@ public class AuthRequestDTO {
         String password;
         @NotBlank(message = "주민번호를 입력해 주세요.")
         String identify_num;
-        @NotBlank(message = "핸드폰번호를 입력해 주세요.")
         String phone;
         @NotBlank(message = "아이디를 입력해 주세요.")
         String userId;
