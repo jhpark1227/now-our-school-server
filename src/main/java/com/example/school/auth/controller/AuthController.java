@@ -14,6 +14,7 @@ import com.example.school.validation.annotation.CheckKeyword;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,6 +66,7 @@ public class AuthController {
     }
 
     //로그아웃
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/logout")
     public ApiResponse<String> logout(@RequestHeader("Authorization") String accessToken) {
         authCommandService.logout(accessToken);
@@ -102,6 +104,7 @@ public class AuthController {
     }
 
     // 비밀번호 변경
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/change-password")
     public ApiResponse<String> changePassword(@RequestBody AuthRequestDTO.ChangePasswordReqDTO changePasswordReqDTO) {
 
