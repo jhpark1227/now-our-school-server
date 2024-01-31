@@ -225,5 +225,16 @@ public class FacilityResponseDTO {
         String status;
         Integer total;
     }
+
+    @Getter @AllArgsConstructor
+    public static class SearchLogList {
+        List<String> list;
+        int count;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class DeleteSearchLog {
+        String value;
+    }
 }
 

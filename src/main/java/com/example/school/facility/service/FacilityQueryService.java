@@ -22,4 +22,6 @@ public interface FacilityQueryService {
     FacilityResponseDTO.DetailOnMarker getDetailOnMarker(Long buildingId);
 
     FacilityResponseDTO.SearchResults searchFacility(Long memberId, String keyword);
+
+    FacilityResponseDTO.SearchLogList getSearchLog(Long memberId);
 }

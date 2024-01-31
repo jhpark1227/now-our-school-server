@@ -6,6 +6,7 @@ import com.example.school.domain.Building;
 import com.example.school.domain.Facility;
 import com.example.school.domain.Member;
 import com.example.school.domain.Theme;
+import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.repository.BuildingRepository;
 import com.example.school.facility.repository.ThemeRepository;
 import com.example.school.facility.repository.FacilityRepository;
@@ -67,7 +68,7 @@ public class FacilityService {
         key = searchLogKey(memberId);
         Long size = redisTemplate.opsForZSet().size(key);
         if(size==10){
-            redisTemplate.opsForZSet().removeRange(key,10,10);
+            redisTemplate.opsForZSet().removeRange(key,0,0);
         }
         redisTemplate.opsForZSet().add(key, value, LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
     }
@@ -78,5 +79,16 @@ public class FacilityService {
 
     public String searchLogKeyBySchool(Long schoolId){
         return "School:"+schoolId;
+    }
+
+    public FacilityResponseDTO.DeleteSearchLog deleteSearchLog(Long memberId, String value) {
+        String key = searchLogKey(memberId);
+
+        long count = redisTemplate.opsForZSet().remove(key, value);
+
+        if(count!=1){
+            throw new GeneralException(ErrorStatus.BAD_REQUEST);
+        }
+        return new FacilityResponseDTO.DeleteSearchLog(value);
     }
 }

@@ -129,4 +129,24 @@ public class FacilityController {
 
         return ApiResponse.onSuccess(res);
     }
+
+    @GetMapping("/search-log")
+    public ApiResponse<FacilityResponseDTO.SearchLogList> getSearchLog(Authentication auth){
+        Member member = (Member)auth.getPrincipal();
+
+        FacilityResponseDTO.SearchLogList res = facilityQueryService.getSearchLog(member.getId());
+
+        return ApiResponse.onSuccess(res);
+    }
+
+    @DeleteMapping("/search-log/{value}")
+    public ApiResponse<FacilityResponseDTO.DeleteSearchLog> deleteSearchLog(
+            @PathVariable(name = "value")String value, Authentication auth
+    ){
+        Member member = (Member)auth.getPrincipal();
+
+        FacilityResponseDTO.DeleteSearchLog res = facilityService.deleteSearchLog(member.getId(), value);
+
+        return ApiResponse.onSuccess(res);
+    }
 }

@@ -15,11 +15,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +34,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
     private final UserRepository userRepository;
     private final BuildingRepository buildingRepository;
     private final FacilityService facilityService;
+    private final RedisTemplate redisTemplate;
 
     @Override
     public Optional<Facility> findFacility(Long id) {
@@ -116,5 +119,14 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
         }).collect(Collectors.toList());
 
         return new FacilityResponseDTO.SearchResults(list,list.size());
+    }
+
+    @Override
+    public FacilityResponseDTO.SearchLogList getSearchLog(Long memberId) {
+        String key = facilityService.searchLogKey(memberId);
+        Set<String> set = redisTemplate.opsForZSet().reverseRange(key,0,9);
+        List<String> list = set.stream().collect(Collectors.toList());
+
+        return new FacilityResponseDTO.SearchLogList(list, list.size());
     }
 }
