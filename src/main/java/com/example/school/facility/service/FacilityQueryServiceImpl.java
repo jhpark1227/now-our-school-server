@@ -15,11 +15,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +33,8 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
     private final FacilityImageRepository facilityImageRepository;
     private final UserRepository userRepository;
     private final BuildingRepository buildingRepository;
+    private final FacilityService facilityService;
+    private final RedisTemplate redisTemplate;
 
     @Override
     public Optional<Facility> findFacility(Long id) {
@@ -103,16 +107,26 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
     }
 
     @Override
-    public FacilityResponseDTO.SearchResults searchFacility(String keyword, String userId) {
-        Member member = userRepository.findByUserId(userId)
+    public FacilityResponseDTO.SearchResults searchFacility(Long memberId, String keyword) {
+        Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
         List<Facility> entities = facilityRepository.findByNameLikeAndBuildingSchool(keyword.trim(),member.getSchool());
+        facilityService.saveSearchLog(memberId, member.getSchool().getId(), keyword);
 
         List<FacilityResponseDTO.SearchResult> list = entities.stream().map(entity->{
             return new FacilityResponseDTO.SearchResult(entity.getId(),entity.getName(),entity.getImageURL(),entity.getTime(),entity.getBuilding().getName());
         }).collect(Collectors.toList());
 
         return new FacilityResponseDTO.SearchResults(list,list.size());
+    }
+
+    @Override
+    public FacilityResponseDTO.SearchLogList getSearchLog(Long memberId) {
+        String key = facilityService.searchLogKey(memberId);
+        Set<String> set = redisTemplate.opsForZSet().reverseRange(key,0,9);
+        List<String> list = set.stream().collect(Collectors.toList());
+
+        return new FacilityResponseDTO.SearchLogList(list, list.size());
     }
 }
