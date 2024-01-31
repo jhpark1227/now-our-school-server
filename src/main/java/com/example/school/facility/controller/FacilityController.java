@@ -112,8 +112,11 @@ public class FacilityController {
     @GetMapping("/search")
     public ApiResponse<FacilityResponseDTO.SearchResults> searchFacility(
             @RequestParam("query") @CheckKeyword String keyword,
-            @RequestParam("userId")String userId){
-        FacilityResponseDTO.SearchResults res = facilityQueryService.searchFacility(keyword,userId);
+            Authentication auth
+    ){
+        Member member = (Member)auth.getPrincipal();
+
+        FacilityResponseDTO.SearchResults res = facilityQueryService.searchFacility(member.getId(), keyword);
 
         return ApiResponse.onSuccess(res);
     }
@@ -123,6 +126,26 @@ public class FacilityController {
         Member member = (Member)auth.getPrincipal();
 
         FacilityResponseDTO.LibraryStatus res = libraryService.getLibraryStatus(member.getId());
+
+        return ApiResponse.onSuccess(res);
+    }
+
+    @GetMapping("/search-log")
+    public ApiResponse<FacilityResponseDTO.SearchLogList> getSearchLog(Authentication auth){
+        Member member = (Member)auth.getPrincipal();
+
+        FacilityResponseDTO.SearchLogList res = facilityQueryService.getSearchLog(member.getId());
+
+        return ApiResponse.onSuccess(res);
+    }
+
+    @DeleteMapping("/search-log/{value}")
+    public ApiResponse<FacilityResponseDTO.DeleteSearchLog> deleteSearchLog(
+            @PathVariable(name = "value")String value, Authentication auth
+    ){
+        Member member = (Member)auth.getPrincipal();
+
+        FacilityResponseDTO.DeleteSearchLog res = facilityService.deleteSearchLog(member.getId(), value);
 
         return ApiResponse.onSuccess(res);
     }

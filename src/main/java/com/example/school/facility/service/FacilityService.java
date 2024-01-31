@@ -6,14 +6,18 @@ import com.example.school.domain.Building;
 import com.example.school.domain.Facility;
 import com.example.school.domain.Member;
 import com.example.school.domain.Theme;
+import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.repository.BuildingRepository;
 import com.example.school.facility.repository.ThemeRepository;
 import com.example.school.facility.repository.FacilityRepository;
 import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Service @Transactional
@@ -23,6 +27,7 @@ public class FacilityService {
     private final ThemeRepository themeRepository;
     private final BuildingRepository buildingRepository;
     private final UserRepository userRepository;
+    private final RedisTemplate redisTemplate;
     public Facility findById(Long id){
         return facilityRepository.findById(id).get();
     }
@@ -54,5 +59,36 @@ public class FacilityService {
         Member member = userRepository.findByUserId(userId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
         return facilityRepository.findByBuildingSchoolAndTagIsNotNull(member.getSchool());
+    }
+
+    public void saveSearchLog(Long memberId, Long schoolId, String value) {
+        String key = searchLogKeyBySchool(schoolId);
+        redisTemplate.opsForList().rightPush(key,value);
+
+        key = searchLogKey(memberId);
+        Long size = redisTemplate.opsForZSet().size(key);
+        if(size==10){
+            redisTemplate.opsForZSet().removeRange(key,0,0);
+        }
+        redisTemplate.opsForZSet().add(key, value, LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+    }
+
+    public String searchLogKey(Long memberId){
+        return "SearchLog:"+memberId;
+    }
+
+    public String searchLogKeyBySchool(Long schoolId){
+        return "School:"+schoolId;
+    }
+
+    public FacilityResponseDTO.DeleteSearchLog deleteSearchLog(Long memberId, String value) {
+        String key = searchLogKey(memberId);
+
+        long count = redisTemplate.opsForZSet().remove(key, value);
+
+        if(count!=1){
+            throw new GeneralException(ErrorStatus.BAD_REQUEST);
+        }
+        return new FacilityResponseDTO.DeleteSearchLog(value);
     }
 }
