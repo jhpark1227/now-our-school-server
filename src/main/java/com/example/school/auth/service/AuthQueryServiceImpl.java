@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -200,6 +201,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         }
     }
 
+    @Transactional
     @Override
     public Boolean findPasswd(AuthRequestDTO.FindPwRequest request) {
         Member member = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> {
@@ -215,6 +217,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         if (!mailService.verifyCertificationCode(request.getEmail(), request.getAuthCode())) {
             throw new GeneralException(ErrorStatus.EMAIL_CODE_ERROR);
         }
+//        String encryptedPassword = new BCryptPasswordEncoder().encode(request.getPassword());
         member.changePassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(member);
 
@@ -222,6 +225,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
             System.out.println("비밀번호가 성공적으로 변경되었습니다.");
         } else {
             System.out.println("비밀번호 변경 실패");
+            return false;
         }
 
         return true;
