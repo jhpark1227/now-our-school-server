@@ -149,4 +149,13 @@ public class FacilityController {
 
         return ApiResponse.onSuccess(res);
     }
+
+    @GetMapping("/search-rank")
+    public ApiResponse<FacilityResponseDTO.SearchRankList> getSearchRank(Authentication auth){
+        Member member = (Member)auth.getPrincipal();
+
+        FacilityResponseDTO.SearchRankList res = facilityQueryService.getSearchRank(member.getId());
+
+        return ApiResponse.onSuccess(res);
+    }
 }
