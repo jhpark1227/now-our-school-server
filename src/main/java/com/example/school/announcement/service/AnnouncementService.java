@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class AnnouncementService {
     private final AnnouncementRepository announcementRepository;
     private final UserRepository userRepository;
 
-    public List<Announcement> getSamples(Long memberId) {
+    public AnnouncementRes.Samples getSamples(Long memberId) {
         Member member = userRepository.findById(memberId)
                 .orElseThrow(()-> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
         School school = member.getSchool();
@@ -34,7 +35,11 @@ public class AnnouncementService {
                 PageRequest.of(0,4)
         );
 
-        return entities;
+        List<AnnouncementRes.Sample> list =
+                entities.stream().map(entity->new AnnouncementRes.Sample(entity.getId(), entity.getTitle()))
+                        .collect(Collectors.toList());
+
+        return new AnnouncementRes.Samples(list,list.size());
     }
 
     public AnnouncementRes.Detail getDetail(Long id) {
