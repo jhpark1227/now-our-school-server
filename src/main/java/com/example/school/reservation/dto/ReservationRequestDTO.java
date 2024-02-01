@@ -1,7 +1,11 @@
 package com.example.school.reservation.dto;
 
 import com.example.school.domain.Facility;
+import com.example.school.domain.enums.AlertType;
 import lombok.Getter;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ReservationRequestDTO {
     //예약 내역 확인
@@ -33,6 +37,17 @@ public class ReservationRequestDTO {
         String year;
         String month;
         String day;
+        Set<AlertType> alerts;
+
+        public void setAlerts(Set<String> alerts) {
+            this.alerts = alerts.stream().map(alert -> {
+                try {
+                    return AlertType.valueOf(alert.toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    throw new RuntimeException("Invalid alert type: " + alert);
+                }
+            }).collect(Collectors.toSet());
+        }
     }
     //예약 불가능한 시간대
     @Getter
