@@ -9,6 +9,7 @@ import com.example.school.facility.dto.FacilitySaveResponseDTO;
 import com.example.school.facility.repository.BuildingRepository;
 import com.example.school.facility.repository.FacilityImageRepository;
 import com.example.school.facility.repository.FacilityRepository;
+import com.example.school.facility.repository.SearchRankRepository;
 import com.example.school.user.repository.ReviewRepository;
 import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
     private final FacilityImageRepository facilityImageRepository;
     private final UserRepository userRepository;
     private final BuildingRepository buildingRepository;
+    private final SearchRankRepository searchRankRepository;
     private final FacilityService facilityService;
     private final RedisTemplate redisTemplate;
 
@@ -128,5 +130,15 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
         List<String> list = set.stream().collect(Collectors.toList());
 
         return new FacilityResponseDTO.SearchLogList(list, list.size());
+    }
+
+    @Override
+    public FacilityResponseDTO.SearchRankList getSearchRank(Long memberId) {
+        Member member = userRepository.findById(memberId)
+                .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
+        List<SearchRank> entities = searchRankRepository.findBySchool(member.getSchool());
+
+        return new FacilityResponseDTO.SearchRankList(entities);
     }
 }
