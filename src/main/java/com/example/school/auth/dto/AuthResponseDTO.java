@@ -1,6 +1,5 @@
 package com.example.school.auth.dto;
 
-import com.example.school.domain.School;
 import lombok.*;
 
 import java.time.LocalDateTime;

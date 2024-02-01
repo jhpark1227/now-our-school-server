@@ -1,7 +1,7 @@
 package com.example.school.facility.repository;
 
-import com.example.school.domain.Building;
-import com.example.school.domain.School;
+import com.example.school.entity.Building;
+import com.example.school.entity.School;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

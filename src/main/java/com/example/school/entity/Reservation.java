@@ -1,7 +1,7 @@
-package com.example.school.domain;
+package com.example.school.entity;
 
-import com.example.school.domain.common.BaseEntity;
-import com.example.school.domain.enums.AlertType;
+import com.example.school.entity.common.BaseEntity;
+import com.example.school.entity.enums.AlertType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

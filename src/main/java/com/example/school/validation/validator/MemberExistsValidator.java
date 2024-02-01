@@ -2,7 +2,7 @@ package com.example.school.validation.validator;
 
 
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.domain.Member;
+import com.example.school.entity.Member;
 import com.example.school.user.service.UserQueryService;
 import com.example.school.validation.annotation.ExistMember;
 import lombok.RequiredArgsConstructor;

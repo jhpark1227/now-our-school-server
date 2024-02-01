@@ -1,6 +1,5 @@
 package com.example.school.auth.service;
 
-import com.example.school.apiPayload.ApiResponse;
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
 import com.example.school.auth.config.util.JwtUtils;
@@ -10,20 +9,15 @@ import com.example.school.auth.dto.AuthRequestDTO;
 import com.example.school.auth.dto.AuthResponseDTO;
 import com.example.school.auth.repository.AuthRepository;
 import com.example.school.awsS3.AwsS3Service;
-import com.example.school.domain.Member;
-import com.example.school.domain.School;
+import com.example.school.entity.Member;
+import com.example.school.entity.School;
 import com.example.school.user.repository.UserRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;

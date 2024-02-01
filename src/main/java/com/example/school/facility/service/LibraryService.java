@@ -2,7 +2,7 @@ package com.example.school.facility.service;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.domain.Member;
+import com.example.school.entity.Member;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.dto.RestTemplateRes;
 import com.example.school.user.repository.UserRepository;

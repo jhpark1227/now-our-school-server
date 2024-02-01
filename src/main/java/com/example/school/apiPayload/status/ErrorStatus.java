@@ -11,7 +11,7 @@ public enum ErrorStatus {
     BAD_REQUEST(HttpStatus.BAD_REQUEST,"COMMON400","잘못된 요청입니다."),
     PAGE_LT_ONE(HttpStatus.BAD_REQUEST,"COMMON401","잘못된 페이지입니다."),
     BAD_QUERY_STRING(HttpStatus.BAD_REQUEST,"COMMON402","잘못된 쿼리스트링입니다."),
-    NO_CONTENT(HttpStatus.NO_CONTENT,"COMMON403","결과가 존재하지 않습니다."),
+    NO_CONTENT(HttpStatus.BAD_REQUEST,"COMMON403","결과가 존재하지 않습니다."),
     EXPIRED_JWT(HttpStatus.OK, "3000", "만료된 토큰입니다."),
     INVALID_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "JWT_REFRESH", "RefreshToken이 일치하지 않습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.OK, "SERVER", "서버 에러"),

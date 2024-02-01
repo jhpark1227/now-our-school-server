@@ -2,10 +2,10 @@ package com.example.school.facility.service;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.domain.Building;
-import com.example.school.domain.Facility;
-import com.example.school.domain.Member;
-import com.example.school.domain.Theme;
+import com.example.school.entity.Building;
+import com.example.school.entity.Facility;
+import com.example.school.entity.Member;
+import com.example.school.entity.Theme;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.repository.BuildingRepository;
 import com.example.school.facility.repository.ThemeRepository;
@@ -32,32 +32,35 @@ public class FacilityService {
         return facilityRepository.findById(id).get();
     }
 
-    public List<Theme> getListByTheme(String email) {
-        Member member = userRepository.findByEmail(email)
+    public List<Theme> getListByTheme(Long memberId) {
+        Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
         List<Theme> entities = themeRepository.findBySchoolWithFacility(member.getSchool());
 
         return entities;
     }
 
-    public List<Building> getListByBuilding(String email) {
-        Member member = userRepository.findByEmail(email)
+    public List<Building> getListByBuilding(Long memberId) {
+        Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
         List<Building> entities = buildingRepository.findBySchoolWithFacility(member.getSchool());
 
         return entities;
     }
 
-    public List<Building> getMarkers(String email) {
-        Member member = userRepository.findByEmail(email)
+    public List<Building> getMarkers(Long memberId) {
+        Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
         return buildingRepository.findAllBySchool(member.getSchool());
     }
 
-    public List<Facility> getSuggestion(String userId) {
-        Member member = userRepository.findByUserId(userId)
+    public List<Facility> getSuggestion(Long memberId) {
+        Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
         return facilityRepository.findByBuildingSchoolAndTagIsNotNull(member.getSchool());
     }
 

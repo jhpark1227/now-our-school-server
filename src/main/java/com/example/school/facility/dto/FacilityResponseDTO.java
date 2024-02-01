@@ -1,9 +1,9 @@
 package com.example.school.facility.dto;
 
-import com.example.school.domain.Building;
-import com.example.school.domain.Facility;
-import com.example.school.domain.SearchRank;
-import com.example.school.domain.Theme;
+import com.example.school.entity.Building;
+import com.example.school.entity.Facility;
+import com.example.school.entity.SearchRank;
+import com.example.school.entity.Theme;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
