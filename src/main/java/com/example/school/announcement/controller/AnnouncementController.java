@@ -3,7 +3,6 @@ package com.example.school.announcement.controller;
 import com.example.school.announcement.dto.AnnouncementRes;
 import com.example.school.announcement.service.AnnouncementService;
 import com.example.school.apiPayload.ApiResponse;
-import com.example.school.entity.Announcement;
 import com.example.school.entity.Member;
 import com.example.school.validation.annotation.CheckAnnouncementType;
 import com.example.school.validation.annotation.CheckPage;
@@ -11,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController @RequestMapping("/api/v1/announcement")
 @RequiredArgsConstructor
@@ -23,13 +20,9 @@ public class AnnouncementController {
     public ApiResponse<AnnouncementRes.Samples> getSamples(Authentication auth){
         Member member = (Member)auth.getPrincipal();
 
-        List<Announcement> entities = announcementService.getSamples(member.getId());
+        AnnouncementRes.Samples res = announcementService.getSamples(member.getId());
 
-        List<AnnouncementRes.Sample> list =
-                entities.stream().map(entity->new AnnouncementRes.Sample(entity.getId(), entity.getTitle()))
-                        .collect(Collectors.toList());
-
-        return ApiResponse.onSuccess(new AnnouncementRes.Samples(list,list.size()));
+        return ApiResponse.onSuccess(res);
     }
 
     @GetMapping("/list")
