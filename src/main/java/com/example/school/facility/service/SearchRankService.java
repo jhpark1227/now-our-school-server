@@ -26,7 +26,7 @@ public class SearchRankService {
     private final SchoolRepository schoolRepository;
     private final SearchRankRepository searchRankRepository;
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 * * * *")
     public void storeRank(){
         storeCount();
         List<School> schoolList = schoolRepository.findAll();
