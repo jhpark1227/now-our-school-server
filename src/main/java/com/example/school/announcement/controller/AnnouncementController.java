@@ -3,8 +3,8 @@ package com.example.school.announcement.controller;
 import com.example.school.announcement.dto.AnnouncementRes;
 import com.example.school.announcement.service.AnnouncementService;
 import com.example.school.apiPayload.ApiResponse;
-import com.example.school.domain.Announcement;
-import com.example.school.domain.Member;
+import com.example.school.entity.Announcement;
+import com.example.school.entity.Member;
 import com.example.school.validation.annotation.CheckAnnouncementType;
 import com.example.school.validation.annotation.CheckPage;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +20,10 @@ public class AnnouncementController {
     private final AnnouncementService announcementService;
 
     @GetMapping("/sample")
-    public ApiResponse<AnnouncementRes.Samples> getSamples(@RequestParam("memberId") Long memberId){
-        List<Announcement> entities = announcementService.getSamples(memberId);
+    public ApiResponse<AnnouncementRes.Samples> getSamples(Authentication auth){
+        Member member = (Member)auth.getPrincipal();
+
+        List<Announcement> entities = announcementService.getSamples(member.getId());
 
         List<AnnouncementRes.Sample> list =
                 entities.stream().map(entity->new AnnouncementRes.Sample(entity.getId(), entity.getTitle()))

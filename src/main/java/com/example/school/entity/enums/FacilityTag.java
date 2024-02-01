@@ -1,4 +1,4 @@
-package com.example.school.domain.enums;
+package com.example.school.entity.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

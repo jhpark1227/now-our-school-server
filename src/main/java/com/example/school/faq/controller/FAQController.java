@@ -1,7 +1,7 @@
 package com.example.school.faq.controller;
 
 import com.example.school.apiPayload.ApiResponse;
-import com.example.school.domain.FAQ;
+import com.example.school.entity.FAQ;
 import com.example.school.faq.dto.FAQRes;
 import com.example.school.faq.service.FAQService;
 import com.example.school.validation.annotation.CheckFaqType;

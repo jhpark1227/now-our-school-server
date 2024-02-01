@@ -1,9 +1,8 @@
 package com.example.school.facility.repository;
 
-import com.example.school.domain.Facility;
-import com.example.school.domain.School;
-import com.example.school.domain.enums.FacilityKeyword;
-import org.springframework.data.domain.Page;
+import com.example.school.entity.Facility;
+import com.example.school.entity.School;
+import com.example.school.entity.enums.FacilityKeyword;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

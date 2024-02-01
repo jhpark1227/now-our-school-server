@@ -1,4 +1,4 @@
-package com.example.school.domain.enums;
+package com.example.school.entity.enums;
 
 public enum FaqType {
     RESERVATION, JOIN, ETC

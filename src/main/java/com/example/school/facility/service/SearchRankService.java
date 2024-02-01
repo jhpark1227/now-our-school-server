@@ -1,8 +1,8 @@
 package com.example.school.facility.service;
 
-import com.example.school.domain.School;
-import com.example.school.domain.SearchLog;
-import com.example.school.domain.SearchRank;
+import com.example.school.entity.School;
+import com.example.school.entity.SearchLog;
+import com.example.school.entity.SearchRank;
 import com.example.school.facility.repository.SchoolRepository;
 import com.example.school.facility.repository.SearchLogRepository;
 import com.example.school.facility.repository.SearchRankRepository;

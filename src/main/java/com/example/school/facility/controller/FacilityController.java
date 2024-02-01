@@ -1,11 +1,11 @@
 package com.example.school.facility.controller;
 
 import com.example.school.apiPayload.ApiResponse;
-import com.example.school.domain.Building;
-import com.example.school.domain.Facility;
-import com.example.school.domain.Member;
-import com.example.school.domain.Theme;
-import com.example.school.domain.enums.FacilityTag;
+import com.example.school.entity.Building;
+import com.example.school.entity.Facility;
+import com.example.school.entity.Member;
+import com.example.school.entity.Theme;
+import com.example.school.entity.enums.FacilityTag;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.service.FacilityQueryService;
 import com.example.school.facility.service.FacilityService;
@@ -29,8 +29,10 @@ public class FacilityController {
     private final LibraryService libraryService;
 
     @GetMapping("/category/theme")
-    public ApiResponse<FacilityResponseDTO.Categories> getListByTheme(@RequestParam("email") String email){
-        List<Theme> entities = facilityService.getListByTheme(email);
+    public ApiResponse<FacilityResponseDTO.Categories> getListByTheme(Authentication auth){
+        Member member = (Member)auth.getPrincipal();
+
+        List<Theme> entities = facilityService.getListByTheme(member.getId());
 
         List<FacilityResponseDTO.CategoryWithFacilities> list =
                 entities.stream().map(FacilityResponseDTO.CategoryWithFacilities::new)
@@ -40,8 +42,9 @@ public class FacilityController {
     }
 
     @GetMapping("/category/building")
-    public ApiResponse<FacilityResponseDTO.Categories> getListByBuilding(@RequestParam("email") String email){
-        List<Building> entities = facilityService.getListByBuilding(email);
+    public ApiResponse<FacilityResponseDTO.Categories> getListByBuilding(Authentication auth){
+        Member member = (Member)auth.getPrincipal();
+        List<Building> entities = facilityService.getListByBuilding(member.getId());
 
         List<FacilityResponseDTO.CategoryWithFacilities> list =
                 entities.stream().map(FacilityResponseDTO.CategoryWithFacilities::new)
@@ -51,8 +54,10 @@ public class FacilityController {
     }
 
     @GetMapping("/map")
-    public ApiResponse<FacilityResponseDTO.Markers> getMarkers(@RequestParam("email") String email){
-        List<Building> entities = facilityService.getMarkers(email);
+    public ApiResponse<FacilityResponseDTO.Markers> getMarkers(Authentication auth){
+        Member member = (Member)auth.getPrincipal();
+
+        List<Building> entities = facilityService.getMarkers(member.getId());
 
         List<FacilityResponseDTO.Marker> list = entities.stream()
                 .map(entity->new FacilityResponseDTO.Marker(entity.getId(),entity.getLatitude(),entity.getLongitude()))
@@ -62,8 +67,10 @@ public class FacilityController {
     }
 
     @GetMapping("/suggestion")
-    public ApiResponse<FacilityResponseDTO.Tags> getSuggestion(@RequestParam("userId")String userId){
-        List<Facility> entities = facilityService.getSuggestion(userId);
+    public ApiResponse<FacilityResponseDTO.Tags> getSuggestion(Authentication auth){
+        Member member = (Member)auth.getPrincipal();
+
+        List<Facility> entities = facilityService.getSuggestion(member.getId());
 
         Map<FacilityTag,List<Facility>> map = entities.stream().collect(Collectors.groupingBy(Facility::getTag));
         List<FacilityResponseDTO.Tag> res = map.keySet().stream().map(key->{
@@ -96,8 +103,10 @@ public class FacilityController {
 
     @GetMapping("/keyword/{keyword}")
     public ApiResponse<FacilityResponseDTO.ListByKeyword> getListByKeyword(
-            @PathVariable("keyword") @ExistKeyword String keyword, @RequestParam("userId")String userId){
-        FacilityResponseDTO.ListByKeyword res = facilityQueryService.getListByKeyword(userId, keyword);
+            @PathVariable("keyword") @ExistKeyword String keyword, Authentication auth){
+        Member member = (Member)auth.getPrincipal();
+
+        FacilityResponseDTO.ListByKeyword res = facilityQueryService.getListByKeyword(member.getId(), keyword);
 
         return ApiResponse.onSuccess(res);
     }

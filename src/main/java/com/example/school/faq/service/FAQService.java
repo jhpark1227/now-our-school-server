@@ -1,7 +1,7 @@
 package com.example.school.faq.service;
 
-import com.example.school.domain.FAQ;
-import com.example.school.domain.enums.FaqType;
+import com.example.school.entity.FAQ;
+import com.example.school.entity.enums.FaqType;
 import com.example.school.faq.dto.FAQRes;
 import com.example.school.faq.repository.FAQRepository;
 import lombok.RequiredArgsConstructor;

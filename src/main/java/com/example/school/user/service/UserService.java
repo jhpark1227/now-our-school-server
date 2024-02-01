@@ -1,6 +1,6 @@
 package com.example.school.user.service;
 
-import com.example.school.domain.Member;
+import com.example.school.entity.Member;
 import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
