@@ -36,6 +36,7 @@ public enum ErrorStatus {
     USER_ID_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4013", "ID를 정확하게 입력해 주세요."),
     EMAIL_DUPLICATE(HttpStatus.BAD_REQUEST,"AUTH_4014", "중복된 이메일입니다."),
     USERID_DUPLICATE(HttpStatus.BAD_REQUEST,"AUTH_4015", "중복된 아이디입니다."),
+    IDENTIFYNUM_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4016", "주민번호 형식이 맞지 않습니다."),
 
 
     FACILITY_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE_4001","시설이 없습니다."),

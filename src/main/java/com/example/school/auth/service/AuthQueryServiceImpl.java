@@ -85,6 +85,14 @@ public class AuthQueryServiceImpl implements AuthQueryService {
     }
 
     @Override
+    public Boolean checkIdentifyNumFormat(String identifyNum) {
+        if (identifyNum.length() != 7) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public Boolean checkNicknameDuplicate(String nickname) {
         Optional<Member> user = userRepository.findByNickname(nickname);
         return user != null; // 이미 존재하는 경우 true, 그렇지 않은 경우 false 반환

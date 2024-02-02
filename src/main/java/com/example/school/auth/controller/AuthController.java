@@ -42,6 +42,10 @@ public class AuthController {
             return ApiResponse.onFailure(ErrorStatus.PASSWORD_FORMAT_ERROR.getCode(), ErrorStatus.PASSWORD_FORMAT_ERROR.getMessage());
         }
 
+        if (!authQueryService.checkIdentifyNumFormat(registerReqDTO.getIdentify_num())) {
+            return ApiResponse.onFailure(ErrorStatus.IDENTIFYNUM_FORMAT_ERROR.getCode(), ErrorStatus.IDENTIFYNUM_FORMAT_ERROR.getMessage());
+        }
+
         if (authQueryService.validateDuplicateEmail(registerReqDTO.getEmail())) {
             return ApiResponse.onFailure(ErrorStatus.EMAIL_DUPLICATE.getCode(), ErrorStatus.EMAIL_DUPLICATE.getMessage());
         }
