@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BuildingRepository extends JpaRepository<Building, Long> {
-    @Query("select b from Building b join fetch b.facilities where b.school=:school")
+    @Query("select b from Building b left join fetch b.facilities where b.school=:school")
     List<Building> findBySchoolWithFacility(@Param("school") School school);
 
     List<Building> findAllBySchool(School school);

@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ThemeRepository extends JpaRepository<Theme, Long> {
-    @Query("select c from Theme c join fetch c.facilities where c.school=:school")
+    @Query("select c from Theme c left join fetch c.facilities where c.school=:school")
     List<Theme> findBySchoolWithFacility(@Param("school") School school);
 }
