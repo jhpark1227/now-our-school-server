@@ -12,6 +12,8 @@ public interface UserQueryService {
     Optional<Member> findMember(Long id);
     Page<Review> getReviewList(Long MemberId, Integer page);
     Page<Review> findByFacility(Long facilityId, Integer page);
+    Page<Review> getAllReviewList(Integer page);
+
     Optional<Review> findById(Long id);
 
     UserResponseDTO.Info getInfo(Long id);

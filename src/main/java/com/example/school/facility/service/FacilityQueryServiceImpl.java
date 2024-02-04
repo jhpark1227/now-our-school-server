@@ -45,6 +45,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
     public Facility createFacility(Long RegionId, FacilitySaveResponseDTO.CreateFacilityResultDTO request) {
         return null;
     }
+    /*
     @Override
     public Page<Review> getReviewList(Long FacilityId, Integer page) {
 
@@ -53,7 +54,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
         Page<Review> FacilityPage = reviewRepository.findAllByFacility(facility, PageRequest.of(page, 10));
         return FacilityPage;
     }
-
+*/
     @Override
     public FacilityResponseDTO.Detail getDetail(Long facilityId) {
         Facility entity = facilityRepository.findByIdWithBuildingAndReview(facilityId)

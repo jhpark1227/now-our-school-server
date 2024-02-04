@@ -77,6 +77,22 @@ public class UserController {
         UserResponseDTO.ReviewPreViewListDTO reviewPreViewListDTO = UserConverter.reviewPreViewListDTO(reviewList);
         return ApiResponse.onSuccess(reviewPreViewListDTO);
     }
+
+    //모든 리뷰 조회
+    @GetMapping("/allReviews")
+    @Operation(summary = "모든 리뷰 목록 조회 API",description = "모든 리뷰들의 목록을 조회하는 API이며, 페이징을 포함합니다. query String 으로 page 번호를 주세요")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "acess 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "acess 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    public ApiResponse<UserResponseDTO.ReviewPreViewListDTO> getAllReviewList(@RequestParam(name = "page") Integer page){
+        Page<Review> reviewList = userQueryService.getAllReviewList(page);
+        UserResponseDTO.ReviewPreViewListDTO reviewPreViewListDTO = UserConverter.reviewPreViewListDTO(reviewList);
+        return ApiResponse.onSuccess(reviewPreViewListDTO);
+    }
+
     //리뷰수정
     @PutMapping("/review/modify")
     @PreAuthorize("isAuthenticated()")

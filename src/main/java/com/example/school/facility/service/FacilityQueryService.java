@@ -12,7 +12,7 @@ public interface FacilityQueryService {
 
     Optional<Facility> findFacility(Long id);
     Facility createFacility (Long RegionId, FacilitySaveResponseDTO.CreateFacilityResultDTO request);
-    Page<Review> getReviewList(Long FacilityId, Integer page);
+    //Page<Review> getReviewList(Long FacilityId, Integer page);
     FacilityResponseDTO.Detail getDetail(Long facilityId);
 
     FacilityResponseDTO.Images getImages(Long facilityId, Integer page);
