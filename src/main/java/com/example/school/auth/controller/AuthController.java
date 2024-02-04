@@ -72,6 +72,12 @@ public class AuthController {
         authCommandService.logout(accessToken);
         return ApiResponse.onSuccess("로그아웃 처리 되었습니다.");
     }
+    //회원탈퇴
+    @DeleteMapping(value="/delete")
+    public ApiResponse<String>  withdrawUser(@RequestHeader("Authorization") String accessToken){
+        authCommandService.withdrawUser(accessToken);
+        return ApiResponse.onSuccess("회원탈퇴 처리 되었습니다.");
+    }
 
     // 이메일 전송
     @PostMapping(value = "/email-send")
