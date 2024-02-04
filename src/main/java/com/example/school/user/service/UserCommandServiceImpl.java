@@ -2,6 +2,9 @@ package com.example.school.user.service;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
+import com.example.school.auth.converter.AuthConverter;
+import com.example.school.auth.dto.AuthRequestDTO;
+import com.example.school.awsS3.AwsS3Service;
 import com.example.school.domain.Inquiry;
 import com.example.school.domain.Member;
 import com.example.school.domain.Review;
@@ -14,6 +17,8 @@ import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional
@@ -24,6 +29,8 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final FacilityRepository facilityRepository;
     private final ReviewRepository reviewRepository;
     private final InquiryRepository inquiryRepository;
+    private final AwsS3Service awsS3Service;
+
 
     @Override
     public Review createReview(Long memberId, Long facilityId, UserRequestDTO.ReviewDTO request) {
@@ -78,22 +85,38 @@ public class UserCommandServiceImpl implements UserCommandService {
     }
 
     @Override
-    public Member updateProfile(Long memberId, UserRequestDTO.UpdateProfileDTO request) {
-        Member member = userRepository.findById(memberId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+        public Member updateProfile(Long memberId, UserRequestDTO.UpdateProfileDTO request, MultipartFile profileImg) {
+        Member user = userRepository.findById(memberId).orElseThrow(() ->
+                new RuntimeException("User not found with id: " + memberId));
 
-        // 프로필 수정 로직
-        if (request.getNickname() != null) {
-            member.setNickname(request.getNickname());
+        // 기존 프로필 사진 URL
+        String existingProfilePictureUrl = user.getProfileImg();
+
+        // 기존 프로필 사진이 존재하면 삭제
+        if (existingProfilePictureUrl != null) {
+            String existingFileName = extractFileNameFromUrl(existingProfilePictureUrl);
+            awsS3Service.deleteFile(existingFileName);
         }
-        if (request.getProfilePicture() != null) {
-            member.setProfileImg(request.getProfilePicture());
+
+        // 새 프로필 사진 업로드
+        String newProfilePictureUrl = null;
+        if (profileImg != null) {
+            newProfilePictureUrl = awsS3Service.uploadSingleFile(profileImg);
         }
 
-        // 이미 존재하는 엔터티를 수정할 때는 flush 또는 merge를 사용
-        userRepository.flush();
+        user.setNickname(request.getNickname());
+        user.setProfileImg(newProfilePictureUrl);
 
-        return member;
+
+        return userRepository.save(user);
+
+    }
+
+
+    // URL에서 파일 이름을 추출하는 메서드
+    private String extractFileNameFromUrl(String url) {
+        int lastIndexOfSlash = url.lastIndexOf("/");
+        return url.substring(lastIndexOfSlash + 1);
     }
 }
 

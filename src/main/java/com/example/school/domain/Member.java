@@ -45,6 +45,7 @@ public class Member extends BaseEntity implements UserDetails {
     private String nickname;
     private Integer age;
     private Integer grade;
+
     private String profileImg;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -99,6 +100,7 @@ public class Member extends BaseEntity implements UserDetails {
         this.profileImg = profileImg;
     }
 
-
-
+    public String getProfileImg() {
+        return this.profileImg;
+    }
 }

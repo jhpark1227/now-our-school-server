@@ -19,20 +19,23 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("user")
+@RequestMapping("/api/v1/user")
 public class UserController {
     private final UserCommandService userCommandService;
     private final UserQueryService userQueryService;
 
     //리뷰 작성
     @PostMapping("/review")
+    @PreAuthorize("isAuthenticated()")
     @Operation(summary = "리뷰 작성 API",description = "리뷰를 작성하는 API")
     public ApiResponse<UserResponseDTO.CreateReviewResultDTO> createReview(@RequestBody @Valid UserRequestDTO.ReviewDTO request,
                                                                            @ExistFacility @RequestParam(name = "facilityId") Long facilityId,
@@ -59,6 +62,7 @@ public class UserController {
     }
     //나의 리뷰 조회
     @GetMapping("/{memberId}/reviews/byMember")
+    @PreAuthorize("isAuthenticated()")
     @Operation(summary = "나의 리뷰 목록 조회 API",description = "나의 리뷰들의 목록을 조회하는 API이며, 페이징을 포함합니다. query String 으로 page 번호를 주세요")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
@@ -73,6 +77,7 @@ public class UserController {
     }
     //리뷰수정
     @PutMapping("/review/modify")
+    @PreAuthorize("isAuthenticated()")
     @Operation(summary = "나의 리뷰 수정 API",description = "나의 리뷰를 수정하는 API이며, reviewId, facilityId, memberId가 모두 일치할 시 수정가능합니다")
     public ApiResponse<UserResponseDTO.UpdateReviewResultDTO> modifyReview(
             @ExistReview @RequestParam(name = "reviewId") Long reviewId,
@@ -85,6 +90,7 @@ public class UserController {
     }
     //리뷰삭제
     @DeleteMapping("/review/delete")
+    @PreAuthorize("isAuthenticated()")
     @Operation(summary = "나의 리뷰 삭제 API", description = "나의 리뷰를 삭제하는 API이며, reviewId, facilityId, memberId가 모두 일치할 시 삭제 가능합니다")
     public ApiResponse<String> deleteReview(
             @ExistReview @RequestParam(name = "reviewId") Long reviewId,
@@ -96,23 +102,26 @@ public class UserController {
     }
     //문의하기
     @PostMapping("/inquiry")
+    @PreAuthorize("isAuthenticated()")
     @Operation(summary = "문의하기 API",description = "문의하는 API")
     public ApiResponse<UserResponseDTO.CreateInquiryResultDTO> createInquiry(@RequestBody @Valid UserRequestDTO.InquiryDTO request,
-                                                                           @ExistMember @RequestParam(name = "memberId") Long memberId){
+                                                                             @ExistMember @RequestParam(name = "memberId") Long memberId){
         Inquiry inquiry = userCommandService.createInquiry(memberId, request);
         return ApiResponse.onSuccess(UserConverter.toCreateInquiryResultDTO(inquiry));
     }
 
-    // 프로필 수정
-    @PutMapping("/profile/update")
-    @Operation(summary = "프로필 수정 API", description = "프로필 정보를 수정하는 API")
+    // 프로필 정보 수정
+    @PutMapping(value = "/update-profile")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<UserResponseDTO.UpdateProfileResultDTO> updateProfile(
             @ExistMember @RequestParam(name = "memberId") Long memberId,
-            @RequestBody @Valid UserRequestDTO.UpdateProfileDTO request) {
+            @RequestPart(value = "image", required = false) MultipartFile profileImage,
+            @RequestPart UserRequestDTO.UpdateProfileDTO updateProfileReqDTO) {
 
-        Member updatedMember = userCommandService.updateProfile(memberId, request);
+        Member updatedMember = userCommandService.updateProfile(memberId,updateProfileReqDTO, profileImage);
         return ApiResponse.onSuccess(UserConverter.toUpdateProfileResultDTO(updatedMember));
     }
+
 
     @GetMapping("/info")
     public ApiResponse<UserResponseDTO.Info> getInfo(Authentication auth){
@@ -123,3 +132,4 @@ public class UserController {
         return ApiResponse.onSuccess(res);
     }
 }
+

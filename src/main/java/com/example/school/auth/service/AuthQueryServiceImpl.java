@@ -185,6 +185,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
     }
 
     @Override
+    @Transactional
     public Boolean changePassword(AuthRequestDTO.ChangePasswordReqDTO request) {
         String email = jwtUtils.getEmailInToken(request.getToken());
         Member member = userRepository.findByEmail(email).orElseThrow(() -> {

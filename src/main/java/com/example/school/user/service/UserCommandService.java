@@ -5,6 +5,7 @@ import com.example.school.domain.Member;
 import com.example.school.domain.Review;
 import com.example.school.user.dto.UserRequestDTO;
 import jakarta.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserCommandService {
     Review createReview(Long memberId, Long facilityId, UserRequestDTO.ReviewDTO request);
@@ -13,5 +14,5 @@ public interface UserCommandService {
 
     Inquiry createInquiry(Long memberId, UserRequestDTO.InquiryDTO request);
 
-    Member updateProfile(Long memberId, UserRequestDTO.UpdateProfileDTO request);
+    Member updateProfile(Long memberId, UserRequestDTO.UpdateProfileDTO request, MultipartFile profileImg);
 }
