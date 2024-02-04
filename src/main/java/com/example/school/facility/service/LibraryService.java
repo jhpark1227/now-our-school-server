@@ -54,7 +54,7 @@ public class LibraryService {
             return FacilityResponseDTO.LibraryDetail.builder()
                     .name(detail.getName())
                     .total(detail.getTotal())
-                    .current(detail.getCurrent())
+                    .current(detail.getTotal()-detail.getCurrent())
                     .status(detail.getStatus()).build();
         }).collect(Collectors.toList());
 
