@@ -47,6 +47,12 @@ public class UserQueryServiceImpl implements UserQueryService{
     }
 
     @Override
+    public Page<Review> getAllReviewList(Integer page) {
+        Page<Review> AllMemberPage = reviewRepository.findAll(PageRequest.of(page, 10));
+        return AllMemberPage;
+    }
+
+    @Override
     public Optional<Review> findById(Long id) {
         {
             return reviewRepository.findById(id);
