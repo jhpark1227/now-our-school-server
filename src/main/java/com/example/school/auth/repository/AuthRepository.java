@@ -1,7 +1,7 @@
 package com.example.school.auth.repository;
 
-import com.example.school.entity.Member;
-import com.example.school.entity.School;
+import com.example.school.domain.Member;
+import com.example.school.domain.School;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

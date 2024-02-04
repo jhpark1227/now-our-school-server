@@ -1,10 +1,10 @@
 package com.example.school.user.service;
 import com.example.school.awsS3.AwsS3Service;
 
-import com.example.school.entity.Inquiry;
-import com.example.school.entity.Member;
-import com.example.school.entity.Review;
-import com.example.school.entity.ReviewImage;
+import com.example.school.domain.Inquiry;
+import com.example.school.domain.Member;
+import com.example.school.domain.Review;
+import com.example.school.domain.ReviewImage;
 import com.example.school.facility.repository.FacilityRepository;
 import com.example.school.user.converter.UserConverter;
 import com.example.school.user.dto.UserRequestDTO;
@@ -15,7 +15,6 @@ import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

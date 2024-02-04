@@ -1,10 +1,8 @@
 package com.example.school.facility.service;
 
-import com.example.school.entity.Facility;
-import com.example.school.entity.Review;
+import com.example.school.domain.Facility;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.dto.FacilitySaveResponseDTO;
-import org.springframework.data.domain.Page;
 
 import java.util.Optional;
 

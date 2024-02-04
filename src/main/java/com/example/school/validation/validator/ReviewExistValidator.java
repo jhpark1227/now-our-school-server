@@ -1,7 +1,7 @@
 package com.example.school.validation.validator;
 
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.entity.Review;
+import com.example.school.domain.Review;
 import com.example.school.user.service.UserQueryService;
 import com.example.school.validation.annotation.ExistReview;
 import jakarta.validation.ConstraintValidator;

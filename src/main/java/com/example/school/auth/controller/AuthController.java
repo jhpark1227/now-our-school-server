@@ -8,7 +8,7 @@ import com.example.school.auth.dto.AuthResponseDTO;
 import com.example.school.auth.service.AuthCommandService;
 import com.example.school.auth.service.AuthQueryService;
 import com.example.school.auth.service.MailService;
-import com.example.school.entity.Member;
+import com.example.school.domain.Member;
 import com.example.school.validation.annotation.CheckKeyword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

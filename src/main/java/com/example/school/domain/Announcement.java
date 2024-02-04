@@ -1,7 +1,7 @@
-package com.example.school.entity;
+package com.example.school.domain;
 
-import com.example.school.entity.common.BaseEntity;
-import com.example.school.entity.enums.AnnouncementType;
+import com.example.school.domain.common.BaseEntity;
+import com.example.school.domain.enums.AnnouncementType;
 import jakarta.persistence.*;
 import lombok.*;
 

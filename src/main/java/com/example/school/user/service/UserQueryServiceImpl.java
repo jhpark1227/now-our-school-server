@@ -2,9 +2,9 @@ package com.example.school.user.service;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.entity.Facility;
-import com.example.school.entity.Member;
-import com.example.school.entity.Review;
+import com.example.school.domain.Facility;
+import com.example.school.domain.Member;
+import com.example.school.domain.Review;
 import com.example.school.facility.repository.FacilityRepository;
 import com.example.school.user.dto.UserResponseDTO;
 import com.example.school.user.repository.ReviewRepository;

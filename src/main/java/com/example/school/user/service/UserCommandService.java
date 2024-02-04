@@ -1,8 +1,8 @@
 package com.example.school.user.service;
 
-import com.example.school.entity.Inquiry;
-import com.example.school.entity.Member;
-import com.example.school.entity.Review;
+import com.example.school.domain.Inquiry;
+import com.example.school.domain.Member;
+import com.example.school.domain.Review;
 import com.example.school.user.dto.UserRequestDTO;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,6 +1,6 @@
 package com.example.school.faq.dto;
 
-import com.example.school.entity.FAQ;
+import com.example.school.domain.FAQ;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Page;

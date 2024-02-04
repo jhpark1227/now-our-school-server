@@ -1,6 +1,7 @@
-package com.example.school.entity;
+package com.example.school.domain;
 
-import com.example.school.entity.common.BaseEntity;
+import com.example.school.domain.common.BaseEntity;
+import com.example.school.domain.enums.FaqType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,16 +13,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Notification extends BaseEntity {
+public class FAQ extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
+
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "notification_id")
-    private Member member;
-
-
+    @Enumerated(EnumType.STRING)
+    private FaqType type;
 }

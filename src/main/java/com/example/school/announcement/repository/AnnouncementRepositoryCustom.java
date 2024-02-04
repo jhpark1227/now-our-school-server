@@ -1,8 +1,8 @@
 package com.example.school.announcement.repository;
 
-import com.example.school.entity.Announcement;
-import com.example.school.entity.School;
-import com.example.school.entity.enums.AnnouncementType;
+import com.example.school.domain.Announcement;
+import com.example.school.domain.School;
+import com.example.school.domain.enums.AnnouncementType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

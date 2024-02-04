@@ -1,4 +1,4 @@
-package com.example.school.entity.common;
+package com.example.school.domain.common;
 
 import jakarta.persistence.Column;
 import lombok.Getter;

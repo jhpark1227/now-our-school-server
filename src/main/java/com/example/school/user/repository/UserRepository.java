@@ -1,7 +1,7 @@
 package com.example.school.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.school.entity.Member;
+import com.example.school.domain.Member;
 
 import java.util.Optional;
 

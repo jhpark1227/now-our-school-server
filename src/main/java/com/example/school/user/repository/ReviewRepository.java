@@ -1,8 +1,8 @@
 package com.example.school.user.repository;
 
-import com.example.school.entity.Facility;
-import com.example.school.entity.Member;
-import com.example.school.entity.Review;
+import com.example.school.domain.Facility;
+import com.example.school.domain.Member;
+import com.example.school.domain.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

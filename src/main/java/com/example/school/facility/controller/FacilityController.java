@@ -1,7 +1,7 @@
 package com.example.school.facility.controller;
 
 import com.example.school.apiPayload.ApiResponse;
-import com.example.school.entity.Member;
+import com.example.school.domain.Member;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.service.FacilityQueryService;
 import com.example.school.facility.service.FacilityService;

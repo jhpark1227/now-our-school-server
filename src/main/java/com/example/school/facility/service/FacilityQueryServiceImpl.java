@@ -2,8 +2,8 @@ package com.example.school.facility.service;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.entity.*;
-import com.example.school.entity.enums.FacilityKeyword;
+import com.example.school.domain.*;
+import com.example.school.domain.enums.FacilityKeyword;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.dto.FacilitySaveResponseDTO;
 import com.example.school.facility.repository.BuildingRepository;

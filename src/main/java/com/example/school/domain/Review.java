@@ -1,11 +1,9 @@
-package com.example.school.entity;
+package com.example.school.domain;
 
-import com.example.school.entity.Member;
-import com.example.school.entity.common.BaseEntity;
+import com.example.school.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity

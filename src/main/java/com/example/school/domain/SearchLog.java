@@ -1,4 +1,4 @@
-package com.example.school.entity;
+package com.example.school.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

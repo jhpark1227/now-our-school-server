@@ -4,7 +4,7 @@ import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
 import com.example.school.auth.config.util.JwtUtils;
 import com.example.school.auth.config.util.RedisUtils;
-import com.example.school.entity.Member;
+import com.example.school.domain.Member;
 import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

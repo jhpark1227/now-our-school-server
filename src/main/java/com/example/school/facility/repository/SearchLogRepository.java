@@ -1,7 +1,7 @@
 package com.example.school.facility.repository;
 
-import com.example.school.entity.School;
-import com.example.school.entity.SearchLog;
+import com.example.school.domain.School;
+import com.example.school.domain.SearchLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,9 +1,9 @@
 package com.example.school.user.controller;
 
 import com.example.school.apiPayload.ApiResponse;
-import com.example.school.entity.Inquiry;
-import com.example.school.entity.Member;
-import com.example.school.entity.Review;
+import com.example.school.domain.Inquiry;
+import com.example.school.domain.Member;
+import com.example.school.domain.Review;
 import com.example.school.user.converter.UserConverter;
 import com.example.school.user.dto.UserRequestDTO;
 import com.example.school.user.dto.UserResponseDTO;

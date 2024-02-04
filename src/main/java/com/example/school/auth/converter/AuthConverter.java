@@ -3,7 +3,7 @@ package com.example.school.auth.converter;
 
 import com.example.school.auth.dto.AuthRequestDTO;
 import com.example.school.auth.dto.AuthResponseDTO;
-import com.example.school.entity.Member;
+import com.example.school.domain.Member;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class AuthConverter {

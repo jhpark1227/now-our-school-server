@@ -1,7 +1,7 @@
 package com.example.school.announcement.repository;
 
-import com.example.school.entity.Announcement;
-import com.example.school.entity.School;
+import com.example.school.domain.Announcement;
+import com.example.school.domain.School;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 

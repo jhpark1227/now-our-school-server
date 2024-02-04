@@ -2,7 +2,7 @@ package com.example.school.auth.service;
 
 import com.example.school.auth.dto.AuthRequestDTO;
 import com.example.school.auth.dto.AuthResponseDTO;
-import com.example.school.entity.Member;
+import com.example.school.domain.Member;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

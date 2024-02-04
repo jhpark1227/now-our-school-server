@@ -3,7 +3,7 @@ package com.example.school.announcement.controller;
 import com.example.school.announcement.dto.AnnouncementRes;
 import com.example.school.announcement.service.AnnouncementService;
 import com.example.school.apiPayload.ApiResponse;
-import com.example.school.entity.Member;
+import com.example.school.domain.Member;
 import com.example.school.validation.annotation.CheckAnnouncementType;
 import com.example.school.validation.annotation.CheckPage;
 import lombok.RequiredArgsConstructor;

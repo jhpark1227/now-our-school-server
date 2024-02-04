@@ -2,11 +2,11 @@ package com.example.school.reservation.service;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.entity.enums.AlertType;
+import com.example.school.domain.enums.AlertType;
 import com.example.school.reservation.converter.ReservationConverter;
-import com.example.school.entity.Facility;
-import com.example.school.entity.Member;
-import com.example.school.entity.Reservation;
+import com.example.school.domain.Facility;
+import com.example.school.domain.Member;
+import com.example.school.domain.Reservation;
 import com.example.school.facility.service.FacilityService;
 import com.example.school.reservation.dto.ReservationRequestDTO;
 import com.example.school.reservation.dto.ReservationResponseDTO;

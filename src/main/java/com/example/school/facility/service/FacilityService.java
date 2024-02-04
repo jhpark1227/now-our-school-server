@@ -2,11 +2,11 @@ package com.example.school.facility.service;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.entity.Building;
-import com.example.school.entity.Facility;
-import com.example.school.entity.Member;
-import com.example.school.entity.Theme;
-import com.example.school.entity.enums.FacilityTag;
+import com.example.school.domain.Building;
+import com.example.school.domain.Facility;
+import com.example.school.domain.Member;
+import com.example.school.domain.Theme;
+import com.example.school.domain.enums.FacilityTag;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.repository.BuildingRepository;
 import com.example.school.facility.repository.ThemeRepository;

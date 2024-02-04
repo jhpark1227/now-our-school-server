@@ -1,8 +1,8 @@
 package com.example.school.user.repository;
 
 
-import com.example.school.entity.Review;
-import com.example.school.entity.ReviewImage;
+import com.example.school.domain.Review;
+import com.example.school.domain.ReviewImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
