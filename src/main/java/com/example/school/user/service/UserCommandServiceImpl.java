@@ -1,19 +1,28 @@
 package com.example.school.user.service;
 
+import com.example.school.apiPayload.GeneralException;
+import com.example.school.apiPayload.status.ErrorStatus;
+import com.example.school.auth.converter.AuthConverter;
+import com.example.school.auth.dto.AuthRequestDTO;
 import com.example.school.awsS3.AwsS3Service;
-import com.example.school.entity.Inquiry;
-import com.example.school.entity.Member;
-import com.example.school.entity.Review;
+import com.example.school.domain.Inquiry;
+import com.example.school.domain.Member;
+import com.example.school.domain.Review;
+import com.example.school.domain.ReviewImage;
 import com.example.school.facility.repository.FacilityRepository;
 import com.example.school.user.converter.UserConverter;
 import com.example.school.user.dto.UserRequestDTO;
 import com.example.school.user.repository.InquiryRepository;
+import com.example.school.user.repository.ReviewImageRepository;
 import com.example.school.user.repository.ReviewRepository;
 import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -25,18 +34,34 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final ReviewRepository reviewRepository;
     private final InquiryRepository inquiryRepository;
     private final AwsS3Service awsS3Service;
+    private final ReviewImageRepository reviewImageRepository;
 
 
     @Override
-    public Review createReview(Long memberId, Long facilityId, UserRequestDTO.ReviewDTO request) {
+    public Review createReview(List<MultipartFile> imgFile, Long memberId, Long facilityId, UserRequestDTO.ReviewDTO request) {
 
         Review review = UserConverter.toReview(request);
 
         review.setMember(userRepository.findById(memberId).get());
         review.setFacility(facilityRepository.findById(facilityId).get());
 
-        return reviewRepository.save(review);
+        review = reviewRepository.save(review);
+
+        if (imgFile != null) {
+            List<String> reviewImgUrls = awsS3Service.uploadFile(imgFile);
+            for (String imageUrl : reviewImgUrls) {
+                ReviewImage reviewImage = new ReviewImage();
+                reviewImage.setReview(review);
+                reviewImage.setImageUrl(imageUrl);
+                reviewImageRepository.save(reviewImage);
+            }
+        }
+
+        return review;
     }
+
+
+
 
     @Override
     public Review updateReview(Long memberId, Long facilityId, Long reviewId, UserRequestDTO.ReviewDTO request) {

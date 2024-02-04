@@ -27,6 +27,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
@@ -35,15 +37,18 @@ public class UserController {
     private final UserQueryService userQueryService;
 
     //리뷰 작성
-    @PostMapping("/review")
+//리뷰 작성
+    @PostMapping(value = "/review",consumes = "multipart/form-data")
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "리뷰 작성 API",description = "리뷰를 작성하는 API")
-    public ApiResponse<UserResponseDTO.CreateReviewResultDTO> createReview(@RequestBody @Valid UserRequestDTO.ReviewDTO request,
+    public ApiResponse<UserResponseDTO.CreateReviewResultDTO> createReview(@RequestPart("image") List<MultipartFile> imgFile,
+                                                                           @RequestPart @Valid UserRequestDTO.ReviewDTO request,
                                                                            @ExistFacility @RequestParam(name = "facilityId") Long facilityId,
                                                                            @ExistMember @RequestParam(name = "memberId") Long memberId){
-        Review review = userCommandService.createReview(memberId, facilityId, request);
+        Review review = userCommandService.createReview(imgFile,memberId, facilityId, request);
         return ApiResponse.onSuccess(UserConverter.toCreateReviewResultDTO(review));
     }
+
     //시설별 리뷰 조회
     /*
     @GetMapping("/details/{facilityId}/review")
