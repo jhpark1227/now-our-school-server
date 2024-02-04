@@ -28,7 +28,7 @@ public class LibraryService {
         Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        if(!member.getSchool().getName().equals("울사대학교")){
+        if(!member.getSchool().getName().equals("울산대학교")){
             throw new GeneralException(ErrorStatus.NO_CONTENT);
         }
 
