@@ -179,6 +179,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .userid(userid)
+                .memberId(member.getId())
                 .accessTokenExpirationTime(JwtUtils.TOKEN_VALID_TIME)
                 .build();
     }

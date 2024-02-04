@@ -30,7 +30,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("reservation")
+@RequestMapping("reservation/api/v1")
 public class ReservationController {
     private final ReservationService reservationService;
     private final AwsS3Service awsS3Service;

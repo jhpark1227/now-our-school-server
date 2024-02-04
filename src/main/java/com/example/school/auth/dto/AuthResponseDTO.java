@@ -24,6 +24,7 @@ public class AuthResponseDTO {
         String accessToken;
         String refreshToken;
         String userid;
+        Long memberId;
         private Long accessTokenExpirationTime;
 
     }
