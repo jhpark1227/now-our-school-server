@@ -19,7 +19,7 @@ public class AnnouncementTypeCheckValidator implements ConstraintValidator<Check
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if(value!=null){
-            if(value.trim().equals("")||!EnumUtils.isValidEnum(AnnouncementType.class,value.toUpperCase())){
+            if(value.trim().equals("")||!EnumUtils.isValidEnum(AnnouncementType.class,value)){
                 context.disableDefaultConstraintViolation();
                 throw new GeneralException(ErrorStatus.BAD_QUERY_STRING);
             }

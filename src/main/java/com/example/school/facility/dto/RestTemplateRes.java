@@ -27,4 +27,16 @@ public class RestTemplateRes {
         String status;
         Integer total;
     }
+
+    @Getter
+    public static class AnnouncementList{
+        List<AnnouncementDetail> list;
+    }
+
+    @Getter
+    public static class AnnouncementDetail{
+        String title;
+        String type;
+        String content;
+    }
 }
