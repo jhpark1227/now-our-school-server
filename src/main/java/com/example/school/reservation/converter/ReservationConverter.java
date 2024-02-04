@@ -1,6 +1,6 @@
 package com.example.school.reservation.converter;
 
-import com.example.school.domain.Reservation;
+import com.example.school.entity.Reservation;
 import com.example.school.reservation.dto.ReservationRequestDTO;
 import com.example.school.reservation.dto.ReservationResponseDTO;
 import org.springframework.data.domain.Page;
@@ -20,6 +20,7 @@ public class ReservationConverter {
                 .day(reservation.getDay())
                 .duration(reservation.getDuration())
                 .back(reservation.getBack())
+                .alerts(reservation.getAlerts())
                 .build();
     }
     //예약 세부 내용들 list
@@ -64,6 +65,7 @@ public class ReservationConverter {
                 .start_time(reservationDTO.getStartTime())
                 .end_time(reservationDTO.getEndTime())
                 .duration(reservationDTO.getDuration())
+                .alerts(reservationDTO.getAlerts())
                 .back(false)
                 .build();
     }

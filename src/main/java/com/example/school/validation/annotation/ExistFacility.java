@@ -1,6 +1,5 @@
 package com.example.school.validation.annotation;
 
-import com.example.school.domain.Facility;
 import com.example.school.validation.validator.FacilityExistValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

@@ -1,11 +1,13 @@
 package com.example.school.reservation.dto;
 
+import com.example.school.entity.enums.AlertType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 public class ReservationResponseDTO {
     //예약 내역
@@ -22,6 +24,8 @@ public class ReservationResponseDTO {
         Integer start_time;
         Integer end_time;
         Boolean back;
+        Set<AlertType> alerts;
+
 
     }
     //예약 내역 리스트

@@ -1,7 +1,7 @@
 package com.example.school.faq.service;
 
-import com.example.school.domain.FAQ;
-import com.example.school.domain.enums.FaqType;
+import com.example.school.entity.FAQ;
+import com.example.school.entity.enums.FaqType;
 import com.example.school.faq.dto.FAQRes;
 import com.example.school.faq.repository.FAQRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,14 +12,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FAQService {
     private final FAQRepository faqRepository;
 
-    public List<FAQ> getFAQSamples() {
-        return faqRepository.findTop4By();
+    public FAQRes.FAQSamples getFAQSamples() {
+        List<FAQ> entities = faqRepository.findTop4By();
+
+        List<FAQRes.FAQSample> list = entities.stream().map(entity->{
+            return new FAQRes.FAQSample(entity.getId(), entity.getTitle());
+        }).collect(Collectors.toList());
+
+        return new FAQRes.FAQSamples(list, list.size());
     }
 
     public FAQRes.FAQList getList(String type, Integer page) {

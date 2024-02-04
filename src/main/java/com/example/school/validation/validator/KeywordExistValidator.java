@@ -2,7 +2,7 @@ package com.example.school.validation.validator;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.domain.enums.FacilityKeyword;
+import com.example.school.entity.enums.FacilityKeyword;
 import com.example.school.validation.annotation.ExistKeyword;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

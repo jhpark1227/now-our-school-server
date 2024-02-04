@@ -1,7 +1,7 @@
 package com.example.school.validation.validator;
 
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.domain.Facility;
+import com.example.school.entity.Facility;
 import com.example.school.facility.service.FacilityQueryService;
 import com.example.school.validation.annotation.ExistFacility;
 import jakarta.validation.ConstraintValidator;

@@ -1,7 +1,6 @@
 package com.example.school.reservation.converter;
 
-import com.example.school.domain.Image;
-import com.example.school.domain.Reservation;
+import com.example.school.entity.Image;
 import com.example.school.reservation.dto.ImageResponseDTO;
 
 import java.util.ArrayList;

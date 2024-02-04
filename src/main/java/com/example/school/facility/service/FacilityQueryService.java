@@ -1,7 +1,7 @@
 package com.example.school.facility.service;
 
-import com.example.school.domain.Facility;
-import com.example.school.domain.Review;
+import com.example.school.entity.Facility;
+import com.example.school.entity.Review;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.dto.FacilitySaveResponseDTO;
 import org.springframework.data.domain.Page;
@@ -17,11 +17,13 @@ public interface FacilityQueryService {
 
     FacilityResponseDTO.Images getImages(Long facilityId, Integer page);
 
-    FacilityResponseDTO.ListByKeyword getListByKeyword(String userId, String keyword);
+    FacilityResponseDTO.ListByKeyword getListByKeyword(Long memberId, String keyword);
 
     FacilityResponseDTO.DetailOnMarker getDetailOnMarker(Long buildingId);
 
     FacilityResponseDTO.SearchResults searchFacility(Long memberId, String keyword);
 
     FacilityResponseDTO.SearchLogList getSearchLog(Long memberId);
+
+    FacilityResponseDTO.SearchRankList getSearchRank(Long memberId);
 }

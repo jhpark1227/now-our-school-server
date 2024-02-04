@@ -2,14 +2,14 @@ package com.example.school.reservation.controller;
 
 import com.example.school.apiPayload.ApiResponse;
 import com.example.school.awsS3.AwsS3Service;
-import com.example.school.domain.Facility;
-import com.example.school.domain.Image;
-import com.example.school.domain.Member;
+import com.example.school.entity.Facility;
+import com.example.school.entity.Image;
+import com.example.school.entity.Member;
 import com.example.school.facility.converter.FacilityConverter;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.reservation.converter.ImageConverter;
 import com.example.school.reservation.converter.ReservationConverter;
-import com.example.school.domain.Reservation;
+import com.example.school.entity.Reservation;
 import com.example.school.reservation.dto.ImageResponseDTO;
 import com.example.school.reservation.dto.ReservationRequestDTO;
 import com.example.school.reservation.dto.ReservationResponseDTO;
@@ -43,8 +43,12 @@ public class ReservationController {
         boolean authenticated = authentication.isAuthenticated();
         System.out.println("인증 되었는가?"+ authenticated);
         try {
-            // facilityId로 facility 찾는 코드 작성
-            return ApiResponse.onSuccess(reservationService.createReservation(reservationDTO));
+            Reservation reservation = reservationService.createReservation(reservationDTO);
+
+            // Schedule alerts
+            //reservationService.scheduleAlerts(reservation);
+
+            return ApiResponse.onSuccess(reservation);
         } catch (RuntimeException e) {
             return ApiResponse.onFailure("COMMON400", e.getMessage());
         }

@@ -1,12 +1,15 @@
-package com.example.school.domain;
+package com.example.school.entity;
 
-import com.example.school.domain.common.BaseEntity;
+import com.example.school.entity.common.BaseEntity;
+import com.example.school.entity.enums.AlertType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -39,7 +42,16 @@ public class Reservation extends BaseEntity {
     private Integer end_time;
     private Integer duration;
     private Boolean back;
-
+  //  @ElementCollection
+   // @CollectionTable(name = "reservation_alerts", joinColumns = @JoinColumn(name = "reservation_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<AlertType> alerts = new HashSet<>();
+    public Set<AlertType> getAlerts() {
+        return alerts != null ? alerts : new HashSet<>();
+    }
+    public void setAlerts(Set<AlertType> alerts) {
+        this.alerts = alerts;
+    }
     public void setMember(Member member){
         this.member = member;
         member.getReservationList().add(this);

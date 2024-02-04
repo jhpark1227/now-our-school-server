@@ -2,11 +2,11 @@ package com.example.school.reservation.service;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
+import com.example.school.entity.enums.AlertType;
 import com.example.school.reservation.converter.ReservationConverter;
-import com.example.school.domain.Facility;
-import com.example.school.domain.Member;
-import com.example.school.domain.Reservation;
-import com.example.school.facility.repository.FacilityRepository;
+import com.example.school.entity.Facility;
+import com.example.school.entity.Member;
+import com.example.school.entity.Reservation;
 import com.example.school.facility.service.FacilityService;
 import com.example.school.reservation.dto.ReservationRequestDTO;
 import com.example.school.reservation.dto.ReservationResponseDTO;
@@ -14,27 +14,38 @@ import com.example.school.reservation.repository.ReservationRepository;
 import com.example.school.user.repository.UserRepository;
 import com.example.school.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ReservationService {
     private final ReservationRepository reservationRepository;
-    private final FacilityRepository facilityRepository;
     private final UserService userService;
+
     private final FacilityService facilityService;
     private final UserRepository userRepository;
+    @Autowired
+    private final SimpMessagingTemplate template;
+
 
     //예약기능
     @Transactional
@@ -56,8 +67,79 @@ public class ReservationService {
         Facility facility = facilityService.findById(reservationDTO.getFacilityId());
         reservation.setMember(member);
         reservation.setFacility(facility);
-        return reservationRepository.save(reservation);
+
+        Reservation savedReservation = reservationRepository.save(reservation);
+
+        scheduleAlerts(savedReservation);
+
+        return savedReservation;
     }
+
+    // Schedule alerts for the reservation
+    public void scheduleAlerts(Reservation reservation) {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(5);
+        log.info("스케줄시작 알림: {}", reservation.getAlerts());
+
+        AlertType[] alertTypes = AlertType.values();
+        AlertType lastAlert = alertTypes[alertTypes.length - 1];
+
+        for (AlertType alert : reservation.getAlerts()) {
+            long timeUntilAlert = calculateTimeUntilAlert(reservation, alert);
+
+            if (timeUntilAlert > 0) {
+                log.info("예약 ID {}에 대한 {} 알림 전송 대기중", reservation.getId(), alert.name());
+                scheduler.schedule(() -> sendAlert(reservation, alert), timeUntilAlert, TimeUnit.MILLISECONDS);
+            }
+
+            if (alert == lastAlert && timeUntilAlert == 1) {
+                // 마감 시간이 되면 알림 전송
+                String reviewMessage = "예약 ID " + reservation.getId() + "에 대한 이용한 시설물에 대한 리뷰를 달아주세요.";
+                template.convertAndSend("/topic/alert", reviewMessage);
+            }
+        }
+        scheduler.shutdown();
+    }
+    // 특정 알림까지의 시간 계산
+    private long calculateTimeUntilAlert(Reservation reservation, AlertType alert) {
+        LocalDateTime reservationEndTime = LocalDateTime.of(
+                Integer.parseInt(reservation.getYear()),
+                Integer.parseInt(reservation.getMonth()),
+                Integer.parseInt(reservation.getDay()),
+                (int) (reservation.getEnd_time() * 60 / 60),
+                (int) (reservation.getEnd_time() * 60 % 60)
+        );
+        //알림을 예약할 시간(마감시간-원하는 n분전 알림시간)
+        LocalDateTime alertTime = reservationEndTime.minus(alert.getMinutesBefore(), ChronoUnit.MINUTES);
+
+        return Duration.between(LocalDateTime.now(), alertTime).toMillis();
+    }
+
+    // 알림 전송
+    private void sendAlert(Reservation reservation, AlertType alert) {
+        String alertMessage;
+
+        switch (alert) {
+            case THREE_DAYS_BEFORE:
+                alertMessage = "예약 ID " + reservation.getId() + "에 대한 시설 이용 3일 전 안내";
+                break;
+            case ONE_DAY_BEFORE:
+                alertMessage = "예약 ID " + reservation.getId() + "에 대한 시설 이용 1일 전 안내";
+                break;
+            case THIRTY_MINUTES_BEFORE:
+                alertMessage = "예약 ID " + reservation.getId() + "에 대한 시설 반납 30분전 안내";
+                break;
+            case TEN_MINUTES_BEFORE:
+                alertMessage = "예약 ID " + reservation.getId() + "에 대한 시설 반납 10분 전 안내";
+                break;
+            default:
+                alertMessage = "예약 ID " + reservation.getId() + "에 대한 알림";
+        }
+
+        template.convertAndSend("/topic/alert", alertMessage);
+        log.info("{} 전송 완료", alertMessage);
+
+    }
+
     //반납하기
     @Transactional
     public Reservation returnReservation(Reservation reservation){

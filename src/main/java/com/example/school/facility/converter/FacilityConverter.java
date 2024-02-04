@@ -1,7 +1,7 @@
 package com.example.school.facility.converter;
 
-import com.example.school.domain.Facility;
-import com.example.school.domain.Reservation;
+import com.example.school.entity.Facility;
+import com.example.school.entity.Reservation;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import org.springframework.data.domain.Page;
 
