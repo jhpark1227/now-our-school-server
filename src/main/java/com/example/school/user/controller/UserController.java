@@ -13,6 +13,8 @@ import com.example.school.validation.annotation.ExistFacility;
 import com.example.school.validation.annotation.ExistMember;
 
 import com.example.school.validation.annotation.ExistReview;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -109,18 +111,24 @@ public class UserController {
         Inquiry inquiry = userCommandService.createInquiry(memberId, request);
         return ApiResponse.onSuccess(UserConverter.toCreateInquiryResultDTO(inquiry));
     }
-
-    // 프로필 정보 수정
-    @PutMapping(value = "/update-profile")
+    //프로필 정보 수정
+    @PutMapping(value = "/update-profile",consumes = "multipart/form-data")
     @PreAuthorize("isAuthenticated()")
     public ApiResponse<UserResponseDTO.UpdateProfileResultDTO> updateProfile(
             @ExistMember @RequestParam(name = "memberId") Long memberId,
             @RequestPart(value = "image", required = false) MultipartFile profileImage,
-            @RequestPart UserRequestDTO.UpdateProfileDTO updateProfileReqDTO) {
+            @RequestPart(name = "updateProfileReqDTO", required = false) String updateProfileReqDTOString) throws JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserRequestDTO.UpdateProfileDTO updateProfileReqDTO = null;
+        if (updateProfileReqDTOString != null) {
+            updateProfileReqDTO = objectMapper.readValue(updateProfileReqDTOString, UserRequestDTO.UpdateProfileDTO.class);
+        }
 
         Member updatedMember = userCommandService.updateProfile(memberId,updateProfileReqDTO, profileImage);
         return ApiResponse.onSuccess(UserConverter.toUpdateProfileResultDTO(updatedMember));
     }
+
 
 
     @GetMapping("/info")

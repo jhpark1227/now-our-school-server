@@ -85,31 +85,31 @@ public class UserCommandServiceImpl implements UserCommandService {
     }
 
     @Override
-        public Member updateProfile(Long memberId, UserRequestDTO.UpdateProfileDTO request, MultipartFile profileImg) {
+    public Member updateProfile(Long memberId, UserRequestDTO.UpdateProfileDTO request, MultipartFile profileImg) {
         Member user = userRepository.findById(memberId).orElseThrow(() ->
                 new RuntimeException("User not found with id: " + memberId));
 
         // 기존 프로필 사진 URL
         String existingProfilePictureUrl = user.getProfileImg();
 
-        // 기존 프로필 사진이 존재하면 삭제
-        if (existingProfilePictureUrl != null) {
+        // 새로운 사진이 들어왔고, 기존 사진이 존재할 시 기존 사진 삭제
+        if (existingProfilePictureUrl != null && profileImg != null) {
             String existingFileName = extractFileNameFromUrl(existingProfilePictureUrl);
             awsS3Service.deleteFile(existingFileName);
         }
 
         // 새 프로필 사진 업로드
-        String newProfilePictureUrl = null;
         if (profileImg != null) {
-            newProfilePictureUrl = awsS3Service.uploadSingleFile(profileImg);
+            String newProfilePictureUrl = awsS3Service.uploadSingleFile(profileImg);
+            user.setProfileImg(newProfilePictureUrl);
         }
 
-        user.setNickname(request.getNickname());
-        user.setProfileImg(newProfilePictureUrl);
-
+        // 닉네임 변경
+        if (request != null && request.getNickname() != null) {
+            user.setNickname(request.getNickname());
+        }
 
         return userRepository.save(user);
-
     }
 
 

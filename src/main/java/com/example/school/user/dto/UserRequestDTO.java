@@ -26,5 +26,6 @@ public class UserRequestDTO {
     @Getter
     public static class UpdateProfileDTO {
         String nickname;
+
     }
 }
