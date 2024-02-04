@@ -7,8 +7,10 @@ import com.example.school.user.dto.UserRequestDTO;
 import jakarta.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface UserCommandService {
-    Review createReview(Long memberId, Long facilityId, UserRequestDTO.ReviewDTO request);
+    Review createReview(List<MultipartFile> imgFile, Long memberId, Long facilityId, UserRequestDTO.ReviewDTO request);
     Review updateReview(Long memberId, Long facilityId, Long reviewId, UserRequestDTO.ReviewDTO request);
     void deleteReview(Long memberId, Long facilityId, Long reviewId);
 

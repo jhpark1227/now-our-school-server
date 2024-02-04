@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,6 +30,9 @@ public class Review extends BaseEntity {
     private Float score;
 
     private String body;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    private List<ReviewImage> reviewImages;
 
 
     public void setMember(Member member){
