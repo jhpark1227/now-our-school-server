@@ -1,6 +1,7 @@
-package com.example.school.domain;
+package com.example.school.entity;
 
-import com.example.school.domain.common.BaseEntity;
+import com.example.school.entity.Review;
+import com.example.school.entity.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
