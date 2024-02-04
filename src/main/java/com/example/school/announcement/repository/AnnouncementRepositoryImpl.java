@@ -1,8 +1,8 @@
 package com.example.school.announcement.repository;
 
-import com.example.school.domain.Announcement;
-import com.example.school.domain.School;
-import com.example.school.domain.enums.AnnouncementType;
+import com.example.school.entity.Announcement;
+import com.example.school.entity.School;
+import com.example.school.entity.enums.AnnouncementType;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-import static com.example.school.domain.QAnnouncement.announcement;
+import static com.example.school.entity.QAnnouncement.announcement;
 
 @RequiredArgsConstructor
 public class AnnouncementRepositoryImpl implements AnnouncementRepositoryCustom{

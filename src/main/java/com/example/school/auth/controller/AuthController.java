@@ -8,12 +8,9 @@ import com.example.school.auth.dto.AuthResponseDTO;
 import com.example.school.auth.service.AuthCommandService;
 import com.example.school.auth.service.AuthQueryService;
 import com.example.school.auth.service.MailService;
-import com.example.school.domain.Member;
-import com.example.school.facility.dto.FacilityResponseDTO;
+import com.example.school.entity.Member;
 import com.example.school.validation.annotation.CheckKeyword;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,6 +40,10 @@ public class AuthController {
 
         if (!authQueryService.checkPassword((registerReqDTO.getPassword()))) {
             return ApiResponse.onFailure(ErrorStatus.PASSWORD_FORMAT_ERROR.getCode(), ErrorStatus.PASSWORD_FORMAT_ERROR.getMessage());
+        }
+
+        if (!authQueryService.checkIdentifyNumFormat(registerReqDTO.getIdentify_num())) {
+            return ApiResponse.onFailure(ErrorStatus.IDENTIFYNUM_FORMAT_ERROR.getCode(), ErrorStatus.IDENTIFYNUM_FORMAT_ERROR.getMessage());
         }
 
         if (authQueryService.validateDuplicateEmail(registerReqDTO.getEmail())) {

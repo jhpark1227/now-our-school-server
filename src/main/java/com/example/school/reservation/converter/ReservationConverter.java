@@ -1,6 +1,6 @@
 package com.example.school.reservation.converter;
 
-import com.example.school.domain.Reservation;
+import com.example.school.entity.Reservation;
 import com.example.school.reservation.dto.ReservationRequestDTO;
 import com.example.school.reservation.dto.ReservationResponseDTO;
 import org.springframework.data.domain.Page;

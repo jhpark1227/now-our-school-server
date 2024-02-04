@@ -1,6 +1,6 @@
 package com.example.school.announcement.dto;
 
-import com.example.school.domain.Announcement;
+import com.example.school.entity.Announcement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Page;

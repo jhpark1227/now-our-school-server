@@ -1,6 +1,5 @@
 package com.example.school.auth.dto;
 
-import com.example.school.domain.School;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -24,6 +23,7 @@ public class AuthResponseDTO {
         String accessToken;
         String refreshToken;
         String userid;
+        Long memberId;
         private Long accessTokenExpirationTime;
 
     }

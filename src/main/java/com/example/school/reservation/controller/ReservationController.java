@@ -2,14 +2,14 @@ package com.example.school.reservation.controller;
 
 import com.example.school.apiPayload.ApiResponse;
 import com.example.school.awsS3.AwsS3Service;
-import com.example.school.domain.Facility;
-import com.example.school.domain.Image;
-import com.example.school.domain.Member;
+import com.example.school.entity.Facility;
+import com.example.school.entity.Image;
+import com.example.school.entity.Member;
 import com.example.school.facility.converter.FacilityConverter;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.reservation.converter.ImageConverter;
 import com.example.school.reservation.converter.ReservationConverter;
-import com.example.school.domain.Reservation;
+import com.example.school.entity.Reservation;
 import com.example.school.reservation.dto.ImageResponseDTO;
 import com.example.school.reservation.dto.ReservationRequestDTO;
 import com.example.school.reservation.dto.ReservationResponseDTO;
@@ -30,7 +30,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("reservation")
+@RequestMapping("/api/v1/reservation")
 public class ReservationController {
     private final ReservationService reservationService;
     private final AwsS3Service awsS3Service;

@@ -1,7 +1,6 @@
 package com.example.school.reservation.dto;
 
-import com.example.school.domain.Facility;
-import com.example.school.domain.enums.AlertType;
+import com.example.school.entity.enums.AlertType;
 import lombok.Getter;
 
 import java.util.Set;

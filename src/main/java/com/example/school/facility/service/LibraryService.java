@@ -2,7 +2,7 @@ package com.example.school.facility.service;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.domain.Member;
+import com.example.school.entity.Member;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.dto.RestTemplateRes;
 import com.example.school.user.repository.UserRepository;
@@ -54,7 +54,7 @@ public class LibraryService {
             return FacilityResponseDTO.LibraryDetail.builder()
                     .name(detail.getName())
                     .total(detail.getTotal())
-                    .current(detail.getCurrent())
+                    .current(detail.getTotal()-detail.getCurrent())
                     .status(detail.getStatus()).build();
         }).collect(Collectors.toList());
 

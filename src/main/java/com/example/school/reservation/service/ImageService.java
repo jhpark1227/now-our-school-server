@@ -1,7 +1,7 @@
 package com.example.school.reservation.service;
 
-import com.example.school.domain.Image;
-import com.example.school.domain.Reservation;
+import com.example.school.entity.Image;
+import com.example.school.entity.Reservation;
 import com.example.school.reservation.converter.ImageConverter;
 import com.example.school.reservation.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;

@@ -2,10 +2,11 @@ package com.example.school.facility.service;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.domain.Building;
-import com.example.school.domain.Facility;
-import com.example.school.domain.Member;
-import com.example.school.domain.Theme;
+import com.example.school.entity.Building;
+import com.example.school.entity.Facility;
+import com.example.school.entity.Member;
+import com.example.school.entity.Theme;
+import com.example.school.entity.enums.FacilityTag;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.repository.BuildingRepository;
 import com.example.school.facility.repository.ThemeRepository;
@@ -19,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service @Transactional
 @RequiredArgsConstructor
@@ -32,33 +35,63 @@ public class FacilityService {
         return facilityRepository.findById(id).get();
     }
 
-    public List<Theme> getListByTheme(String email) {
-        Member member = userRepository.findByEmail(email)
+    public FacilityResponseDTO.Categories getListByTheme(Long memberId) {
+        Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
         List<Theme> entities = themeRepository.findBySchoolWithFacility(member.getSchool());
 
-        return entities;
+        List<FacilityResponseDTO.CategoryWithFacilities> list =
+                entities.stream().map(FacilityResponseDTO.CategoryWithFacilities::new)
+                        .collect(Collectors.toList());
+
+        return new FacilityResponseDTO.Categories(list,list.size());
     }
 
-    public List<Building> getListByBuilding(String email) {
-        Member member = userRepository.findByEmail(email)
+    public FacilityResponseDTO.Categories getListByBuilding(Long memberId) {
+        Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
         List<Building> entities = buildingRepository.findBySchoolWithFacility(member.getSchool());
 
-        return entities;
+        List<FacilityResponseDTO.CategoryWithFacilities> list =
+                entities.stream().map(FacilityResponseDTO.CategoryWithFacilities::new)
+                        .collect(Collectors.toList());
+
+
+        return new FacilityResponseDTO.Categories(list,list.size());
     }
 
-    public List<Building> getMarkers(String email) {
-        Member member = userRepository.findByEmail(email)
+    public FacilityResponseDTO.Markers getMarkers(Long memberId) {
+        Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        return buildingRepository.findAllBySchool(member.getSchool());
+        List<Building> entities = buildingRepository.findAllBySchool(member.getSchool());
+
+        List<FacilityResponseDTO.Marker> list = entities.stream()
+                .map(entity->new FacilityResponseDTO.Marker(entity.getId(),entity.getLatitude(),entity.getLongitude()))
+                .collect(Collectors.toList());
+
+        return new FacilityResponseDTO.Markers(list,list.size());
     }
 
-    public List<Facility> getSuggestion(String userId) {
-        Member member = userRepository.findByUserId(userId)
+    public FacilityResponseDTO.Tags getSuggestion(Long memberId) {
+        Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
-        return facilityRepository.findByBuildingSchoolAndTagIsNotNull(member.getSchool());
+
+        List<Facility> entities = facilityRepository.findByBuildingSchoolAndTagIsNotNull(member.getSchool());
+
+        Map<FacilityTag,List<Facility>> map = entities.stream().collect(Collectors.groupingBy(Facility::getTag));
+
+        List<FacilityResponseDTO.Tag> tags = map.keySet().stream().map(key->{
+            List<FacilityResponseDTO.FacilityWithTag> list =
+                    map.get(key).stream().map(value->{
+                        return new FacilityResponseDTO.FacilityWithTag(value.getId(),value.getName(),value.getImageURL());
+                    }).collect(Collectors.toList());
+            return new FacilityResponseDTO.Tag(key.getTag(),list,list.size());
+        }).collect(Collectors.toList());
+
+        return new FacilityResponseDTO.Tags(tags);
     }
 
     public void saveSearchLog(Long memberId, Long schoolId, String value) {

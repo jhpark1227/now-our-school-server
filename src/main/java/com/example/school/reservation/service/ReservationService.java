@@ -2,12 +2,11 @@ package com.example.school.reservation.service;
 
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.domain.enums.AlertType;
+import com.example.school.entity.enums.AlertType;
 import com.example.school.reservation.converter.ReservationConverter;
-import com.example.school.domain.Facility;
-import com.example.school.domain.Member;
-import com.example.school.domain.Reservation;
-import com.example.school.facility.repository.FacilityRepository;
+import com.example.school.entity.Facility;
+import com.example.school.entity.Member;
+import com.example.school.entity.Reservation;
 import com.example.school.facility.service.FacilityService;
 import com.example.school.reservation.dto.ReservationRequestDTO;
 import com.example.school.reservation.dto.ReservationResponseDTO;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

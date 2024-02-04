@@ -4,10 +4,10 @@ import com.example.school.announcement.dto.AnnouncementRes;
 import com.example.school.announcement.repository.AnnouncementRepository;
 import com.example.school.apiPayload.GeneralException;
 import com.example.school.apiPayload.status.ErrorStatus;
-import com.example.school.domain.Announcement;
-import com.example.school.domain.Member;
-import com.example.school.domain.School;
-import com.example.school.domain.enums.AnnouncementType;
+import com.example.school.entity.Announcement;
+import com.example.school.entity.Member;
+import com.example.school.entity.School;
+import com.example.school.entity.enums.AnnouncementType;
 import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class AnnouncementService {
     private final AnnouncementRepository announcementRepository;
     private final UserRepository userRepository;
 
-    public List<Announcement> getSamples(Long memberId) {
+    public AnnouncementRes.Samples getSamples(Long memberId) {
         Member member = userRepository.findById(memberId)
                 .orElseThrow(()-> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
         School school = member.getSchool();
@@ -34,7 +35,11 @@ public class AnnouncementService {
                 PageRequest.of(0,4)
         );
 
-        return entities;
+        List<AnnouncementRes.Sample> list =
+                entities.stream().map(entity->new AnnouncementRes.Sample(entity.getId(), entity.getTitle()))
+                        .collect(Collectors.toList());
+
+        return new AnnouncementRes.Samples(list,list.size());
     }
 
     public AnnouncementRes.Detail getDetail(Long id) {

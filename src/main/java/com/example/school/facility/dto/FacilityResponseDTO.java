@@ -1,8 +1,9 @@
 package com.example.school.facility.dto;
 
-import com.example.school.domain.Building;
-import com.example.school.domain.Facility;
-import com.example.school.domain.Theme;
+import com.example.school.entity.Building;
+import com.example.school.entity.Facility;
+import com.example.school.entity.SearchRank;
+import com.example.school.entity.Theme;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -234,6 +235,25 @@ public class FacilityResponseDTO {
 
     @Getter @AllArgsConstructor
     public static class DeleteSearchLog {
+        String value;
+    }
+
+    @Getter
+    public static class SearchRankList {
+        List<SearchRankDTO> list;
+        int count;
+
+        public SearchRankList(List<SearchRank> entities){
+            list = entities.stream().map(entity->{
+                return new SearchRankDTO(entity.getRanking(), entity.getValue());
+            }).collect(Collectors.toList());
+            count = list.size();
+        }
+    }
+
+    @Getter @AllArgsConstructor
+    public static class SearchRankDTO{
+        int ranking;
         String value;
     }
 }
