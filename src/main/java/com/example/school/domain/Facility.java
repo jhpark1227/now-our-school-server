@@ -26,6 +26,10 @@ public class Facility extends BaseEntity{
     private List<Review> reviewList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "school_id")
+    private School school;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="building_id")
     private Building building;
 

@@ -88,7 +88,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
         FacilityKeyword keywordEnum = FacilityKeyword.valueOf(keyword.toUpperCase());
 
-        List<Facility> entities = facilityRepository.findByKeywordAndBuildingSchool(keywordEnum,member.getSchool());
+        List<Facility> entities = facilityRepository.findByKeywordAndSchool(keywordEnum,member.getSchool());
 
         List<FacilityResponseDTO.FacilityInKeyword> list = entities.stream().map(entity->{
             return new FacilityResponseDTO.FacilityInKeyword(entity.getId(),entity.getName(), entity.getDescription(), entity.getImageURL());
@@ -114,7 +114,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
         Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        List<Facility> entities = facilityRepository.findByNameLikeAndBuildingSchool(keyword.trim(),member.getSchool());
+        List<Facility> entities = facilityRepository.findByNameLikeAndSchool(keyword.trim(),member.getSchool());
         facilityService.saveSearchLog(memberId, member.getSchool().getId(), keyword);
 
         List<FacilityResponseDTO.SearchResult> list = entities.stream().map(entity->{
