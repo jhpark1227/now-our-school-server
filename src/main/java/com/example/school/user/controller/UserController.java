@@ -37,16 +37,54 @@ public class UserController {
     private final UserQueryService userQueryService;
 
     //리뷰 작성
-//리뷰 작성
-    @PostMapping(value = "/review",consumes = "multipart/form-data")
+    @PostMapping(value = "/review", consumes = "multipart/form-data")
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "리뷰 작성 API",description = "리뷰를 작성하는 API")
-    public ApiResponse<UserResponseDTO.CreateReviewResultDTO> createReview(@RequestPart("image") List<MultipartFile> imgFile,
-                                                                           @RequestPart @Valid UserRequestDTO.ReviewDTO request,
-                                                                           @ExistFacility @RequestParam(name = "facilityId") Long facilityId,
-                                                                           @ExistMember @RequestParam(name = "memberId") Long memberId){
-        Review review = userCommandService.createReview(imgFile,memberId, facilityId, request);
+    public ApiResponse<UserResponseDTO.CreateReviewResultDTO> createReview(
+            @RequestPart(value = "image", required = false) List<MultipartFile> imgFile,
+            @RequestPart @Valid UserRequestDTO.ReviewDTO request,
+            @ExistFacility @RequestParam(name = "facilityId") Long facilityId,
+            @ExistMember @RequestParam(name = "memberId") Long memberId){
+
+        Review review = userCommandService.createReview(imgFile, memberId, facilityId, request);
         return ApiResponse.onSuccess(UserConverter.toCreateReviewResultDTO(review));
+    }
+
+    @PutMapping(value = "/review/modify",consumes = "multipart/form-data")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "나의 리뷰 수정 API",description = "나의 리뷰를 수정하는 API이며, reviewId, facilityId, memberId가 모두 일치할 시 수정가능합니다")
+    public ApiResponse<UserResponseDTO.UpdateReviewResultDTO> modifyReview(
+            @ExistReview @RequestParam(name = "reviewId") Long reviewId,
+            @RequestPart(value = "image", required = false) List<MultipartFile> imgFile,
+            @RequestPart(name = "review", required = false) String updateReviewDTOString,
+            @ExistFacility @RequestParam(name = "facilityId") Long facilityId,
+            @ExistMember @RequestParam(name = "memberId") Long memberId) throws JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserRequestDTO.UpdateReviewDTO updateReviewDTO = null;
+        if (updateReviewDTOString != null) {
+            updateReviewDTO = objectMapper.readValue(updateReviewDTOString, UserRequestDTO.UpdateReviewDTO.class);
+        }
+
+        Review updatedReview = userCommandService.updateReview(memberId, facilityId, reviewId, updateReviewDTO, imgFile);
+        return ApiResponse.onSuccess(UserConverter.toUpdateReviewResultDTO(updatedReview));
+    }
+    //프로필 정보 수정
+    @PutMapping(value = "/update-profile",consumes = "multipart/form-data")
+    @PreAuthorize("isAuthenticated()")
+    public ApiResponse<UserResponseDTO.UpdateProfileResultDTO> updateProfile(
+            @ExistMember @RequestParam(name = "memberId") Long memberId,
+            @RequestPart(value = "image", required = false) MultipartFile profileImage,
+            @RequestPart(name = "updateProfileReqDTO", required = false) String updateProfileReqDTOString) throws JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserRequestDTO.UpdateProfileDTO updateProfileReqDTO = null;
+        if (updateProfileReqDTOString != null) {
+            updateProfileReqDTO = objectMapper.readValue(updateProfileReqDTOString, UserRequestDTO.UpdateProfileDTO.class);
+        }
+
+        Member updatedMember = userCommandService.updateProfile(memberId,updateProfileReqDTO, profileImage);
+        return ApiResponse.onSuccess(UserConverter.toUpdateProfileResultDTO(updatedMember));
     }
 
     //시설별 리뷰 조회
@@ -97,19 +135,7 @@ public class UserController {
         return ApiResponse.onSuccess(reviewPreViewListDTO);
     }
 
-    //리뷰수정
-    @PutMapping("/review/modify")
-    @PreAuthorize("isAuthenticated()")
-    @Operation(summary = "나의 리뷰 수정 API",description = "나의 리뷰를 수정하는 API이며, reviewId, facilityId, memberId가 모두 일치할 시 수정가능합니다")
-    public ApiResponse<UserResponseDTO.UpdateReviewResultDTO> modifyReview(
-            @ExistReview @RequestParam(name = "reviewId") Long reviewId,
-            @RequestBody @Valid UserRequestDTO.ReviewDTO request,
-            @ExistFacility @RequestParam(name = "facilityId") Long facilityId,
-            @ExistMember @RequestParam(name = "memberId") Long memberId) {
 
-        Review updatedReview = userCommandService.updateReview(memberId, facilityId, reviewId, request);
-        return ApiResponse.onSuccess(UserConverter.toUpdateReviewResultDTO(updatedReview));
-    }
     //리뷰삭제
     @DeleteMapping("/review/delete")
     @PreAuthorize("isAuthenticated()")
@@ -131,23 +157,7 @@ public class UserController {
         Inquiry inquiry = userCommandService.createInquiry(memberId, request);
         return ApiResponse.onSuccess(UserConverter.toCreateInquiryResultDTO(inquiry));
     }
-    //프로필 정보 수정
-    @PutMapping(value = "/update-profile",consumes = "multipart/form-data")
-    @PreAuthorize("isAuthenticated()")
-    public ApiResponse<UserResponseDTO.UpdateProfileResultDTO> updateProfile(
-            @ExistMember @RequestParam(name = "memberId") Long memberId,
-            @RequestPart(value = "image", required = false) MultipartFile profileImage,
-            @RequestPart(name = "updateProfileReqDTO", required = false) String updateProfileReqDTOString) throws JsonProcessingException {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        UserRequestDTO.UpdateProfileDTO updateProfileReqDTO = null;
-        if (updateProfileReqDTOString != null) {
-            updateProfileReqDTO = objectMapper.readValue(updateProfileReqDTOString, UserRequestDTO.UpdateProfileDTO.class);
-        }
-
-        Member updatedMember = userCommandService.updateProfile(memberId,updateProfileReqDTO, profileImage);
-        return ApiResponse.onSuccess(UserConverter.toUpdateProfileResultDTO(updatedMember));
-    }
 
 
 

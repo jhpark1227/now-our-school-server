@@ -42,7 +42,7 @@ public class UserCommandServiceImpl implements UserCommandService {
 
         review = reviewRepository.save(review);
 
-        if (imgFile != null) {
+        if (imgFile != null && !imgFile.isEmpty()) {
             List<String> reviewImgUrls = awsS3Service.uploadFile(imgFile);
             for (String imageUrl : reviewImgUrls) {
                 ReviewImage reviewImage = new ReviewImage();
@@ -56,19 +56,43 @@ public class UserCommandServiceImpl implements UserCommandService {
     }
 
 
-
-
     @Override
-    public Review updateReview(Long memberId, Long facilityId, Long reviewId, UserRequestDTO.ReviewDTO request) {
+    public Review updateReview(Long memberId, Long facilityId, Long reviewId, UserRequestDTO.UpdateReviewDTO request, List<MultipartFile> imgFile) {
 
         Review existingReview = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new RuntimeException("Review not found with id: " + reviewId));
 
         validateReviewOwnership(existingReview, memberId, facilityId);
 
-        existingReview.setTitle(request.getTitle());
-        existingReview.setScore(request.getScore());
-        existingReview.setBody(request.getBody());
+        // Update review content if request is not null
+        if (request != null) {
+            if (request.getTitle() != null)
+                existingReview.setTitle(request.getTitle());
+            if (request.getScore() != null)
+                existingReview.setScore(request.getScore());
+            if (request.getBody() != null)
+                existingReview.setBody(request.getBody());
+        }
+
+
+        // Update review images if imgFile is not null and not empty
+        if (imgFile != null && !imgFile.isEmpty()) {
+            // Delete previous images
+            List<ReviewImage> oldImages = reviewImageRepository.findByReviewId(reviewId);
+            for (ReviewImage oldImage : oldImages) {
+                awsS3Service.deleteFile(oldImage.getImageUrl());
+                reviewImageRepository.delete(oldImage);
+            }
+
+            // Upload new images
+            List<String> reviewImgUrls = awsS3Service.uploadFile(imgFile);
+            for (String imageUrl : reviewImgUrls) {
+                ReviewImage reviewImage = new ReviewImage();
+                reviewImage.setReview(existingReview);
+                reviewImage.setImageUrl(imageUrl);
+                reviewImageRepository.save(reviewImage);
+            }
+        }
 
         return reviewRepository.save(existingReview);
     }

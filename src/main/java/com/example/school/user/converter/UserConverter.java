@@ -27,12 +27,6 @@ public class UserConverter {
                 .build();
     }
 
-    public static UserResponseDTO.UpdateReviewResultDTO toUpdateReviewResultDTO(Review updatedReview) {
-        return UserResponseDTO.UpdateReviewResultDTO.builder()
-                .updatedReviewId(updatedReview.getId())
-                .updatedAt(LocalDateTime.now())
-                .build();
-    }
     public static UserResponseDTO.ReviewPreViewDTO reviewPreViewDTO(Review review){
         return UserResponseDTO.ReviewPreViewDTO.builder()
                 .title(review.getTitle())
@@ -72,6 +66,16 @@ public class UserConverter {
         return UserResponseDTO.UpdateProfileResultDTO.builder()
                 .nickname(member.getNickname())
                 .profilePicture(member.getProfileImg())
+                .updatedAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static UserResponseDTO.UpdateReviewResultDTO toUpdateReviewResultDTO(Review updatedReview) {
+        return UserResponseDTO.UpdateReviewResultDTO.builder()
+                .updatedReviewId(updatedReview.getId())
+                .updatedScore(updatedReview.getScore())
+                .updatedBody(updatedReview.getBody())
+                .updatedTitle(updatedReview.getTitle())
                 .updatedAt(LocalDateTime.now())
                 .build();
     }

@@ -10,10 +10,8 @@ import java.util.List;
 
 public interface UserCommandService {
     Review createReview(List<MultipartFile> imgFile, Long memberId, Long facilityId, UserRequestDTO.ReviewDTO request);
-    Review updateReview(Long memberId, Long facilityId, Long reviewId, UserRequestDTO.ReviewDTO request);
+    Review updateReview(Long memberId, Long facilityId, Long reviewId, UserRequestDTO.UpdateReviewDTO request, List<MultipartFile> imgFile);
     void deleteReview(Long memberId, Long facilityId, Long reviewId);
-
     Inquiry createInquiry(Long memberId, UserRequestDTO.InquiryDTO request);
-
     Member updateProfile(Long memberId, UserRequestDTO.UpdateProfileDTO request, MultipartFile profileImg);
 }
