@@ -13,10 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,13 +28,11 @@ public class LibraryService {
         Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        URI uri = UriComponentsBuilder
-                .fromUriString(address)
-                .path("/api/v1/library")
-                .queryParam("university",member.getSchool().getName())
-                .encode(Charset.defaultCharset())
-                .build()
-                .toUri();
+        if(!member.getSchool().getName().equals("울산대학교")){
+            throw new GeneralException(ErrorStatus.NO_CONTENT);
+        }
+
+        String uri = address + "/api/v1/library/울산대학교";
 
         RestTemplate restTemplate = new RestTemplate();
 
