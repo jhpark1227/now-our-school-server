@@ -1,6 +1,7 @@
 package com.example.school.user.dto;
 
 import com.example.school.domain.Member;
+import com.example.school.domain.ReviewImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +26,9 @@ public class UserResponseDTO {
     @AllArgsConstructor
     public static class UpdateReviewResultDTO {
         Long updatedReviewId;
+        Float updatedScore;
+        String updatedTitle;
+        String updatedBody;
         LocalDateTime updatedAt;
     }
 

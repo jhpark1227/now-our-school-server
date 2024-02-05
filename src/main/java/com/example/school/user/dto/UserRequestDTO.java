@@ -28,4 +28,11 @@ public class UserRequestDTO {
         String nickname;
 
     }
+    @Getter
+    public static class UpdateReviewDTO{
+
+        String title;
+        Float score;
+        String body;
+    }
 }
