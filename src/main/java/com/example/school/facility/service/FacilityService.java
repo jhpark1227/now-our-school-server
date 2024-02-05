@@ -79,7 +79,7 @@ public class FacilityService {
         Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        List<Facility> entities = facilityRepository.findByBuildingSchoolAndTagIsNotNull(member.getSchool());
+        List<Facility> entities = facilityRepository.findBySchoolAndTagIsNotNull(member.getSchool());
 
         Map<FacilityTag,List<Facility>> map = entities.stream().collect(Collectors.groupingBy(Facility::getTag));
 
