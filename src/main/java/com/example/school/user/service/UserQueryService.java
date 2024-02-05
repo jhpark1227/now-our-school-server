@@ -10,9 +10,9 @@ import java.util.Optional;
 public interface UserQueryService {
 
     Optional<Member> findMember(Long id);
-    Page<Review> getReviewList(Long MemberId, Integer page);
-    Page<Review> findByFacility(Long facilityId, Integer page);
-    Page<Review> getAllReviewList(Integer page);
+    Page<UserResponseDTO.ReviewPreViewDTO>  getReviewList(Long MemberId, Integer page);
+    Page<UserResponseDTO.ReviewPreViewDTO> findByFacility(Long facilityId, Integer page);
+    Page<UserResponseDTO.ReviewPreViewDTO> getAllReviewList(Integer page);
 
     Optional<Review> findById(Long id);
 

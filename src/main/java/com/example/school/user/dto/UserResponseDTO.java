@@ -55,6 +55,7 @@ public class UserResponseDTO {
         Float score;
         String body;
         LocalDate createdAt;
+        List<String> imageUrls;
     }
     @Builder
     @Getter

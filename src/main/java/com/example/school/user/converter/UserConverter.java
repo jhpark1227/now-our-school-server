@@ -3,6 +3,7 @@ package com.example.school.user.converter;
 import com.example.school.domain.Inquiry;
 import com.example.school.domain.Member;
 import com.example.school.domain.Review;
+import com.example.school.domain.ReviewImage;
 import com.example.school.user.dto.UserRequestDTO;
 import com.example.school.user.dto.UserResponseDTO;
 import org.springframework.data.domain.Page;
@@ -28,12 +29,17 @@ public class UserConverter {
     }
 
     public static UserResponseDTO.ReviewPreViewDTO reviewPreViewDTO(Review review){
+        List<String> imageUrls = review.getReviewImages().stream()
+                .map(ReviewImage::getImageUrl)
+                .collect(Collectors.toList());
+
         return UserResponseDTO.ReviewPreViewDTO.builder()
                 .title(review.getTitle())
                 .ownerNickname(review.getMember().getName())
                 .score(review.getScore())
                 .createdAt(review.getCreatedAt().toLocalDate())
                 .body(review.getBody())
+                .imageUrls(imageUrls)
                 .build();
     }   public static UserResponseDTO.ReviewPreViewListDTO reviewPreViewListDTO(Page<Review> reviewList){
 
