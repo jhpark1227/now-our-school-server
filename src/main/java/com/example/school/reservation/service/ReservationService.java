@@ -168,8 +168,10 @@ public class ReservationService {
                     .allMatch(otherReservation -> newEndTime <= otherReservation.getStart_time());
 
             if (isExtensionAllowed) {
+                int newDuration = reservation.getDuration() + extendTime;
                 // 연장 가능한 경우, endTime 업데이트
                 reservation.setEnd_time(newEndTime);
+                reservation.setDuration(newDuration);
                 return reservationRepository.save(reservation);
             } else {
                 // 연장이 불가능한 경우에 대한 처리
