@@ -13,6 +13,8 @@ public class ReservationConverter {
     public static ReservationResponseDTO.DetailDTO detailResultDTO(Reservation reservation){
         return ReservationResponseDTO.DetailDTO.builder()
                 .id(reservation.getId())
+                .facilityId(reservation.getFacility().getId())
+                .memberId(reservation.getMember().getId())
                 .year(reservation.getYear())
                 .month(reservation.getMonth())
                 .start_time(reservation.getStart_time())

@@ -17,6 +17,8 @@ public class ReservationResponseDTO {
     @AllArgsConstructor
     public static class DetailDTO{
         Long id;
+        Long facilityId;
+        Long memberId;
         String year;
         String month;
         String day;
