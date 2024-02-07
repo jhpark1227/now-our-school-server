@@ -35,31 +35,35 @@ public class FacilityService {
         return facilityRepository.findById(id).get();
     }
 
-    public FacilityResponseDTO.Categories getListByTheme(Long memberId) {
+    public FacilityResponseDTO.ListByTheme getListByTheme(Long memberId) {
         Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        List<Theme> entities = themeRepository.findBySchoolWithFacility(member.getSchool());
+        List<Theme> themeEntities = themeRepository.findBySchoolWithFacility(member.getSchool());
 
-        List<FacilityResponseDTO.CategoryWithFacilities> list =
-                entities.stream().map(FacilityResponseDTO.CategoryWithFacilities::new)
-                        .collect(Collectors.toList());
+        List<Facility> facilityEntities = facilityRepository.findBySchoolAndIsThemeIsTrue(member.getSchool());
 
-        return new FacilityResponseDTO.Categories(list,list.size());
+        List<FacilityResponseDTO.ThemeWithFacilities> themeList =
+                themeEntities.stream().map(FacilityResponseDTO.ThemeWithFacilities::new).collect(Collectors.toList());
+
+        List<FacilityResponseDTO.FacilityIdAndName> facilityList =
+                facilityEntities.stream().map(FacilityResponseDTO.FacilityIdAndName::new).collect(Collectors.toList());
+
+        return new FacilityResponseDTO.ListByTheme(themeList, facilityList);
     }
 
-    public FacilityResponseDTO.Categories getListByBuilding(Long memberId) {
+    public FacilityResponseDTO.ListByBuilding getListByBuilding(Long memberId) {
         Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
         List<Building> entities = buildingRepository.findBySchoolWithFacility(member.getSchool());
 
-        List<FacilityResponseDTO.CategoryWithFacilities> list =
-                entities.stream().map(FacilityResponseDTO.CategoryWithFacilities::new)
+        List<FacilityResponseDTO.BuildingWithFacilities> list =
+                entities.stream().map(FacilityResponseDTO.BuildingWithFacilities::new)
                         .collect(Collectors.toList());
 
 
-        return new FacilityResponseDTO.Categories(list,list.size());
+        return new FacilityResponseDTO.ListByBuilding(list,list.size());
     }
 
     public FacilityResponseDTO.Markers getMarkers(Long memberId) {

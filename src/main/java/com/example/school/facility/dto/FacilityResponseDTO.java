@@ -47,35 +47,55 @@ public class FacilityResponseDTO {
         Boolean isLast;    }
 
     @Getter @AllArgsConstructor
-    public static class Categories{
-        List<CategoryWithFacilities> categories;
+    public static class ListByBuilding{
+        List<BuildingWithFacilities> categories;
         int count;
     }
 
     @Getter @AllArgsConstructor
-    public static class CategoryWithFacilities{
+    public static class BuildingWithFacilities{
         String name;
         List<FacilityIdAndName> facilities;
         int count;
 
-        public CategoryWithFacilities(Theme theme){
-            name = theme.getName();
-            facilities = theme.getFacilities().stream().map(fac->new FacilityIdAndName(fac.getId(),fac.getName()))
-                    .collect(Collectors.toList());
-            count = facilities.size();
-        }
-        public CategoryWithFacilities(Building theme){
+        public BuildingWithFacilities(Building theme){
             name = theme.getName();
             facilities = theme.getFacilities().stream().map(fac->new FacilityIdAndName(fac.getId(),fac.getName()))
                     .collect(Collectors.toList());
             count = facilities.size();
         }
     }
+
+    @Getter @AllArgsConstructor
+    public static class ListByTheme{
+        List<ThemeWithFacilities> categories;
+        List<FacilityIdAndName> facilities;
+    }
+
+    @Getter @AllArgsConstructor
+    public static class ThemeWithFacilities{
+        String name;
+        List<FacilityIdAndName> facilities;
+        int count;
+
+        public ThemeWithFacilities(Theme theme){
+            name = theme.getName();
+            facilities = theme.getFacilities().stream().map(fac->new FacilityIdAndName(fac.getId(),fac.getName()))
+                    .collect(Collectors.toList());
+            count = facilities.size();
+        }
+    }
+
 
     @Getter @AllArgsConstructor
     public static class FacilityIdAndName{
         Long id;
         String name;
+
+        public FacilityIdAndName(Facility entity){
+            id = entity.getId();
+            name = entity.getName();
+        }
     }
 
     @Getter @AllArgsConstructor

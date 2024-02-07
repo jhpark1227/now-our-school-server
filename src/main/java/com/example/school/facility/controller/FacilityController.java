@@ -22,18 +22,18 @@ public class FacilityController {
     private final LibraryService libraryService;
 
     @GetMapping("/category/theme")
-    public ApiResponse<FacilityResponseDTO.Categories> getListByTheme(Authentication auth){
+    public ApiResponse<FacilityResponseDTO.ListByTheme> getListByTheme(Authentication auth){
         Member member = (Member)auth.getPrincipal();
 
-        FacilityResponseDTO.Categories res = facilityService.getListByTheme(member.getId());
+        FacilityResponseDTO.ListByTheme res = facilityService.getListByTheme(member.getId());
 
         return ApiResponse.onSuccess(res);
     }
 
     @GetMapping("/category/building")
-    public ApiResponse<FacilityResponseDTO.Categories> getListByBuilding(Authentication auth){
+    public ApiResponse<FacilityResponseDTO.ListByBuilding> getListByBuilding(Authentication auth){
         Member member = (Member)auth.getPrincipal();
-        FacilityResponseDTO.Categories res = facilityService.getListByBuilding(member.getId());
+        FacilityResponseDTO.ListByBuilding res = facilityService.getListByBuilding(member.getId());
 
         return ApiResponse.onSuccess(res);
     }
