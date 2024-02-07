@@ -6,9 +6,9 @@ import jakarta.persistence.Enumerated;
 public enum AlertType {
     @Enumerated(EnumType.STRING)
     THREE_DAYS_BEFORE(3 * 24 * 60),
-    ONE_DAY_BEFORE(20),
-    THIRTY_MINUTES_BEFORE(19),
-    TEN_MINUTES_BEFORE(18)
+    ONE_DAY_BEFORE(24*60),
+    THIRTY_MINUTES_BEFORE(30),
+    TEN_MINUTES_BEFORE(10)
     ;
 
     private final int minutesBefore;
