@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FacilityRepository extends JpaRepository<Facility, Long> {
-    List<Facility> findByBuildingSchoolAndTagIsNotNull(School school);
+    List<Facility> findBySchoolAndTagIsNotNull(School school);
 
     @Query("select f from Facility f left join fetch f.building left join fetch f.reviewList where f.id=:id")
     Optional<Facility> findByIdWithBuildingAndReview(@Param("id") Long id);
 
-    List<Facility> findByKeywordAndBuildingSchool(FacilityKeyword keyword, School school);
+    List<Facility> findByKeywordAndSchool(FacilityKeyword keyword, School school);
 
-    @Query("select f from Facility f left join fetch f.building b where f.name like concat('%', :keyword, '%')and b.school=:school")
-    List<Facility> findByNameLikeAndBuildingSchool(@Param("keyword") String keyword, @Param("school") School school);
+    @Query("select f from Facility f where f.name like concat('%', :keyword, '%')and f.school=:school")
+    List<Facility> findByNameLikeAndSchool(@Param("keyword") String keyword, @Param("school") School school);
 }
