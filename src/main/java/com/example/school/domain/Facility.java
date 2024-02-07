@@ -45,6 +45,7 @@ public class Facility extends BaseEntity{
     private String caution;
     private String location;
     private Float score;
+    private Boolean isTheme;
 
     private String description;
 

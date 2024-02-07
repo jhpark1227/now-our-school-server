@@ -20,4 +20,6 @@ public interface FacilityRepository extends JpaRepository<Facility, Long> {
 
     @Query("select f from Facility f where f.name like concat('%', :keyword, '%')and f.school=:school")
     List<Facility> findByNameLikeAndSchool(@Param("keyword") String keyword, @Param("school") School school);
+
+    List<Facility> findBySchoolAndIsThemeIsTrue(School school);
 }
