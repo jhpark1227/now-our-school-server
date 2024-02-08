@@ -22,6 +22,14 @@ public class Building {
 
     private String imageURL;
 
+    private String purpose;
+
+    private String item;
+
+    private String caution;
+
+    private String location;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id")
     private School school;

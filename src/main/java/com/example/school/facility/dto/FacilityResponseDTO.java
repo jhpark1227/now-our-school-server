@@ -1,9 +1,6 @@
 package com.example.school.facility.dto;
 
-import com.example.school.domain.Building;
-import com.example.school.domain.Facility;
-import com.example.school.domain.SearchRank;
-import com.example.school.domain.Theme;
+import com.example.school.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -286,6 +283,44 @@ public class FacilityResponseDTO {
     public static class SearchRankDTO{
         int ranking;
         String value;
+    }
+
+    @Getter
+    public static class BuildingDetail {
+        Long id;
+        String name;
+        String location;
+        String purpose;
+        String item;
+        String caution;
+        Double latitude;
+        Double longitude;
+        List<HourInDetail> hours;
+
+        public BuildingDetail(Building entity){
+            id = entity.getId();
+            name = entity.getName();
+            location = entity.getLocation();
+            purpose = entity.getPurpose();
+            item = entity.getItem();
+            caution = entity.getCaution();
+            latitude = entity.getLatitude();
+            longitude = entity.getLongitude();
+            hours = entity.getBuildingHours().stream().map(hour->new HourInDetail(hour)).collect(Collectors.toList());
+        }
+    }
+
+    @Getter
+    public static class HourInDetail{
+        String name;
+        String openingTime;
+        String closingTime;
+
+        public HourInDetail(BuildingHour hour){
+            name = hour.getName();
+            openingTime = hour.getOpeningTime();
+            closingTime = hour.getClosingTime();
+        }
     }
 }
 

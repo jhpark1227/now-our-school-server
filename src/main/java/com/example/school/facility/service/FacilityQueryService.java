@@ -24,4 +24,6 @@ public interface FacilityQueryService {
     FacilityResponseDTO.SearchLogList getSearchLog(Long memberId);
 
     FacilityResponseDTO.SearchRankList getSearchRank(Long memberId);
+
+    FacilityResponseDTO.BuildingDetail getBuildingDetail(Long buildingId);
 }

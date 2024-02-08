@@ -142,4 +142,12 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
 
         return new FacilityResponseDTO.SearchRankList(entities);
     }
+
+    @Override
+    public FacilityResponseDTO.BuildingDetail getBuildingDetail(Long buildingId) {
+        Building entity = buildingRepository.findByIdWithBuildingHours(buildingId)
+                .orElseThrow(()->new GeneralException(ErrorStatus.BUILDING_NOT_FOUND));
+
+        return new FacilityResponseDTO.BuildingDetail(entity);
+    }
 }
