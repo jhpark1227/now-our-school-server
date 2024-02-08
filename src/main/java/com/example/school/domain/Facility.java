@@ -55,4 +55,7 @@ public class Facility extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     private FacilityKeyword keyword;
+
+    @OneToMany(mappedBy = "facility",cascade = CascadeType.ALL)
+    private List<FacilityHour> facilityHours = new ArrayList<>();
 }

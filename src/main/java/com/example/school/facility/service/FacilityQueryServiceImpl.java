@@ -55,7 +55,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
 */
     @Override
     public FacilityResponseDTO.Detail getDetail(Long facilityId) {
-        Facility entity = facilityRepository.findByIdWithBuildingAndReview(facilityId)
+        Facility entity = facilityRepository.findByIdWithDetail(facilityId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.FACILITY_NOT_FOUND));
 
         return new FacilityResponseDTO.Detail(entity);

@@ -147,11 +147,12 @@ public class FacilityResponseDTO {
         String location;
         String purpose;
         String item;
-        String time;
         String caution;
         String buildingName;
         Double latitude;
         Double longitude;
+        String imageURL;
+        List<HourInDetail> hours;
         List<ReviewInDetail> reviews;
         int reviewCount;
 
@@ -162,11 +163,12 @@ public class FacilityResponseDTO {
             location = facility.getLocation();
             purpose = facility.getPurpose();
             item = facility.getItem();
-            time = facility.getTime();
             caution = facility.getCaution();
             buildingName = facility.getBuilding().getName();
             latitude = facility.getBuilding().getLatitude();
             longitude = facility.getBuilding().getLongitude();
+            imageURL = facility.getImageURL();
+            hours = facility.getFacilityHours().stream().map(hour->new HourInDetail(hour)).collect(Collectors.toList());
             reviews = facility.getReviewList().stream().map(review->{
                 return new ReviewInDetail(
                         review.getId(),
@@ -318,6 +320,12 @@ public class FacilityResponseDTO {
         String closingTime;
 
         public HourInDetail(BuildingHour hour){
+            name = hour.getName();
+            openingTime = hour.getOpeningTime();
+            closingTime = hour.getClosingTime();
+        }
+
+        public HourInDetail(FacilityHour hour){
             name = hour.getName();
             openingTime = hour.getOpeningTime();
             closingTime = hour.getClosingTime();
