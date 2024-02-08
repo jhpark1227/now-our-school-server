@@ -60,7 +60,7 @@ public class FacilityResponseDTO {
 
         public BuildingWithFacilities(Building theme){
             name = theme.getName();
-            facilities = theme.getFacilities().stream().map(fac->new FacilityIdAndName(fac.getId(),fac.getName()))
+            facilities = theme.getFacilities().stream().map(fac->new FacilityIdAndName(fac))
                     .collect(Collectors.toList());
             count = facilities.size();
         }
@@ -69,25 +69,25 @@ public class FacilityResponseDTO {
     @Getter @AllArgsConstructor
     public static class ListByTheme{
         List<ThemeWithFacilities> categories;
-        List<FacilityIdAndName> facilities;
+        List<FacilityIdAndExtraName> facilities;
     }
 
     @Getter @AllArgsConstructor
     public static class ThemeWithFacilities{
         String name;
-        List<FacilityIdAndName> facilities;
+        List<FacilityIdAndExtraName> facilities;
         int count;
 
         public ThemeWithFacilities(Theme theme){
             name = theme.getName();
-            facilities = theme.getFacilities().stream().map(fac->new FacilityIdAndName(fac.getId(),fac.getName()))
+            facilities = theme.getFacilities().stream().map(fac->new FacilityIdAndExtraName(fac))
                     .collect(Collectors.toList());
             count = facilities.size();
         }
     }
 
 
-    @Getter @AllArgsConstructor
+    @Getter
     public static class FacilityIdAndName{
         Long id;
         String name;
@@ -95,6 +95,17 @@ public class FacilityResponseDTO {
         public FacilityIdAndName(Facility entity){
             id = entity.getId();
             name = entity.getName();
+        }
+    }
+
+    @Getter
+    public static class FacilityIdAndExtraName{
+        Long id;
+        String name;
+
+        public FacilityIdAndExtraName(Facility entity){
+            id = entity.getId();
+            name = entity.getExtraName();
         }
     }
 

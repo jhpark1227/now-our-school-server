@@ -38,6 +38,7 @@ public class Facility extends BaseEntity{
     private Theme theme;
 
     private String name;
+    private String extraName;
     private String imageURL;
     private String purpose;
     private String item;

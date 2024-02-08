@@ -46,8 +46,8 @@ public class FacilityService {
         List<FacilityResponseDTO.ThemeWithFacilities> themeList =
                 themeEntities.stream().map(FacilityResponseDTO.ThemeWithFacilities::new).collect(Collectors.toList());
 
-        List<FacilityResponseDTO.FacilityIdAndName> facilityList =
-                facilityEntities.stream().map(FacilityResponseDTO.FacilityIdAndName::new).collect(Collectors.toList());
+        List<FacilityResponseDTO.FacilityIdAndExtraName> facilityList =
+                facilityEntities.stream().map(FacilityResponseDTO.FacilityIdAndExtraName::new).collect(Collectors.toList());
 
         return new FacilityResponseDTO.ListByTheme(themeList, facilityList);
     }
