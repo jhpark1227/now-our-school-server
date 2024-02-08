@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface FacilityRepository extends JpaRepository<Facility, Long> {
     List<Facility> findBySchoolAndTagIsNotNull(School school);
 
-    @Query("select f from Facility f left join fetch f.building left join fetch f.reviewList left join f.facilityHours where f.id=:id")
+    @Query("select f from Facility f left join fetch f.building left join fetch f.facilityHours where f.id=:id")
     Optional<Facility> findByIdWithDetail(@Param("id") Long id);
 
     List<Facility> findByKeywordAndSchool(FacilityKeyword keyword, School school);

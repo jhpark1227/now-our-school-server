@@ -156,7 +156,7 @@ public class FacilityResponseDTO {
         List<ReviewInDetail> reviews;
         int reviewCount;
 
-        public Detail(Facility facility){
+        public Detail(Facility facility, Page<Review> reviewList){
             id = facility.getId();
             name = facility.getName();
             score = facility.getScore();
@@ -169,7 +169,7 @@ public class FacilityResponseDTO {
             longitude = facility.getBuilding().getLongitude();
             imageURL = facility.getImageURL();
             hours = facility.getFacilityHours().stream().map(hour->new HourInDetail(hour)).collect(Collectors.toList());
-            reviews = facility.getReviewList().stream().map(review->{
+            reviews = reviewList.stream().map(review->{
                 return new ReviewInDetail(
                         review.getId(),
                         review.getScore(),
