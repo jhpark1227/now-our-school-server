@@ -1,13 +1,11 @@
 package com.example.school.facility.dto;
 
-import com.example.school.domain.Building;
-import com.example.school.domain.Facility;
-import com.example.school.domain.SearchRank;
-import com.example.school.domain.Theme;
+import com.example.school.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -286,6 +284,63 @@ public class FacilityResponseDTO {
     public static class SearchRankDTO{
         int ranking;
         String value;
+    }
+
+    @Getter
+    public static class BuildingDetail {
+        Long id;
+        String name;
+        String location;
+        String purpose;
+        String item;
+        String caution;
+        Double latitude;
+        Double longitude;
+        List<HourInDetail> hours;
+
+        public BuildingDetail(Building entity){
+            id = entity.getId();
+            name = entity.getName();
+            location = entity.getLocation();
+            purpose = entity.getPurpose();
+            item = entity.getItem();
+            caution = entity.getCaution();
+            latitude = entity.getLatitude();
+            longitude = entity.getLongitude();
+            hours = entity.getBuildingHours().stream().map(hour->new HourInDetail(hour)).collect(Collectors.toList());
+        }
+    }
+
+    @Getter
+    public static class HourInDetail{
+        String name;
+        String openingTime;
+        String closingTime;
+
+        public HourInDetail(BuildingHour hour){
+            name = hour.getName();
+            openingTime = hour.getOpeningTime();
+            closingTime = hour.getClosingTime();
+        }
+    }
+
+    @Getter
+    public static class BuildingImages {
+        List<String> list;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+
+        public BuildingImages(Page<BuildingImage> entities){
+            list = entities.stream().map(entity->entity.getImageURL()).collect(Collectors.toList());
+            listSize = entities.getSize();
+            totalPage = entities.getTotalPages();
+            totalElements = entities.getTotalElements();
+            isFirst = entities.isFirst();
+            isLast = entities.isLast();
+        }
     }
 }
 
