@@ -241,8 +241,16 @@ public class FacilityResponseDTO {
         Long id;
         String name;
         String imageURL;
-        String time;
         String buildingName;
+        List<HourInDetail> hours;
+
+        public SearchResult(Facility entity){
+            id = entity.getId();
+            name = entity.getName();
+            imageURL = entity.getImageURL();
+            hours = entity.getFacilityHours().stream().map(hour->new HourInDetail(hour)).collect(Collectors.toList());
+            buildingName = entity.getBuilding().getName();
+        }
     }
 
     @Getter @AllArgsConstructor

@@ -114,7 +114,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
         facilityService.saveSearchLog(memberId, member.getSchool().getId(), keyword);
 
         List<FacilityResponseDTO.SearchResult> list = entities.stream().map(entity->{
-            return new FacilityResponseDTO.SearchResult(entity.getId(),entity.getName(),entity.getImageURL(),entity.getTime(),entity.getBuilding().getName());
+            return new FacilityResponseDTO.SearchResult(entity);
         }).collect(Collectors.toList());
 
         return new FacilityResponseDTO.SearchResults(list,list.size());
