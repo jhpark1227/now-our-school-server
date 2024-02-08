@@ -233,7 +233,20 @@ public class FacilityResponseDTO {
     @Getter @AllArgsConstructor
     public static class SearchResults{
         List<SearchResult> list;
-        int count;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+
+        public SearchResults(Page<Facility> entities){
+            list = entities.stream().map(entity->new FacilityResponseDTO.SearchResult(entity)).collect(Collectors.toList());
+            listSize = entities.getSize();
+            totalPage = entities.getTotalPages();
+            totalElements = entities.getTotalElements();
+            isFirst = entities.isFirst();
+            isLast = entities.isLast();
+        }
     }
 
     @Getter @AllArgsConstructor

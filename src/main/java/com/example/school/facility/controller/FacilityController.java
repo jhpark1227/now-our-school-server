@@ -110,11 +110,12 @@ public class FacilityController {
     @GetMapping("/search")
     public ApiResponse<FacilityResponseDTO.SearchResults> searchFacility(
             @RequestParam("query") @CheckKeyword String keyword,
+            @RequestParam("page") @CheckPage Integer page,
             Authentication auth
     ){
         Member member = (Member)auth.getPrincipal();
 
-        FacilityResponseDTO.SearchResults res = facilityQueryService.searchFacility(member.getId(), keyword);
+        FacilityResponseDTO.SearchResults res = facilityQueryService.searchFacility(member.getId(), keyword, page);
 
         return ApiResponse.onSuccess(res);
     }

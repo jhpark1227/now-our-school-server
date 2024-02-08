@@ -106,18 +106,15 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
     }
 
     @Override
-    public FacilityResponseDTO.SearchResults searchFacility(Long memberId, String keyword) {
+    public FacilityResponseDTO.SearchResults searchFacility(Long memberId, String keyword, Integer page) {
         Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        List<Facility> entities = facilityRepository.findByNameLikeAndSchool(keyword.trim(),member.getSchool());
+        Pageable pageRequest = PageRequest.of(page-1,10);
+        Page<Facility> entities = facilityRepository.findByNameLikeAndSchool(keyword.trim(),member.getSchool(), pageRequest);
         facilityService.saveSearchLog(memberId, member.getSchool().getId(), keyword);
 
-        List<FacilityResponseDTO.SearchResult> list = entities.stream().map(entity->{
-            return new FacilityResponseDTO.SearchResult(entity);
-        }).collect(Collectors.toList());
-
-        return new FacilityResponseDTO.SearchResults(list,list.size());
+        return new FacilityResponseDTO.SearchResults(entities);
     }
 
     @Override
