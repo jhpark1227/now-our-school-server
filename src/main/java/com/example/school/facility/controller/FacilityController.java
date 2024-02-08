@@ -70,6 +70,16 @@ public class FacilityController {
         return ApiResponse.onSuccess(res);
     }
 
+    @GetMapping("/building/{buildingId}/img")
+    public ApiResponse<FacilityResponseDTO.BuildingImages> getBuildingImages(
+            @PathVariable("buildingId")Long facilityId,
+          @RequestParam("page") @CheckPage Integer page
+    ){
+        FacilityResponseDTO.BuildingImages res = facilityQueryService.getBuildingImages(facilityId, page);
+
+        return ApiResponse.onSuccess(res);
+    }
+
     @GetMapping("/{facilityId}/img")
     public ApiResponse<FacilityResponseDTO.Images> getImages(
             @PathVariable("facilityId")Long facilityId,

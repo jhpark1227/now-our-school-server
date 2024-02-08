@@ -6,11 +6,7 @@ import com.example.school.domain.*;
 import com.example.school.domain.enums.FacilityKeyword;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.dto.FacilitySaveResponseDTO;
-import com.example.school.facility.repository.BuildingRepository;
-import com.example.school.facility.repository.FacilityImageRepository;
-import com.example.school.facility.repository.FacilityRepository;
-import com.example.school.facility.repository.SearchRankRepository;
-import com.example.school.user.repository.ReviewRepository;
+import com.example.school.facility.repository.*;
 import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,7 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FacilityQueryServiceImpl implements FacilityQueryService{
     private final FacilityRepository facilityRepository;
-    private final ReviewRepository reviewRepository;
+    private final BuildingImageRepository buildingImageRepository;
     private final FacilityImageRepository facilityImageRepository;
     private final UserRepository userRepository;
     private final BuildingRepository buildingRepository;
@@ -149,5 +145,13 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
                 .orElseThrow(()->new GeneralException(ErrorStatus.BUILDING_NOT_FOUND));
 
         return new FacilityResponseDTO.BuildingDetail(entity);
+    }
+
+    @Override
+    public FacilityResponseDTO.BuildingImages getBuildingImages(Long buildingId, Integer page) {
+        Pageable pageRequest = PageRequest.of(page-1,5);
+        Page<BuildingImage> entities = buildingImageRepository.findByBuildingId(buildingId,pageRequest);
+
+        return new FacilityResponseDTO.BuildingImages(entities);
     }
 }

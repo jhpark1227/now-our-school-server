@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -320,6 +321,25 @@ public class FacilityResponseDTO {
             name = hour.getName();
             openingTime = hour.getOpeningTime();
             closingTime = hour.getClosingTime();
+        }
+    }
+
+    @Getter
+    public static class BuildingImages {
+        List<String> list;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+
+        public BuildingImages(Page<BuildingImage> entities){
+            list = entities.stream().map(entity->entity.getImageURL()).collect(Collectors.toList());
+            listSize = entities.getSize();
+            totalPage = entities.getTotalPages();
+            totalElements = entities.getTotalElements();
+            isFirst = entities.isFirst();
+            isLast = entities.isLast();
         }
     }
 }
