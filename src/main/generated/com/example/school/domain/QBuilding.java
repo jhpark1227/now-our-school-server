@@ -24,17 +24,25 @@ public class QBuilding extends EntityPathBase<Building> {
 
     public final ListPath<BuildingHour, QBuildingHour> buildingHours = this.<BuildingHour, QBuildingHour>createList("buildingHours", BuildingHour.class, QBuildingHour.class, PathInits.DIRECT2);
 
+    public final StringPath caution = createString("caution");
+
     public final ListPath<Facility, QFacility> facilities = this.<Facility, QFacility>createList("facilities", Facility.class, QFacility.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath imageURL = createString("imageURL");
 
+    public final StringPath item = createString("item");
+
     public final NumberPath<Double> latitude = createNumber("latitude", Double.class);
+
+    public final StringPath location = createString("location");
 
     public final NumberPath<Double> longitude = createNumber("longitude", Double.class);
 
     public final StringPath name = createString("name");
+
+    public final StringPath purpose = createString("purpose");
 
     public final QSchool school;
 

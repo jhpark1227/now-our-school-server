@@ -15,6 +15,7 @@ public class ReservationConverter {
                 .id(reservation.getId())
                 .facilityId(reservation.getFacility().getId())
                 .memberId(reservation.getMember().getId())
+                .users(reservation.getUsers())
                 .year(reservation.getYear())
                 .month(reservation.getMonth())
                 .start_time(reservation.getStart_time())
