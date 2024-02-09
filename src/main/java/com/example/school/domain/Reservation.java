@@ -34,6 +34,7 @@ public class Reservation extends BaseEntity {
 
     @OneToMany(mappedBy = "reservation")
     List<Image> images = new ArrayList<>();
+    private Integer users; //이용 인원
     private String year;
     private String month;
     private String day;

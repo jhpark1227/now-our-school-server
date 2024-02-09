@@ -30,6 +30,7 @@ public class ReservationRequestDTO {
     public static class ReservationDTO{
         Long memberId;
         Long facilityId;
+        Integer users;
         Integer startTime;
         Integer endTime;
         Integer duration;
