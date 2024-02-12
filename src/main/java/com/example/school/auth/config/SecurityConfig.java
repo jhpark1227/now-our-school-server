@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @RequiredArgsConstructor
@@ -34,6 +35,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())) // CORS 설정 추가
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> {
                     httpSecuritySessionManagementConfigurer
                             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -42,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user/**").authenticated()
                         .requestMatchers("/api/v1/reservation/**").authenticated()
                         .requestMatchers("/api/v1/facility/**").authenticated()
+                        .requestMatchers("/ws/**").permitAll()
 //                        .requestMatchers("/api/admin/**").permitAll()
                         .anyRequest().permitAll()
                 )

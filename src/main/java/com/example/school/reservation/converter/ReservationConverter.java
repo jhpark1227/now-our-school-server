@@ -15,6 +15,7 @@ public class ReservationConverter {
                 .id(reservation.getId())
                 .facilityId(reservation.getFacility().getId())
                 .memberId(reservation.getMember().getId())
+                .users(reservation.getUsers())
                 .year(reservation.getYear())
                 .month(reservation.getMonth())
                 .start_time(reservation.getStart_time())
@@ -62,6 +63,7 @@ public class ReservationConverter {
     public static Reservation reservation(ReservationRequestDTO.ReservationDTO reservationDTO){
         return Reservation.builder()
                 .year(reservationDTO.getYear())
+                .users(reservationDTO.getUsers())
                 .month(reservationDTO.getMonth())
                 .day(reservationDTO.getDay())
                 .start_time(reservationDTO.getStartTime())

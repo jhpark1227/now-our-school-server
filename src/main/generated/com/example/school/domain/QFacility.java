@@ -33,9 +33,15 @@ public class QFacility extends EntityPathBase<Facility> {
 
     public final StringPath description = createString("description");
 
+    public final StringPath extraName = createString("extraName");
+
+    public final ListPath<FacilityHour, QFacilityHour> facilityHours = this.<FacilityHour, QFacilityHour>createList("facilityHours", FacilityHour.class, QFacilityHour.class, PathInits.DIRECT2);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath imageURL = createString("imageURL");
+
+    public final BooleanPath isTheme = createBoolean("isTheme");
 
     public final StringPath item = createString("item");
 

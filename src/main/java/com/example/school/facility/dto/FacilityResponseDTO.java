@@ -156,7 +156,7 @@ public class FacilityResponseDTO {
         List<ReviewInDetail> reviews;
         int reviewCount;
 
-        public Detail(Facility facility){
+        public Detail(Facility facility, Page<Review> reviewList){
             id = facility.getId();
             name = facility.getName();
             score = facility.getScore();
@@ -169,7 +169,7 @@ public class FacilityResponseDTO {
             longitude = facility.getBuilding().getLongitude();
             imageURL = facility.getImageURL();
             hours = facility.getFacilityHours().stream().map(hour->new HourInDetail(hour)).collect(Collectors.toList());
-            reviews = facility.getReviewList().stream().map(review->{
+            reviews = reviewList.stream().map(review->{
                 return new ReviewInDetail(
                         review.getId(),
                         review.getScore(),
@@ -233,7 +233,20 @@ public class FacilityResponseDTO {
     @Getter @AllArgsConstructor
     public static class SearchResults{
         List<SearchResult> list;
-        int count;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+
+        public SearchResults(Page<Facility> entities){
+            list = entities.stream().map(entity->new FacilityResponseDTO.SearchResult(entity)).collect(Collectors.toList());
+            listSize = entities.getSize();
+            totalPage = entities.getTotalPages();
+            totalElements = entities.getTotalElements();
+            isFirst = entities.isFirst();
+            isLast = entities.isLast();
+        }
     }
 
     @Getter @AllArgsConstructor

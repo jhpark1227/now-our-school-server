@@ -19,7 +19,7 @@ public interface FacilityQueryService {
 
     FacilityResponseDTO.DetailOnMarker getDetailOnMarker(Long buildingId);
 
-    FacilityResponseDTO.SearchResults searchFacility(Long memberId, String keyword);
+    FacilityResponseDTO.SearchResults searchFacility(Long memberId, String keyword, Integer page);
 
     FacilityResponseDTO.SearchLogList getSearchLog(Long memberId);
 

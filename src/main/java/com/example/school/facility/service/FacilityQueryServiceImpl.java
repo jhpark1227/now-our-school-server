@@ -7,6 +7,7 @@ import com.example.school.domain.enums.FacilityKeyword;
 import com.example.school.facility.dto.FacilityResponseDTO;
 import com.example.school.facility.dto.FacilitySaveResponseDTO;
 import com.example.school.facility.repository.*;
+import com.example.school.user.repository.ReviewRepository;
 import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,6 +32,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
     private final UserRepository userRepository;
     private final BuildingRepository buildingRepository;
     private final SearchRankRepository searchRankRepository;
+    private final ReviewRepository reviewRepository;
     private final FacilityService facilityService;
     private final RedisTemplate redisTemplate;
 
@@ -55,10 +57,13 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
 */
     @Override
     public FacilityResponseDTO.Detail getDetail(Long facilityId) {
-        Facility entity = facilityRepository.findByIdWithDetail(facilityId)
+        Facility facility = facilityRepository.findByIdWithDetail(facilityId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.FACILITY_NOT_FOUND));
 
-        return new FacilityResponseDTO.Detail(entity);
+        PageRequest page = PageRequest.of(0,5);
+        Page<Review> reviews = reviewRepository.findAllByFacility(facility,page);
+
+        return new FacilityResponseDTO.Detail(facility, reviews);
     }
 
     @Override
@@ -106,18 +111,15 @@ public class FacilityQueryServiceImpl implements FacilityQueryService{
     }
 
     @Override
-    public FacilityResponseDTO.SearchResults searchFacility(Long memberId, String keyword) {
+    public FacilityResponseDTO.SearchResults searchFacility(Long memberId, String keyword, Integer page) {
         Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        List<Facility> entities = facilityRepository.findByNameLikeAndSchool(keyword.trim(),member.getSchool());
+        Pageable pageRequest = PageRequest.of(page-1,10);
+        Page<Facility> entities = facilityRepository.findByNameLikeAndSchool(keyword.trim(),member.getSchool(), pageRequest);
         facilityService.saveSearchLog(memberId, member.getSchool().getId(), keyword);
 
-        List<FacilityResponseDTO.SearchResult> list = entities.stream().map(entity->{
-            return new FacilityResponseDTO.SearchResult(entity);
-        }).collect(Collectors.toList());
-
-        return new FacilityResponseDTO.SearchResults(list,list.size());
+        return new FacilityResponseDTO.SearchResults(entities);
     }
 
     @Override

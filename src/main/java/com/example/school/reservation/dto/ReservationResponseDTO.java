@@ -19,6 +19,7 @@ public class ReservationResponseDTO {
         Long id;
         Long facilityId;
         Long memberId;
+        Integer users;
         String year;
         String month;
         String day;
