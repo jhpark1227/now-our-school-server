@@ -27,6 +27,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepositoryCustom{
                         typeEq(type),
                         schoolEq(school)
                 )
+                .orderBy(announcement.createdAt.desc())
                 .fetch();
 
         long totalCount = queryFactory
