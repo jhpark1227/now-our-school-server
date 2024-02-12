@@ -35,7 +35,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())) // CORS 설정 추가
+                .cors(AbstractHttpConfigurer::disable)
+               // .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())) // CORS 설정 추가
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> {
                     httpSecuritySessionManagementConfigurer
                             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -45,6 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/reservation/**").authenticated()
                         .requestMatchers("/api/v1/facility/**").authenticated()
                         .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/stomp/**").permitAll()
 //                        .requestMatchers("/api/admin/**").permitAll()
                         .anyRequest().permitAll()
                 )
