@@ -319,6 +319,7 @@ public class FacilityResponseDTO {
         String caution;
         Double latitude;
         Double longitude;
+        String imageURL;
         List<HourInDetail> hours;
 
         public BuildingDetail(Building entity){
@@ -330,6 +331,7 @@ public class FacilityResponseDTO {
             caution = entity.getCaution();
             latitude = entity.getLatitude();
             longitude = entity.getLongitude();
+            imageURL = entity.getImageURL();
             hours = entity.getBuildingHours().stream().map(hour->new HourInDetail(hour)).collect(Collectors.toList());
         }
     }
