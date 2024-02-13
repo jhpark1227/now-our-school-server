@@ -107,7 +107,7 @@ public class ReservationController {
     @PostMapping( value = "/return", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("isAuthenticated()")
     public ApiResponse<ReservationResponseDTO.returnDTO> returnReservation(@RequestPart(value="image", required=false) List<MultipartFile> imgFile,
-                                                                           @RequestPart ReservationRequestDTO.returnDTO returnDTO){
+                                                                           @RequestPart(value="returnDTO") ReservationRequestDTO.returnDTO returnDTO){
         log.info("이미지 : {}",imgFile);
         Reservation reservation = reservationService.getReservationById(returnDTO.getReservationId());
         reservationService.returnReservation(reservation);
