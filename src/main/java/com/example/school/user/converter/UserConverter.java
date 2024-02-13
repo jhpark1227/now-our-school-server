@@ -36,6 +36,7 @@ public class UserConverter {
         return UserResponseDTO.ReviewPreViewDTO.builder()
                 .title(review.getTitle())
                 .ownerNickname(review.getMember().getName())
+                .profileUrl(review.getMember().getProfileImg())
                 .score(review.getScore())
                 .createdAt(review.getCreatedAt().toLocalDate())
                 .body(review.getBody())

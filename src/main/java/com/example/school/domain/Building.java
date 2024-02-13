@@ -30,6 +30,8 @@ public class Building {
 
     private String location;
 
+    private String label;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id")
     private School school;
