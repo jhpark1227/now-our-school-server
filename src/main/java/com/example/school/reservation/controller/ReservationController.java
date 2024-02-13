@@ -45,9 +45,6 @@ public class ReservationController {
         try {
             Reservation reservation = reservationService.createReservation(reservationDTO);
 
-            // Schedule alerts
-            //reservationService.scheduleAlerts(reservation);
-
             return ApiResponse.onSuccess(reservation);
         } catch (RuntimeException e) {
             return ApiResponse.onFailure("COMMON400", e.getMessage());
