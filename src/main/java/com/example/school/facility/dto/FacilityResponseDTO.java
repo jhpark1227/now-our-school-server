@@ -1,10 +1,7 @@
 package com.example.school.facility.dto;
 
 import com.example.school.domain.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
@@ -24,7 +21,7 @@ public class FacilityResponseDTO {
         String time;
         String location;
         String purpose;
-        Float score;
+        Double score;
         String year;
         String month;
         String day;
@@ -144,7 +141,7 @@ public class FacilityResponseDTO {
     public static class Detail{
         Long id;
         String name;
-        Float score;
+        Double score;
         String location;
         String purpose;
         String item;
@@ -374,5 +371,6 @@ public class FacilityResponseDTO {
             isLast = entities.isLast();
         }
     }
+
 }
 

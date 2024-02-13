@@ -3,6 +3,7 @@ package com.example.school.facility.repository;
 import com.example.school.domain.Facility;
 import com.example.school.domain.School;
 import com.example.school.domain.enums.FacilityKeyword;
+import com.example.school.facility.dto.ScoreDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,4 +25,9 @@ public interface FacilityRepository extends JpaRepository<Facility, Long> {
     Page<Facility> findByNameLikeAndSchool(@Param("keyword") String keyword, @Param("school") School school, Pageable page);
 
     List<Facility> findBySchoolAndIsThemeIsTrue(School school);
+
+    @Query("select new com.example.school.facility.dto.ScoreDTO(f,avg(r.score)) " +
+            "from Facility f join Review r on r.facility = f " +
+            "group by f.id")
+    List<ScoreDTO> findAllWithReview();
 }
