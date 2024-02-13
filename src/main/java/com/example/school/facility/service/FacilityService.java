@@ -73,7 +73,7 @@ public class FacilityService {
         List<Building> entities = buildingRepository.findAllBySchool(member.getSchool());
 
         List<FacilityResponseDTO.Marker> list = entities.stream()
-                .map(entity->new FacilityResponseDTO.Marker(entity.getId(),entity.getLatitude(),entity.getLongitude()))
+                .map(entity->new FacilityResponseDTO.Marker(entity.getId(),entity.getLabel(),entity.getLatitude(),entity.getLongitude()))
                 .collect(Collectors.toList());
 
         return new FacilityResponseDTO.Markers(list,list.size());

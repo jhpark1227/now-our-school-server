@@ -116,6 +116,7 @@ public class FacilityResponseDTO {
     @Getter @AllArgsConstructor
     public static class Marker{
         Long id;
+        String label;
         Double latitude;
         Double longitude;
     }
