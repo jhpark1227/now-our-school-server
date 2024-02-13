@@ -45,7 +45,7 @@ public class Facility extends BaseEntity{
     private String time;
     private String caution;
     private String location;
-    private Float score;
+    private Double score;
     private Boolean isTheme;
 
     private String description;
@@ -58,4 +58,8 @@ public class Facility extends BaseEntity{
 
     @OneToMany(mappedBy = "facility",cascade = CascadeType.ALL)
     private List<FacilityHour> facilityHours = new ArrayList<>();
+
+    public void updateScore(Double newScore){
+        score = newScore;
+    }
 }
