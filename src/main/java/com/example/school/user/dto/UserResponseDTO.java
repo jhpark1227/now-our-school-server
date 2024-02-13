@@ -51,7 +51,7 @@ public class UserResponseDTO {
     public static class ReviewPreViewDTO{
         String title;
         String ownerNickname;
-
+        String profileUrl;
         Float score;
         String body;
         LocalDate createdAt;
