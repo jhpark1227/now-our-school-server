@@ -56,7 +56,7 @@ public class FacilityService {
         Member member = userRepository.findById(memberId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        List<Building> entities = buildingRepository.findBySchoolWithFacility(member.getSchool());
+        List<Building> entities = buildingRepository.findBySchoolAndInCategoryWithFacility(member.getSchool());
 
         List<FacilityResponseDTO.BuildingWithFacilities> list =
                 entities.stream().map(FacilityResponseDTO.BuildingWithFacilities::new)
