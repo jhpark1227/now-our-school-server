@@ -86,7 +86,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
 
     @Override
     public Boolean checkIdentifyNumFormat(String identifyNum) {
-        if (identifyNum.length() != 7) {
+        if (identifyNum.length() != 13) {
             return false;
         }
         return true;
