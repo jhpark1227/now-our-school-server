@@ -32,6 +32,8 @@ public class Building {
 
     private String label;
 
+    private Boolean inCategory;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id")
     private School school;
