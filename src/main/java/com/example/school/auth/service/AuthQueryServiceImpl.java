@@ -11,6 +11,7 @@ import com.example.school.auth.repository.AuthRepository;
 import com.example.school.awsS3.AwsS3Service;
 import com.example.school.domain.Member;
 import com.example.school.domain.School;
+import com.example.school.facility.repository.SchoolRepository;
 import com.example.school.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
     private final JwtUtils jwtUtils;
     private final RedisUtils redisUtils;
     private final AwsS3Service awsS3Service;
+    private final SchoolRepository schoolRepository;
 
     //    @Override
 //    @Transactional
@@ -234,19 +236,23 @@ public class AuthQueryServiceImpl implements AuthQueryService {
         return true;
     }
 
-//    @Override
-//    public Boolean changePwd(AuthRequestDTO.FindPwRequest request) {
-//        // 토큰에서 이메일을 추출하지 않고 직접 request에서 얻어옴
-//        String email = request.getPassword(); // 예시로 request에 getEmail() 메서드가 있다고 가정
-//
-//        Member member = userRepository.findByEmail(email).orElseThrow(() -> {
-//            throw new GeneralException(ErrorStatus.MEMBER_NOT_FOUND);
-//        });
-//
-//        member.changePassword(passwordEncoder.encode(request.getPassword()));
-//        userRepository.save(member);
-//        return true;
-//    }
+    @Override
+    public Boolean checkSchoolFormat(Long id, String name) {
+        // 주어진 이름으로 학교를 찾습니다.
+        School school = schoolRepository.findByName(name);
+
+        // 학교를 찾지 못한 경우나 학교의 id가 null인 경우 false를 반환합니다.
+        if (school == null || school.getId() == null) {
+            return false;
+        }
+
+        // 학교의 id와 주어진 id, 그리고 학교의 name과 주어진 name을 비교하여 모두 일치하는지 확인합니다.
+        if (school.getId().equals(id) && school.getName().equals(name)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public AuthResponseDTO.ReissueRespDto reissue(String refreshToken) {

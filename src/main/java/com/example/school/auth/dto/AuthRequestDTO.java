@@ -1,5 +1,6 @@
 package com.example.school.auth.dto;
 
+import com.example.school.domain.School;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,7 +28,7 @@ public class AuthRequestDTO {
 
         Integer age;
         Integer grade;
-        String school;
+        School school;
     }
 
     @Getter @Builder

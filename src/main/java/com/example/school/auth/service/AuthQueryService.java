@@ -12,6 +12,7 @@ public interface AuthQueryService {
     Member register(AuthRequestDTO.RegisterReqDTO request, MultipartFile profileImage);
     List<AuthResponseDTO.SchoolResDTO> searchSchool(String schoolName);
     Boolean checkUserIdFormat(String id);
+    Boolean checkSchoolFormat(Long id, String name);
     Boolean checkIdentifyNumFormat(String identifyNum);
     Member findMemberByEmail(String email);
     Boolean validateDuplicateEmail(String email);
