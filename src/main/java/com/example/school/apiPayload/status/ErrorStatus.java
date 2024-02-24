@@ -37,7 +37,7 @@ public enum ErrorStatus {
     EMAIL_DUPLICATE(HttpStatus.BAD_REQUEST,"AUTH_4014", "중복된 이메일입니다."),
     USERID_DUPLICATE(HttpStatus.BAD_REQUEST,"AUTH_4015", "중복된 아이디입니다."),
     IDENTIFYNUM_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4016", "주민번호 형식이 맞지 않습니다."),
-    SCHOOL_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "AUTH_40017", "학교 형식이 잘못되었습니다."),
+    SCHOOL_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "AUTH_4017", "학교 형식이 잘못되었습니다."),
 
 
     FACILITY_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE_4001","시설이 없습니다."),
