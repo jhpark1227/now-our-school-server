@@ -57,6 +57,11 @@ public class AuthController {
         if (!authQueryService.checkNicknameDuplicate(registerReqDTO.getNickname())) {
             return ApiResponse.onFailure(ErrorStatus.NICKNAME_DUPLICATE.getCode(), ErrorStatus.NICKNAME_DUPLICATE.getMessage());
         }
+
+        if (!authQueryService.checkSchoolFormat(registerReqDTO.getSchool().getId(), registerReqDTO.getSchool().getName())) {
+            return ApiResponse.onFailure(ErrorStatus.SCHOOL_FORMAT_ERROR.getCode(), ErrorStatus.SCHOOL_FORMAT_ERROR.getMessage());
+        }
+
         return ApiResponse.onSuccess(authQueryService.register(registerReqDTO, profileImage));
     }
 

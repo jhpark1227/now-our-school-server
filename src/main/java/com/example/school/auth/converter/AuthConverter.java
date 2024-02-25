@@ -24,6 +24,7 @@ public class AuthConverter {
                 .email(request.getEmail())
                 .identifyNum(request.getIdentify_num())
                 .password(encryptedPassword)
+                .school(request.getSchool())
                 .phone(request.getPhone())
                 .nickname(request.getNickname())
                 .age(request.getAge())
