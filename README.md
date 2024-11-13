@@ -25,8 +25,9 @@
     * 시설물 조회 (유형별 조회, 검색 등)
     * FAQ 조회
 * 백엔드 배포
-    * AWS EC2,RDS,ElastiCache
-      <br>
+    * AWS EC2, RDS, ElastiCache
+
+<br/><br/>
 
 ## 💡 주요 기능
 
@@ -37,21 +38,29 @@
 | 캠퍼스 맵                | 캠퍼스 맵을 통해 모르는 시설물에 대한 정확한 위치를 파악할 수 있습니다.        |
 | 리뷰 작성 및 조회           | 시설물 이용 후에 리뷰를 남기거나 다른 사람이 남긴 리뷰를 열람할 수 있습니다.     |
 | 시설물 반납 인증            | 원활한 시설물 관리를 위하여 퇴실 시에 인증 사진을 업로드합니다.             |
-<br>
+
+<br/><br/>
 
 ## 🛠️ 기술스택
-<br>
+<img width="740" alt="image" src="https://github.com/user-attachments/assets/0d1dae2e-f265-4a25-b364-961e43e6ba60">
+<img width="740" alt="image" src="https://github.com/user-attachments/assets/1c2619a0-e0f7-4c7d-895c-80ea8f258afe">
 
-## 📂 서비스 요청 흐름도
-<br>
+<br/><br/>
+
+## 📂 인프라
+
+<br/><br/>
 
 ## 📂 ERD
 ![지금 우리 학교는 erd (1)](https://github.com/user-attachments/assets/b6a4964a-0c8d-47c4-b7e4-7ca3c57734ad)
 
-## [📂 API 명세서](https://spicy-lillipilli-407.notion.site/API-13d6a72d1937802ca4f4cba44697a17d)
+<br/><br/>
 
+## 📂 API 명세서
+https://spicy-lillipilli-407.notion.site/API-13d6a72d1937802ca4f4cba44697a17d
+
+<br/><br/>
 ## 👨‍👩‍👧‍👦 팀 구성
-* 박준혁: 팀장, 시설/FAQ 관련 기능 개발, 배포
-* 유지민: 사용자/인증 관련 기능 개발
-* 지승현: 예약/시설 관련 기능 개발
-* 하태욱: 사용자/리뷰 관련 기능 개발
+
+<br/><br/>
+## 📺 사용 화면
